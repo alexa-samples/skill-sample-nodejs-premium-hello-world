@@ -21,7 +21,6 @@ const HelpIntentHandler = {
     );
   },
   handle(handlerInput) {
-    //TODO: write  better response
     const speakOutput = `You can say hello to me! How can I help?`;
     return handlerInput.responseBuilder
       .speak(speakOutput)
@@ -452,7 +451,6 @@ function getStandardGreeting() {
   ];
 }
 function getPremiumGreeting() {
-  //TODO: Add more greetings
   const premium_greetings = [
     { language: "hindi", greeting: "Namaste" },
     { language: "french", greeting: "Bonjour" },
