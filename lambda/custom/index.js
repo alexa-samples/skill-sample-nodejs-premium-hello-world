@@ -265,6 +265,14 @@ const ConnectionsResponseHandler = {
             const attributeNameToSave = `entitledProducts`;
             saveToSession(handlerInput, attributeNameToSave, premiumProduct);
             repromptOutput = getRandomYesNoQuestion();
+            // resetting the count of standard greetings to avoid hitting upsell logic
+            const secondAttributeNameToSave = `numberOfStandardGreetingsOfferedInThisSession`;
+            const numberOfStandardGreetingsOfferedInThisSession = 1;
+            saveToSession(
+              handlerInput,
+              secondAttributeNameToSave,
+              numberOfStandardGreetingsOfferedInThisSession
+            );
             break;
           case "DECLINED":
             if (handlerInput.requestEnvelope.request.name === "Buy") {
@@ -632,4 +640,3 @@ exports.handler = Alexa.SkillBuilders.standard()
   .addRequestInterceptors(LogRequestInterceptor, UpSellInterceptor)
   .addResponseInterceptors(LogResponseInterceptor)
   .lambda();
-//reset upsell session attribute after sale
