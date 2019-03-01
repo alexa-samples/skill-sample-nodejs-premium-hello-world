@@ -21,6 +21,7 @@ const HelpIntentHandler = {
     );
   },
   handle(handlerInput) {
+    //TODO: write  better response
     const speakOutput = `You can say hello to me! How can I help?`;
     return handlerInput.responseBuilder
       .speak(speakOutput)
@@ -39,7 +40,7 @@ const CancelAndStopIntentHandler = {
     );
   },
   handle(handlerInput) {
-    const speakOutput = "Goodbye!";
+    const speakOutput = `${getRandomGoodbye()}`;
     return handlerInput.responseBuilder.speak(speakOutput).getResponse();
   }
 };
@@ -129,12 +130,15 @@ const AnotherGreetingWithUpsellHandler = {
       const originalUpsellMessage =
         response.directives[0].payload.upsellMessage;
       const newUpsellMessage = `Here's your standard greeting: ${getStandardGreeting()} <break/> ${originalUpsellMessage}`;
+      // Setting a Session Attribute to keep track of the number of times the customer has said heard a standard greeting.
+      // We will use this to determine if an upsell is required.
+      const attributeNameToIncrement = `numberOfStandardGreetingsOfferedInThisSession`;
+      incrementCountInSession(handlerInput, attributeNameToIncrement);
       response.directives[0].payload.upsellMessage = newUpsellMessage;
       return response;
     });
   }
 };
-
 // IF THE USER SAYS NO, THEY DON'T WANT ANOTHER GREETING.  EXIT THE SKILL.
 const NoIntentHandler = {
   canHandle(handlerInput) {
@@ -274,6 +278,10 @@ const ConnectionsResponseHandler = {
             }
             // response when declined upsell request
             speakOutput = `Here's your standard greeting: ${getStandardGreeting()} Would you like another greeting?`;
+            // Setting a Session Attribute to keep track of the number of times the customer has said heard a standard greeting.
+            // We will use this to determine if an upsell is required.
+            const attributeNameToIncrement = `numberOfStandardGreetingsOfferedInThisSession`;
+            incrementCountInSession(handlerInput, attributeNameToIncrement);
             repromptOutput = "Would you like another greeting?";
             break;
           case "ALREADY_PURCHASED":
@@ -311,6 +319,20 @@ const ConnectionsResponseHandler = {
         )
         .getResponse();
     });
+  }
+};
+const CancelfromConnectionsHandler = {
+  canHandle(handlerInput) {
+    return (
+      handlerInput.requestEnvelope.request.type === "Connections.Response" &&
+      handlerInput.requestEnvelope.request.name === "Cancel"
+    );
+  },
+  handle(handlerInput) {
+    // Since the skill only has entitlements we cannot refund ourselves.
+    // Directing to customer support, the customer already got a card from the Monetization service
+    const speakOutput = `You will find details for contacting customer support in the card. ${getRandomGoodbye()}.`;
+    return handlerInput.responseBuilder.speak(speakOutput).getResponse();
   }
 };
 // Following handler demonstrates how skills can handle user requests to discover what
@@ -422,6 +444,7 @@ function getStandardGreeting() {
   ];
 }
 function getPremiumGreeting() {
+  //TODO: Add more greetings
   const premium_greetings = [
     { language: "hindi", greeting: "Namaste" },
     { language: "french", greeting: "Bonjour" },
@@ -492,8 +515,8 @@ function getResponseBasedOnAccessType(
   }
   //Customer has not bought the Premium Product. Upsell should not be done.
   const speakOutput = `Here's your Standard Greeting: ${getStandardGreeting()} ${getRandomYesNoQuestion()}`;
-  // Setting a new attribute inside Session Attributes to keep track of the number of times the customer has said heard a standard greeting.
-  //We will use this to determine if an upsell is required.
+  // Setting a Session Attribute to keep track of the number of times the customer has said heard a standard greeting.
+  // We will use this to determine if an upsell is required.
   const attributeNameToIncrement = `numberOfStandardGreetingsOfferedInThisSession`;
   incrementCountInSession(handlerInput, attributeNameToIncrement);
   return handlerInput.responseBuilder
@@ -589,6 +612,7 @@ const UpSellInterceptor = {
 // defined are included below. The order matters - they're processed top to bottom.
 exports.handler = Alexa.SkillBuilders.standard()
   .addRequestHandlers(
+    CancelfromConnectionsHandler,
     ConnectionsResponseHandler,
     LaunchRequestHandler,
     AnotherGreetingWithUpsellHandler,
@@ -604,7 +628,8 @@ exports.handler = Alexa.SkillBuilders.standard()
     RefundIntentHandler,
     SessionEndedRequestHandler
   )
-  // .addErrorHandlers(ErrorHandler)
+  .addErrorHandlers(ErrorHandler)
   .addRequestInterceptors(LogRequestInterceptor, UpSellInterceptor)
   .addResponseInterceptors(LogResponseInterceptor)
   .lambda();
+//reset upsell session attribute after sale
