@@ -36,10 +36,10 @@ So far, we have [created a Voice User Interface](./voice-user-interface.md), [a 
 > **Pro Tip**: type or say `exit` in the simulator to reset the session before each test pass.  The simulator holds a session open longer than on a device to assist in your testing and it's easy to forget a session is still open.
 
 
-## Other testing methods to consider:**
-    *  Testing on your Alexa enabled devices and applications - any devices registered using the same account as your Alexa developer account will have your skill enabled on them when testing is enabled in development mode.  You should always test your skill on an actual device rather than relying solely on the simulator.  Keep in mind that in-skill products may not be purchased on all devices, but already purchased products will be available for use on all devices.
-    *  [Echosim.io](https://echosim.io) - a browser-based Alexa skill testing tool that makes it easy to test your skills without carrying a physical device everywhere you go.
-    *  [Unit Testing with Alexa](https://alexa.design/postman-guide) - a modern approach to unit testing your Alexa skills with [Postman](http://getpostman.com) and [Amazon API Gateway](http://aws.amazon.com/apigateway).
+## **Other testing methods to consider:**
+* Testing on your Alexa enabled devices and applications - any devices registered using the same account as your Alexa developer account will have your skill enabled on them when testing is enabled in development mode.  You should always test your skill on an actual device rather than relying solely on the simulator.  Keep in mind that in-skill products may not be purchased on all devices, but already purchased products will be available for use on all devices.
+* [Echosim.io](https://echosim.io) - a browser-based Alexa skill testing tool that makes it easy to test your skills without carrying a physical device everywhere you go.
+* [Unit Testing with Alexa](https://alexa.design/postman-guide) - a modern approach to unit testing your Alexa skills with [Postman](http://getpostman.com) and [Amazon API Gateway](http://aws.amazon.com/apigateway).
 
 > Note: While in-skill products are only currently available in the English (US) locale, any developer account (regardless of home locale), can be used to create skills with in-skill products.  When testing, you must use an account which defaults to the amazon.com marketplace.  (You may recall see that marketplace mentioned on the in-skill products' pricing page.)  If your developer account does not default to that marketplace, or your billing address is outside the United States, then you will need to create a new account for testing purposes.  Create this account using https://www.amazon.com and set an address for somewhere in the United States.
 
