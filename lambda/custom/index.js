@@ -1,640 +1,702 @@
-const Alexa = require(`ask-sdk`);
-const skillName = "Premium Hello World";
+const Alexa = require('ask-sdk');
+const skillName = 'Premium Hello World';
+
 const LaunchRequestHandler = {
-  canHandle(handlerInput) {
-    return handlerInput.requestEnvelope.request.type === `LaunchRequest`;
-  },
-  handle(handlerInput) {
-    const speakOutput = `Welcome to ${skillName}. To hear a greeting, you can say hello, or to hear about the premium categories for purchase, say 'What can I buy'. For help, say , 'Help me'... So, What can I help you with?'`;
-    let response = handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt(speakOutput)
-      .getResponse();
-    return response;
-  }
-};
-const HelpIntentHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === `IntentRequest` &&
-      handlerInput.requestEnvelope.request.intent.name === `AMAZON.HelpIntent`
-    );
-  },
-  handle(handlerInput) {
-    const speakOutput = `You can say hello to me! How can I help?`;
-    return handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt(speakOutput)
-      .getResponse();
-  }
-};
-const CancelAndStopIntentHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === `IntentRequest` &&
-      (handlerInput.requestEnvelope.request.intent.name ===
-        `AMAZON.CancelIntent` ||
-        handlerInput.requestEnvelope.request.intent.name ===
-          `AMAZON.StopIntent`)
-    );
-  },
-  handle(handlerInput) {
-    const speakOutput = `${getRandomGoodbye()}`;
-    return handlerInput.responseBuilder.speak(speakOutput).getResponse();
-  }
-};
-const SessionEndedRequestHandler = {
-  canHandle(handlerInput) {
-    return handlerInput.requestEnvelope.request.type === "SessionEndedRequest";
-  },
-  handle(handlerInput) {
-    return handlerInput.responseBuilder.getResponse();
-  }
-};
-const WelcomeIntentHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === "IntentRequest" &&
-      handlerInput.requestEnvelope.request.intent.name === "WelcomeIntent"
-    );
-  },
-  handle(handlerInput) {
-    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-    const isUpsellNeeded = sessionAttributes.shouldUpsell;
-    const locale = handlerInput.requestEnvelope.request.locale;
-    const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    return monetizationClient.getInSkillProducts(locale).then(function(result) {
-      return checkForProductAccess(handlerInput, result, isUpsellNeeded);
-    });
-  }
-};
-// IF THE USER SAYS YES, THEY WANT ANOTHER GREETING.
-const AnotherGreetingHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === "IntentRequest" &&
-      handlerInput.requestEnvelope.request.intent.name === "AMAZON.YesIntent"
-    );
-  },
-  handle(handlerInput) {
-    //Get the locale for the request
-    const locale = handlerInput.requestEnvelope.request.locale;
+	canHandle(handlerInput) {
+		return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
+	},
+	handle(handlerInput) {
+		const speechText = 'Welcome to the Alexa Skills Kit, you can say hello!';
 
-    //Instantiate a new MonetizationServiceClient object to invoke the inSkillPurchaseAPI
-    const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-
-    //Check if upsell should be done. You can set your own upsell timing logic inside the shouldUpsell() function.
-    const isUpsellNeeded = false;
-
-    //Get list of products the customer has bought, and then respond accordingly
-    return monetizationClient.getInSkillProducts(locale).then(function(result) {
-      //Pass the handlerInput, list of products customer has access to (result), and the flag for upsell to the helper function checkForProductAccess to determine the response.
-      let response = checkForProductAccess(
-        handlerInput,
-        result,
-        isUpsellNeeded
-      );
-      return response;
-    });
-  }
+		return handlerInput.responseBuilder
+			.speak(speechText)
+			.reprompt(speechText)
+			.withSimpleCard(skillName, speechText)
+			.getResponse();
+	},
 };
-const AnotherGreetingWithUpsellHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === "IntentRequest" &&
-      handlerInput.requestEnvelope.request.intent.name === "AMAZON.YesIntent" &&
-      handlerInput.attributesManager.getSessionAttributes().shouldUpsell ===
-        true
-    );
-  },
-  handle(handlerInput) {
-    //Get the locale for the request
-    const locale = handlerInput.requestEnvelope.request.locale;
 
-    //Instantiate a new MonetizationServiceClient object to invoke the inSkillPurchaseAPI
-    const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+const SimpleHelloIntentHandler = {
+	canHandle(handlerInput) {
+		return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'SimpleHelloIntent';
+	},
+	handle(handlerInput) {
+		const speechText = `${getSimpleHello()} ${getRandomYesNoQuestion()}`;
 
-    //Check if upsell should be done. You can set your own upsell timing logic inside the shouldUpsell() function.
-    const isUpsellNeeded = true;
-
-    //Get list of products the customer has bought, and then respond accordingly
-    return monetizationClient.getInSkillProducts(locale).then(function(result) {
-      //Pass the handlerInput, list of products customer has access to (result), and the flag for upsell to the helper function checkForProductAccess to determine the response.
-      let response = checkForProductAccess(
-        handlerInput,
-        result,
-        isUpsellNeeded
-      );
-      //Modify the Upsell message so we hear a standard greeting before it
-      const originalUpsellMessage =
-        response.directives[0].payload.upsellMessage;
-      const newUpsellMessage = `Here's your standard greeting: ${getStandardGreeting()} <break/> ${originalUpsellMessage}`;
-      // Setting a Session Attribute to keep track of the number of times the customer has said heard a standard greeting.
-      // We will use this to determine if an upsell is required.
-      const attributeNameToIncrement = `numberOfStandardGreetingsOfferedInThisSession`;
-      incrementCountInSession(handlerInput, attributeNameToIncrement);
-      response.directives[0].payload.upsellMessage = newUpsellMessage;
-      return response;
-    });
-  }
+		return handlerInput.responseBuilder
+			.speak(speechText)
+			.reprompt(getRandomYesNoQuestion())
+			.withSimpleCard(skillName, speechText)
+			.getResponse();
+	}
 };
-// IF THE USER SAYS NO, THEY DON'T WANT ANOTHER GREETING.  EXIT THE SKILL.
+
+const GetAnotherHelloHandler = {
+	canHandle(handlerInput){
+		return(
+			handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent');
+	},
+	handle(handlerInput){
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+		let preSpeechText = '';
+
+		return monetizationClient.getInSkillProducts(locale).then(function(res) {
+			//Use the helper function getResponseBasedOnAccessType to determine the response based on the products the customer has purchased
+			return getResponseBasedOnAccessType(handlerInput,res,preSpeechText);
+		});
+	}
+};
+
 const NoIntentHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === "IntentRequest" &&
-      handlerInput.requestEnvelope.request.intent.name === "AMAZON.NoIntent"
-    );
-  },
-  handle(handlerInput) {
-    const speakOutput = getRandomGoodbye();
-    return handlerInput.responseBuilder.speak(speakOutput).getResponse();
-  }
+	canHandle(handlerInput){
+		return(
+			handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NoIntent'
+		);
+	},
+	handle(handlerInput){
+		const speechText = getRandomGoodbye();
+		return handlerInput.responseBuilder
+			.speak(speechText)
+			.getResponse();
+	}
 };
-const BuyIntentHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === "IntentRequest" &&
-      handlerInput.requestEnvelope.request.intent.name === "BuyIntent"
-    );
-  },
-  handle(handlerInput) {
-    const locale = handlerInput.requestEnvelope.request.locale;
-    const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-    return monetizationClient.getInSkillProducts(locale).then(function(result) {
-      const premiumProduct = result.inSkillProducts.filter(
-        record => record.referenceName === `Premium_Greeting`
-      );
-      return handlerInput.responseBuilder
-        .addDirective({
-          type: "Connections.SendRequest",
-          name: "Buy",
-          payload: {
-            InSkillProduct: {
-              productId: premiumProduct[0].productId
-            }
-          },
-          token: JSON.stringify(sessionAttributes)
-        })
-        .getResponse();
-    });
-  }
-};
-const RefundIntentHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === "IntentRequest" &&
-      handlerInput.requestEnvelope.request.intent.name === "RefundIntent"
-    );
-  },
-  handle(handlerInput) {
-    const locale = handlerInput.requestEnvelope.request.locale;
-    const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-    return monetizationClient.getInSkillProducts(locale).then(function(result) {
-      const premiumProduct = result.inSkillProducts.filter(
-        record => record.referenceName === `Premium_Greeting`
-      );
-      return handlerInput.responseBuilder
-        .addDirective({
-          type: "Connections.SendRequest",
-          name: "Cancel",
-          payload: {
-            InSkillProduct: {
-              productId: premiumProduct[0].productId
-            }
-          },
-          token: JSON.stringify(sessionAttributes)
-        })
-        .getResponse();
-    });
-  }
-};
-const PremiumGreetingHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === "IntentRequest" &&
-      (handlerInput.requestEnvelope.request.intent.name ===
-        "PremiumGreetingIntent" ||
-        handlerInput.requestEnvelope.request.intent.name === "BuyIntent")
-    );
-  },
-  handle(handlerInput) {
-    const locale = handlerInput.requestEnvelope.request.locale;
-    const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    const isUpsellNeeded = true;
-    return monetizationClient.getInSkillProducts(locale).then(function(result) {
-      return checkForProductAccess(handlerInput, result, isUpsellNeeded);
-    });
-  }
-};
-// THIS HANDLES THE CONNECTIONS.RESPONSE EVENT AFTER A BUY or UPSELL OCCURS.
-const ConnectionsResponseHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === "Connections.Response" &&
-      (handlerInput.requestEnvelope.request.name === "Buy" ||
-        handlerInput.requestEnvelope.request.name === "Upsell")
-    );
-  },
-  handle(handlerInput) {
-    const locale = handlerInput.requestEnvelope.request.locale;
-    const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    const productId = handlerInput.requestEnvelope.request.payload.productId;
-    return monetizationClient.getInSkillProducts(locale).then(function(result) {
-      handlerInput.attributesManager.setSessionAttributes(
-        JSON.parse(handlerInput.requestEnvelope.request.token)
-      );
-      if (handlerInput.requestEnvelope.request.status.code === "200") {
-        let speakOutput;
-        let repromptOutput;
-        let theGreeting;
-        const premiumProduct = result.inSkillProducts.filter(
-          record => record.productId === productId
-        );
-        switch (handlerInput.requestEnvelope.request.payload.purchaseResult) {
-          case "ACCEPTED":
-            theGreeting = getPremiumGreeting();
-            speakOutput = `You have unlocked the Premium Greeting Pack. Here's your Premium greeting: ${
-              theGreeting["greeting"]
-            } ! That's hello in ${
-              theGreeting["language"]
-            }. ${getRandomYesNoQuestion()}`;
-            const attributeNameToSave = `entitledProducts`;
-            saveToSession(handlerInput, attributeNameToSave, premiumProduct);
-            repromptOutput = getRandomYesNoQuestion();
-            // resetting the count of standard greetings to avoid hitting upsell logic
-            const secondAttributeNameToSave = `numberOfStandardGreetingsOfferedInThisSession`;
-            const numberOfStandardGreetingsOfferedInThisSession = 1;
-            saveToSession(
-              handlerInput,
-              secondAttributeNameToSave,
-              numberOfStandardGreetingsOfferedInThisSession
-            );
-            break;
-          case "DECLINED":
-            if (handlerInput.requestEnvelope.request.name === "Buy") {
-              // response when declined buy request
-              speakOutput = `Thanks for your interest in the ${
-                premiumProduct[0].name
-              }.  Would you like to listen to the standard greeting?`;
-              repromptOutput =
-                "Would you like to listen to the standard greeting?";
-              break;
-            }
-            // response when declined upsell request
-            speakOutput = `Here's your standard greeting: ${getStandardGreeting()} Would you like another greeting?`;
-            // Setting a Session Attribute to keep track of the number of times the customer has said heard a standard greeting.
-            // We will use this to determine if an upsell is required.
-            const attributeNameToIncrement = `numberOfStandardGreetingsOfferedInThisSession`;
-            incrementCountInSession(handlerInput, attributeNameToIncrement);
-            repromptOutput = "Would you like another greeting?";
-            break;
-          case "ALREADY_PURCHASED":
-            theGreeting = getPremiumGreeting();
-            speakOutput = `You already own the ${
-              premiumProduct[0].name
-            }. Here's a Premium greeting: ${
-              theGreeting["greeting"]
-            } ! That's hello in ${
-              theGreeting["language"]
-            }. ${getRandomYesNoQuestion()}`;
-            repromptOutput = getRandomYesNoQuestion();
-            break;
-          default:
-            speakOutput = `Something unexpected happened, but thanks for your interest in the ${
-              premiumProduct[0].name
-            }.  Would you like another random greeting?`;
-            repromptOutput = "Would you like another random greeting?";
-            break;
-        }
-        return handlerInput.responseBuilder
-          .speak(speakOutput)
-          .reprompt(repromptOutput)
-          .getResponse();
-      }
-      // Something failed.
-      console.error(
-        `Connections.Response indicated failure. error: ${
-          handlerInput.requestEnvelope.request.status.message
-        }`
-      );
-      return handlerInput.responseBuilder
-        .speak(
-          "There was an error handling your purchase request. Please try again or contact us for help."
-        )
-        .getResponse();
-    });
-  }
-};
-const CancelfromConnectionsHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === "Connections.Response" &&
-      handlerInput.requestEnvelope.request.name === "Cancel"
-    );
-  },
-  handle(handlerInput) {
-    // Since the skill only has entitlements we cannot refund ourselves.
-    // Directing to customer support, the customer already got a card from the Monetization service
-    const speakOutput = `You will find details for contacting customer support in the card. ${getRandomGoodbye()}.`;
-    return handlerInput.responseBuilder.speak(speakOutput).getResponse();
-  }
-};
-// Following handler demonstrates how skills can handle user requests to discover what
-// products are available for purchase in-skill.
-// Use says: Alexa, ask Greetings helper what can I buy
-const WhatCanIBuyHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === "IntentRequest" &&
-      handlerInput.requestEnvelope.request.intent.name === "WhatCanIBuyIntent"
-    );
-  },
-  handle(handlerInput) {
-    // Inform the user about what products are available for purchase
-    const locale = handlerInput.requestEnvelope.request.locale;
-    const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    return monetizationClient
-      .getInSkillProducts(locale)
-      .then(function fetchPurchasableProducts(result) {
-        const purchasableProducts = result.inSkillProducts.filter(
-          record =>
-            record.entitled === "NOT_ENTITLED" &&
-            record.purchasable === "PURCHASABLE"
-        );
-        if (purchasableProducts.length > 0) {
-          const speakOutput = `Products available for purchase at this time are ${getSpeakableListOfProducts(
-            purchasableProducts
-          )}. To learn more about a product, say 'Tell me more about' followed by the product name. If you are ready to buy, say, 'Buy' followed by the product name. So what can I help you with?`;
-          const repromptOutput = `I didn't catch that. What can I help you with?`;
-          return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(repromptOutput)
-            .getResponse();
-        }
-        const speakOutput = `There are no products to offer to you right now. Sorry about that. Would you like a greeting instead?`;
-        const repromptOutput = `I didn't catch that. What can I help you with?`;
-        return handlerInput.responseBuilder
-          .speak(speakOutput)
-          .reprompt(repromptOutput)
-          .getResponse();
-      });
-  }
-};
-const PurchaseHistoryHandler = {
-  canHandle(handlerInput) {
-    return (
-      handlerInput.requestEnvelope.request.type === "IntentRequest" &&
-      handlerInput.requestEnvelope.request.intent.name ===
-        "PurchaseHistoryIntent"
-    );
-  },
-  handle(handlerInput) {
-    const locale = handlerInput.requestEnvelope.request.locale;
-    const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    return monetizationClient.getInSkillProducts(locale).then(function(result) {
-      const entitledProducts = getAllEntitledProducts(result.inSkillProducts);
-      if (entitledProducts && entitledProducts.length > 0) {
-        const speakOutput = `You have bought the following items: ${getSpeakableListOfProducts(
-          entitledProducts
-        )}. ${getRandomYesNoQuestion()}`;
-        const repromptOutput = `You asked me for a what you've bought, here's a list ${getSpeakableListOfProducts(
-          entitledProducts
-        )}`;
-        return handlerInput.responseBuilder
-          .speak(speakOutput)
-          .reprompt(repromptOutput)
-          .getResponse();
-      }
-      const speakOutput = `You haven't purchased anything yet. Would you like a standard greeting or premium greeting`;
-      const repromptOutput = `You asked me for a what you've bought, but you haven't purchased anything yet. You can say - what can I buy, or say yes to get another greeting. ${getRandomYesNoQuestion()}`;
-      return handlerInput.responseBuilder
-        .speak(speakOutput)
-        .reprompt(repromptOutput)
-        .getResponse();
-    });
-  }
-};
-// Generic error handling to capture any syntax or routing errors. If you receive an error
-// stating the request handler chain is not found, you have not implemented a handler for
-// the intent being invoked or added it in the skill builder below.
-const ErrorHandler = {
-  canHandle() {
-    return true;
-  },
-  handle(handlerInput, error) {
-    console.error(`~~~~ Error handled: ${error.stack}`);
-    const speechText = `Sorry, I couldn't understand what you said. Please try again.`;
 
-    return handlerInput.responseBuilder
-      .speak(speechText)
-      .reprompt(speechText)
-      .getResponse();
-  }
+//Respond to the utterance "what can I buy"
+const WhatCanIBuyIntentHandler = {
+	canHandle(handlerInput){
+		return (handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+    handlerInput.requestEnvelope.request.intent.name === 'WhatCanIBuyIntent');
+	},
+	handle(handlerInput){
+		//Get the list of products available for in-skill purchase
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+		return monetizationClient.getInSkillProducts(locale).then(function(res){
+			//res contains the list of all ISP products for this skill. 
+			// We now need to filter this to find the ISP products that are available for purchase (NOT ENTITLED)
+			const purchasableProducts = res.inSkillProducts.filter(
+				record => record.entitled === 'NOT_ENTITLED' &&
+        record.purchasable === 'PURCHASABLE'
+			);
+
+			// Say the list of products 
+			if (purchasableProducts.length > 0){
+				//One or more products are available for purchase. say the list of products
+				const speechText = `Products available for purchase at this time are ${getSpeakableListOfProducts(purchasableProducts)}. 
+                            To learn more about a product, say 'Tell me more about' followed by the product name. 
+                            If you are ready to buy, say, 'Buy' followed by the product name. So what can I help you with?`;
+				const repromptOutput = 'I didn\'t catch that. What can I help you with?';
+				return handlerInput.responseBuilder
+					.speak(speechText)
+					.reprompt(repromptOutput)
+					.getResponse();  
+			}
+			else{
+				// no products are available for purchase. Ask if they would like to hear another greeting
+				const speechText = 'There are no products to offer to you right now. Sorry about that. Would you like a greeting instead?';
+				const repromptOutput = 'I didn\'t catch that. What can I help you with?';
+				return handlerInput.responseBuilder
+					.speak(speechText)
+					.reprompt(repromptOutput)
+					.getResponse();  
+			}
+		});
+	}
 };
-/*
-   Helper function that returns a speakable list of product names from a list of
-   entitled products.
-*/
-function getSpeakableListOfProducts(entitleProductsList) {
-  const productNameList = entitleProductsList.map(item => item.name);
-  let productListSpeech = productNameList.join(", "); // Generate a single string with comma separated product names
-  productListSpeech = productListSpeech.replace(/_([^_]*)$/, "and $1"); // Replace last comma with an 'and '
-  return productListSpeech;
+
+const BuyGreetingsPackIntentHandler = {
+	canHandle(handlerInput){
+		return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+    handlerInput.requestEnvelope.request.intent.name === 'BuyGreetingsPackIntent';
+	},
+	handle(handlerInput){
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+
+		return monetizationClient.getInSkillProducts(locale).then(function(res){
+			// Filter the list of products available for purchase to find the product with the reference name "Greetings_Pack"
+			const greetingsPackProduct = res.inSkillProducts.filter(
+				record => record.referenceName === 'Greetings_Pack'
+			);
+
+			const premiumSubscriptionProduct = res.inSkillProducts.filter(
+				record => record.referenceName === 'Premium_Subscription'
+			);
+
+			if (isEntitled(premiumSubscriptionProduct)){
+				//Customer has bought the Premium Subscription. They don't need to buy the Greetings Pack. 
+				const speechText = `Good News! You're subscribed to the Premium Subscription, which includes all features of the Greetings Pack. ${getRandomYesNoQuestion()}`;
+				const repromptOutput = `${getRandomYesNoQuestion()}`;
+
+				return handlerInput.responseBuilder
+					.speak(speechText)
+					.reprompt(repromptOutput)
+					.getResponse(); 
+			}
+			else{
+				//Send Connections.SendRequest Directive back to Alexa to switch to Purchase Flow
+				return handlerInput.responseBuilder
+					.addDirective({
+						type: 'Connections.SendRequest',
+						name: 'Buy',
+						payload: {
+							InSkillProduct:{
+								productId: greetingsPackProduct[0].productId
+							}
+						},
+						token:'correlationToken'
+					})
+					.getResponse();						
+			}
+		});
+	}
+};
+
+const BuyPremiumSubscriptionIntentHandler = {
+	canHandle(handlerInput){
+		return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+    handlerInput.requestEnvelope.request.intent.name === 'BuyPremiumSubscriptionIntent';
+	},
+	handle(handlerInput){
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+
+		return monetizationClient.getInSkillProducts(locale).then(function(res){
+			// Filter the list of products available for purchase to find the product with the reference name "Premium_Subscription"
+			const premiumSubscriptionProduct = res.inSkillProducts.filter(
+				record => record.referenceName === 'Premium_Subscription'
+			);
+      
+			//Send Connections.SendRequest Directive back to Alexa to switch to Purchase Flow
+			return handlerInput.responseBuilder
+				.addDirective({
+					type: 'Connections.SendRequest',
+					name: 'Buy',
+					payload: {
+						InSkillProduct:{
+							productId: premiumSubscriptionProduct[0].productId
+						}
+					},
+					token:'correlationToken'
+				})
+				.getResponse();
+		});
+	}
+};
+
+const BuyResponseHandler = {
+	canHandle(handlerInput){
+		return handlerInput.requestEnvelope.request.type === 'Connections.Response' &&
+        (handlerInput.requestEnvelope.request.name === 'Buy' ||
+        handlerInput.requestEnvelope.request.name === 'Upsell');
+	},
+	handle(handlerInput){
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+		const productId = handlerInput.requestEnvelope.request.payload.productId;
+
+		return monetizationClient.getInSkillProducts(locale).then(function(res){
+			const product = res.inSkillProducts.filter(
+				record => record.productId === productId
+			);
+
+			if (handlerInput.requestEnvelope.request.status.code === '200'){
+				let preSpeechText;
+
+				// check the Buy status - acccpted, declined, already purchased, or something went wrong.
+				switch (handlerInput.requestEnvelope.request.payload.purchaseResult){
+				case 'ACCEPTED':
+					preSpeechText = getBuyResponseText(product[0].referenceName, product[0].name);
+					break;
+				case 'DECLINED':
+					preSpeechText = 'No Problem.';
+					break;
+				case 'ALREADY_PURCHASED':
+					preSpeechText = getBuyResponseText(product[0].referenceName, product[0].name);
+					break;
+				default: 
+					preSpeechText = `Something unexpected happened, but thanks for your interest in the ${product[0].name}.`;
+					break;
+				}        
+				//respond back to the customer
+				return getResponseBasedOnAccessType(handlerInput,res,preSpeechText);
+			}
+			else {
+				// Request Status Code NOT 200. Something has failed with the connection. 
+				console.log(
+					`Connections.Response indicated failure. error: + ${handlerInput.requestEnvelope.request.status.message}`
+				);
+				return handlerInput.responseBuilder
+					.speak('There was an error handling your purchase request. Please try again or contact us for help.')
+					.getResponse();
+			}
+		});
+	}
+};
+
+const PurchaseHistoryHandler = {
+	canHandle(handlerInput) {
+		return (
+			handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'PurchaseHistoryIntent'
+		);
+	},
+	handle(handlerInput) {
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+
+		return monetizationClient.getInSkillProducts(locale).then(function(result) {
+			const entitledProducts = getAllEntitledProducts(result.inSkillProducts);
+			if (entitledProducts && entitledProducts.length > 0) {
+				const speechText = `You have bought the following items: ${getSpeakableListOfProducts(entitledProducts)}. ${getRandomYesNoQuestion()}`;
+				const repromptOutput = `You asked me for a what you've bought, here's a list ${getSpeakableListOfProducts(entitledProducts)}`;
+
+				return handlerInput.responseBuilder
+					.speak(speechText)
+					.reprompt(repromptOutput)
+					.getResponse();
+			}
+			else{
+				const speechText = 'You haven\'t purchased anything yet. Would you like a simple greeting or special greeting?';
+				const repromptOutput = `You asked me for a what you've bought, but you haven't purchased anything yet. You can say - what can I buy, or say yes to get another greeting. ${getRandomYesNoQuestion()}`;
+  
+				return handlerInput.responseBuilder
+					.speak(speechText)
+					.reprompt(repromptOutput)
+					.getResponse();  
+			}
+		});
+	}
+};
+
+const RefundGreetingsPackIntentHandler = {
+	canHandle(handlerInput) {
+		return (
+			handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'RefundGreetingsPackIntent'
+		);
+	},
+	handle(handlerInput) {
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+
+		return monetizationClient.getInSkillProducts(locale).then(function(res) {
+			const premiumProduct = res.inSkillProducts.filter(
+				record => record.referenceName === 'Greetings_Pack'
+			);
+			return handlerInput.responseBuilder
+				.addDirective({
+					type: 'Connections.SendRequest',
+					name: 'Cancel',
+					payload: {
+						InSkillProduct: {
+							productId: premiumProduct[0].productId
+						}
+					},
+					token: 'correlationToken'
+				})
+				.getResponse();
+		});
+	}
+};
+
+const CancelPremiumSubscriptionIntentHandler = {
+	canHandle(handlerInput) {
+		return (
+			handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'CancelPremiumSubscriptionIntent'
+		);
+	},
+	handle(handlerInput) {
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+
+		return monetizationClient.getInSkillProducts(locale).then(function(res) {
+			const premiumProduct = res.inSkillProducts.filter(
+				record => record.referenceName === 'Premium_Subscription'
+			);
+			return handlerInput.responseBuilder
+				.addDirective({
+					type: 'Connections.SendRequest',
+					name: 'Cancel',
+					payload: {
+						InSkillProduct: {
+							productId: premiumProduct[0].productId
+						}
+					},
+					token: 'correlationToken'
+				})
+				.getResponse();
+		});
+	}
+};
+
+const CancelProductResponseHandler = {
+	canHandle(handlerInput) {
+		return handlerInput.requestEnvelope.request.type === 'Connections.Response' &&
+      handlerInput.requestEnvelope.request.name === 'Cancel';
+	},
+	handle(handlerInput) {
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+		const productId = handlerInput.requestEnvelope.request.payload.productId;
+    
+		return monetizationClient.getInSkillProducts(locale).then(function(res) {
+			const product = res.inSkillProducts.filter(
+				record => record.productId === productId
+			);
+      
+			console.log(
+				`PRODUCT = ${JSON.stringify(product)}`
+			);
+
+			if (handlerInput.requestEnvelope.request.status.code === '200') {
+				if (handlerInput.requestEnvelope.request.payload.purchaseResult === 'ACCEPTED') {
+					//The cancelation confirmation response is handled by Alexa's Purchase Experience Flow.
+					//Simply add to that with getRandomYesNoQuestion()
+					const speechText = `${getRandomYesNoQuestion()}`;
+					const repromptOutput = getRandomYesNoQuestion();
+					return handlerInput.responseBuilder
+						.speak(speechText)
+						.reprompt(repromptOutput)
+						.getResponse();
+				}
+				else if (handlerInput.requestEnvelope.request.payload.purchaseResult === 'DECLINED') {
+					const speechText = `${getRandomYesNoQuestion()}`;
+					const repromptOutput = getRandomYesNoQuestion();
+					return handlerInput.responseBuilder
+						.speak(speechText)
+						.reprompt(repromptOutput)
+						.getResponse();
+				}
+				else if (handlerInput.requestEnvelope.request.payload.purchaseResult === 'NOT_ENTITLED') {
+					//No subscription to cancel. 
+					//The "No subscription to cancel" response is handled by Alexa's Purchase Experience Flow.
+					//Simply add to that with getRandomYesNoQuestion()
+					const speakOutput = `${getRandomYesNoQuestion()}`;
+					const repromptOutput = getRandomYesNoQuestion();
+					return handlerInput.responseBuilder
+						.speak(speakOutput)
+						.reprompt(repromptOutput)
+						.getResponse();
+				}
+			}
+			// Something failed.
+			console.log(
+				`Connections.Response indicated failure. error: ${handlerInput.requestEnvelope.request.status.message}`
+			);
+
+			return handlerInput.responseBuilder
+				.speak('There was an error handling your purchase request. Please try again or contact us for help.')
+				.getResponse();
+		});
+	},
+};
+
+const HelpIntentHandler = {
+	canHandle(handlerInput) {
+		return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
+	},
+	handle(handlerInput) {
+		const speechText = 'You can say hello to me! How can I help?';
+
+		return handlerInput.responseBuilder
+			.speak(speechText)
+			.reprompt(speechText)
+			.withSimpleCard(skillName, speechText)
+			.getResponse();
+	},
+};
+
+const CancelAndStopIntentHandler = {
+	canHandle(handlerInput) {
+		return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.CancelIntent'
+        || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
+	},
+	handle(handlerInput) {
+		const speechText = getRandomGoodbye();
+
+		return handlerInput.responseBuilder
+			.speak(speechText)
+			.withSimpleCard(skillName, speechText)
+			.getResponse();
+	},
+};
+
+const SessionEndedRequestHandler = {
+	canHandle(handlerInput) {
+		return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
+	},
+	handle(handlerInput) {
+		console.log(
+			`Session ended with reason: ${handlerInput.requestEnvelope.request.reason}`
+		);
+
+		return handlerInput.responseBuilder.getResponse();
+	},
+};
+
+const ErrorHandler = {
+	canHandle() {
+		return true;
+	},
+	handle(handlerInput, error) {
+		console.log(
+			`Error handled: ${error.message}`
+		);
+
+		return handlerInput.responseBuilder
+			.speak('Sorry, I can\'t understand the command. Please say again.')
+			.reprompt('Sorry, I can\'t understand the command. Please say again.')
+			.getResponse();
+	},
+};
+
+// *****************************************
+// *********** HELPER FUNCTIONS ************
+// *****************************************
+
+function randomize(array){
+	const randomItem = array[Math.floor(Math.random() * array.length)];
+	return randomItem;
 }
-function getStandardGreeting() {
-  const standard_greetings = ["Howdy!", "Hello!", "How are you?", "Hiya!"];
-  return standard_greetings[
-    Math.floor(Math.random() * standard_greetings.length)
-  ];
+
+function getSimpleHello() {
+	const simple_greetings = ['Howdy!', 'Hello!', 'How are you?', 'Hiya!'];
+	return simple_greetings[
+		Math.floor(Math.random() * simple_greetings.length)
+	];
 }
-function getPremiumGreeting() {
-  const premium_greetings = [
-    { language: "hindi", greeting: "Namaste" },
-    { language: "french", greeting: "Bonjour" },
-    { language: "spanish", greeting: "Hola" },
-    { language: "japanese", greeting: "Konichiwa" },
-    { language: "italian", greeting: "Ciao" }
-  ];
-  return premium_greetings[
-    Math.floor(Math.random() * premium_greetings.length)
-  ];
+
+function getSpecialHello() {
+	const special_greetings = [
+		{ language: 'hindi', greeting: 'Namaste' },
+		{ language: 'french', greeting: 'Bonjour' },
+		{ language: 'spanish', greeting: 'Hola' },
+		{ language: 'japanese', greeting: 'Konichiwa' },
+		{ language: 'italian', greeting: 'Ciao' }
+	];
+	return randomize(special_greetings);
 }
+
 function getRandomGoodbye() {
-  const goodbyes = [
-    "OK.  Goodbye!",
-    "Have a great day!",
-    "Come back again soon!"
-  ];
-  return goodbyes[Math.floor(Math.random() * goodbyes.length)];
+	const goodbyes = [
+		'OK.  Goodbye!',
+		'Have a great day!',
+		'Come back again soon!'
+	];
+	return randomize(goodbyes);
 }
+
+function getRandomYesNoQuestion() {
+	const questions = [
+		'Would you like another greeting?',
+		'Can I give you another greeting?',
+		'Do you want to hear another greeting?'
+	];
+	return randomize(questions);
+}
+
+function getRandomLearnMorePrompt() {
+	const questions = [
+		'Want to learn more about it?',
+		'Should I tell you more about it?',
+		'Want to learn about it?',
+		'Interested in learning more about it?'
+	];
+	return randomize(questions);
+}
+
+function getVoicePersonality(language){
+	const personalities = [
+		{'language':'hindi','name':['Aditi','Raveena']},
+		{'language':'german','name':['Hans', 'Marlene', 'Vicki']},
+		{'language':'spanish','name':['Conchita', 'Enrique']},
+		{'language':'french','name':['Celine', 'Lea', 'Mathieu']},
+		{'language':'japanese','name':['Mizuki', 'Takumi']},
+		{'language':'italian','name':['Carla', 'Giorgio']}
+	];
+	const personality = personalities.filter(
+		record => record.language === language
+	);
+	return randomize(personality[0].name);
+}
+
+function getSpeakableListOfProducts(entitleProductsList) {
+	const productNameList = entitleProductsList.map(item => item.name);
+	let productListSpeech = productNameList.join(', '); // Generate a single string with comma separated product names
+	productListSpeech = productListSpeech.replace(/_([^_]*)$/, 'and $1'); // Replace last comma with an 'and '
+	return productListSpeech;
+}
+
+function getResponseBasedOnAccessType(handlerInput,res,preSpeechText){
+	// The filter() method creates a new array with all elements that pass the test implemented by the provided function.
+	const greetingsPackProduct = res.inSkillProducts.filter(
+		record => record.referenceName === 'Greetings_Pack'
+	);
+
+	console.log(
+		`GREETINGS PACK PRODUCT = ${JSON.stringify(greetingsPackProduct)}`
+	);
+
+	const premiumSubscriptionProduct = res.inSkillProducts.filter(
+		record => record.referenceName === 'Premium_Subscription'
+	);
+
+	let theGreeting;
+	let speechText;
+	let cardText;
+	let repromptOutput;
+	
+	const specialGreeting = getSpecialHello();
+	const greetingLanguage = specialGreeting['language'];
+	const greetingText = specialGreeting['greeting'];
+	
+	const preGreetingSpeechText = `${preSpeechText} Here's your special greeting: `;
+	const postGreetingSpeechText = `That's hello in ${greetingLanguage}.`;
+
+	if (isEntitled(premiumSubscriptionProduct)){
+		//Customer has bought the Premium Subscription. Switch to Polly Voice, and return special hello
+		cardText = `${preGreetingSpeechText} ${greetingText} ${postGreetingSpeechText}`;
+		speechText = `${preGreetingSpeechText} ${getVoiceTalentToSay((greetingText + '! ' + postGreetingSpeechText),greetingLanguage)} ${getRandomYesNoQuestion()}`;
+		repromptOutput = `${getRandomYesNoQuestion()}`;
+	}
+	else if (isEntitled(greetingsPackProduct)) {
+		//Customer has bought the Greetings Pack, but not the Premium Subscription. Return special hello greeting in Alexa voice
+		cardText = `${preGreetingSpeechText} ${greetingText} ${postGreetingSpeechText}`;
+		speechText = `${preGreetingSpeechText} ${specialGreeting['greeting']} ! ${postGreetingSpeechText}. ${getRandomYesNoQuestion()}`;
+		repromptOutput = `${getRandomYesNoQuestion()}`;
+	}
+	else{
+		//Customer has NOT bought neither the Premium Subscription nor the Greetings Pack Product. 
+		//Determine if upsell should be made. returns true/false
+		if (shouldUpsell(greetingsPackProduct,handlerInput)){
+			//Upsell Greetings Pack
+			return makeUpsell(greetingsPackProduct,handlerInput);
+		}
+		else{
+			// Do not make the upsell. Just return Simple Hello Greeting.
+			theGreeting = getSimpleHello();
+			cardText = `Here's your simple greeting: ${theGreeting}.`;
+			speechText = `Here's your simple greeting: ${theGreeting}. ${getRandomYesNoQuestion()}`;
+			repromptOutput = `${getRandomYesNoQuestion()}`;
+		}
+	}
+
+	return handlerInput.responseBuilder
+		.speak(speechText)
+		.reprompt(repromptOutput)
+		.withSimpleCard(skillName, cardText)
+		.getResponse(); 
+}
+
 function isProduct(product) {
-  return product && product.length > 0;
+	return product && product.length > 0;
 }
 function isEntitled(product) {
-  return isProduct(product) && product[0].entitled === "ENTITLED";
+	return isProduct(product) && product[0].entitled === 'ENTITLED';
 }
-function getResponseBasedOnAccessType(
-  handlerInput,
-  premiumProduct,
-  isUpsellNeeded
-) {
-  const repromptOutput = getRandomYesNoQuestion();
-  //Customer has bought the Premium Product. Return the response with Premium Greeting.
-  if (isEntitled(premiumProduct)) {
-    const theGreeting = getPremiumGreeting();
-    const speakOutput = `Here's your Premium greeting: ${
-      theGreeting["greeting"]
-    } ! That's hello in ${
-      theGreeting["language"]
-    }. ${getRandomYesNoQuestion()}`;
-    const attributeNameToSave = `entitledProducts`;
-    saveToSession(handlerInput, attributeNameToSave, premiumProduct);
 
-    let response = handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt(repromptOutput)
-      .getResponse();
-    return response;
-  }
-  //Customer has not bought the Premium Product. Upsell should be made.
-  if (isUpsellNeeded) {
-    const upsellMessage = `You don't currently own the Premium Greeting pack. ${
-      premiumProduct[0].summary
-    }. ${getRandomLearnMorePrompt()}`;
-    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-    return handlerInput.responseBuilder
-      .addDirective({
-        type: "Connections.SendRequest",
-        name: "Upsell",
-        payload: {
-          InSkillProduct: {
-            productId: premiumProduct[0].productId
-          },
-          upsellMessage
-        },
-        token: JSON.stringify(sessionAttributes)
-      })
-      .getResponse();
-  }
-  //Customer has not bought the Premium Product. Upsell should not be done.
-  const speakOutput = `Here's your Standard Greeting: ${getStandardGreeting()} ${getRandomYesNoQuestion()}`;
-  // Setting a Session Attribute to keep track of the number of times the customer has said heard a standard greeting.
-  // We will use this to determine if an upsell is required.
-  const attributeNameToIncrement = `numberOfStandardGreetingsOfferedInThisSession`;
-  incrementCountInSession(handlerInput, attributeNameToIncrement);
-  return handlerInput.responseBuilder
-    .speak(speakOutput)
-    .reprompt(repromptOutput)
-    .getResponse();
-}
-function checkForProductAccess(handlerInput, result, isUpsellNeeded) {
-  const premiumProduct = result.inSkillProducts.filter(
-    record => record.referenceName === `Premium_Greeting`
-  );
-  const response = getResponseBasedOnAccessType(
-    handlerInput,
-    premiumProduct,
-    isUpsellNeeded
-  );
-  return response;
-}
-function getRandomYesNoQuestion() {
-  const questions = [
-    "Would you like another greeting?",
-    "Can I give you another greeting?",
-    "Do you want to hear another greeting?"
-  ];
-  return questions[Math.floor(Math.random() * questions.length)];
-}
-function getRandomLearnMorePrompt() {
-  const questions = [
-    "Want to learn more about it?",
-    "Should I tell you more about it?",
-    "Want to learn about it?",
-    "Interested in learning more about it?"
-  ];
-  return questions[Math.floor(Math.random() * questions.length)];
-}
-function saveToSession(handlerInput, attributeNameToSave, fieldValue) {
-  const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-  sessionAttributes[attributeNameToSave] = fieldValue;
-  handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
-}
-function shouldUpsell(handlerInput) {
-  const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-  const numberOfStandardGreetingsOfferedInThisSession =
-    sessionAttributes.numberOfStandardGreetingsOfferedInThisSession;
-  if (numberOfStandardGreetingsOfferedInThisSession % 2 === 0) {
-    return true;
-  }
-  return false;
-}
-function incrementCountInSession(handlerInput, attributeNameToIncrement) {
-  const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-  const currentValue = sessionAttributes[attributeNameToIncrement];
-  let newValue;
-  if (currentValue === null || currentValue === undefined) {
-    newValue = 1;
-  } else {
-    newValue = currentValue + 1;
-  }
-  saveToSession(handlerInput, attributeNameToIncrement, newValue);
-}
 function getAllEntitledProducts(inSkillProductList) {
-  const entitledProductList = inSkillProductList.filter(
-    record => record.entitled === "ENTITLED"
-  );
-  return entitledProductList;
+	const entitledProductList = inSkillProductList.filter(
+		record => record.entitled === 'ENTITLED'
+	);
+	return entitledProductList;
 }
+
+function makeUpsell(greetingsPackProduct,handlerInput){
+	let upsellMessage = `By the way, you can now get greetings in more languages. ${greetingsPackProduct[0].summary}. ${getRandomLearnMorePrompt()}`;
+    
+	return handlerInput.responseBuilder
+		.addDirective({
+			type: 'Connections.SendRequest',
+			name: 'Upsell',
+			payload: {
+				InSkillProduct: {
+					productId: greetingsPackProduct[0].productId
+				},
+				upsellMessage
+			},
+			token: 'correlationToken'
+		})
+		.getResponse();
+}
+
+function shouldUpsell(product, handlerInput) {
+	if (handlerInput.requestEnvelope.request.intent == undefined){
+		//If the last intent was Connections.Response, do not upsell
+		return false;    
+	}
+	else{
+		return randomize([true,false]); //randomize upsell
+	}
+}
+
+function getVoiceTalentToSay(speakOutput,language){
+	const personality = getVoicePersonality(language);
+	const generatedSpeech = `<voice name="${personality}"> ${speakOutput} </voice>`;
+	return generatedSpeech;
+}
+
+function getBuyResponseText(productReferenceName,productName){
+	if (productReferenceName === 'Greetings_Pack'){
+		return `With the ${productName}, I can now say hello in a variety of languages.`;
+	}
+	else if (productReferenceName === 'Premium_Subscription'){
+		return `With the ${productName}, I can now say hello in a variety of languages, in different accents using Amazon Polly.`;
+	}
+	else{
+		console.log('Product Undefined');
+		return 'Sorry, that\'s not a valid product';
+	}
+}
+
+// *****************************************
+// *********** Interceptors ************
+// *****************************************
 const LogResponseInterceptor = {
-  process(handlerInput) {
-    console.log(
-      `RESPONSE = ${JSON.stringify(handlerInput.responseBuilder.getResponse())}`
-    );
-  }
+	process(handlerInput) {
+		console.log(
+			`RESPONSE = ${JSON.stringify(handlerInput.responseBuilder.getResponse())}`
+		);
+	}
 };
+
 const LogRequestInterceptor = {
-  process(handlerInput) {
-    console.log(
-      `REQUEST ENVELOPE = ${JSON.stringify(handlerInput.requestEnvelope)}`
-    );
-  }
+	process(handlerInput) {
+		console.log(
+			`REQUEST ENVELOPE = ${JSON.stringify(handlerInput.requestEnvelope)}`
+		);
+	}
 };
-const UpSellInterceptor = {
-  process(handlerInput) {
-    const attributeNameToSave = `shouldUpsell`;
-    let fieldValue = false;
-    if (shouldUpsell(handlerInput)) {
-      fieldValue = true;
-    }
-    saveToSession(handlerInput, attributeNameToSave, fieldValue);
-  }
-};
-// This is the entry point for your skill, routing all request and response
-// payloads to the handlers above. Make sure any new handlers or interceptors you've
-// defined are included below. The order matters - they're processed top to bottom.
-exports.handler = Alexa.SkillBuilders.standard()
-  .addRequestHandlers(
-    CancelfromConnectionsHandler,
-    ConnectionsResponseHandler,
-    LaunchRequestHandler,
-    AnotherGreetingWithUpsellHandler,
-    AnotherGreetingHandler,
-    NoIntentHandler,
-    WelcomeIntentHandler,
-    BuyIntentHandler,
-    PremiumGreetingHandler,
-    WhatCanIBuyHandler,
-    PurchaseHistoryHandler,
-    HelpIntentHandler,
-    CancelAndStopIntentHandler,
-    RefundIntentHandler,
-    SessionEndedRequestHandler
-  )
-  .addErrorHandlers(ErrorHandler)
-  .addRequestInterceptors(LogRequestInterceptor, UpSellInterceptor)
-  .addResponseInterceptors(LogResponseInterceptor)
-  .lambda();
+    
+const skillBuilder = Alexa.SkillBuilders.standard();
+
+exports.handler = skillBuilder
+	.addRequestHandlers(
+		LaunchRequestHandler,
+		SimpleHelloIntentHandler,
+		GetAnotherHelloHandler,
+		NoIntentHandler,
+		WhatCanIBuyIntentHandler,
+		BuyGreetingsPackIntentHandler,
+		BuyPremiumSubscriptionIntentHandler,
+		BuyResponseHandler,
+		PurchaseHistoryHandler,
+		RefundGreetingsPackIntentHandler,
+		CancelPremiumSubscriptionIntentHandler,
+		CancelProductResponseHandler,
+		HelpIntentHandler,
+		CancelAndStopIntentHandler,
+		SessionEndedRequestHandler
+	)
+	.addErrorHandlers(ErrorHandler)
+	.addRequestInterceptors(LogRequestInterceptor)
+	.addResponseInterceptors(LogResponseInterceptor)
+	.lambda();

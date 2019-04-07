@@ -17,10 +17,11 @@ So far, we have [created a Voice User Interface](./voice-user-interface.md), [a 
 	3. **If you've forgotten the invocation name** for your skill, revisit the **Build** panel on the top navigation menu and select **Invocation** from the sidebar to review it.
 5. Test phrases like:
         - Alexa, open premium hello world
-        - give me a premium greeting
+        - say hello in other languages
         - what can I buy
-        - buy premium greeting
+        - buy premium subscription
         - what have I bought
+        - cancel premium subscription
         > Note: if you have enabled a voice code to prevent accidental purchases via voice, you will be required to provide it before you can make an in-skill purchase.  If you type that code, be sure to spell the numbers out, e.g. "one two three four" instead of "1234", otherwise the simulator will not recognize your code.
 
 6. Ensure your skill works the way that you designed it to.

@@ -5,12 +5,11 @@
 
 At this point, you should have a working copy of your skill. This is a clone of a sample skill, so if you want to publish the skill, you will first need to customize it so it offers content/functionality not currently available via the Alexa Skill Store.
 
-### Update Premium Greetings
+### Update greetings for "Greetings Pack"
 
-You can expand the premium greeting pack with greetings in more languages by updating the object `premium_greetings` inside index.js.
-
+You can expand the "Greetings pack" with greetings in more languages by updating the object `special_greetings` inside index.js.
   ```
-  const premium_greetings = [
+  const special_greetings = [
     { language: "hindi", greeting: "Namaste" },
     { language: "french", greeting: "Bonjour" },
     { language: "spanish", greeting: "Hola" },
