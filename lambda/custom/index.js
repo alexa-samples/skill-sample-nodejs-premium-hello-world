@@ -6,7 +6,7 @@ const LaunchRequestHandler = {
 		return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
 	},
 	handle(handlerInput) {
-		const speechText = 'Welcome to the Alexa Skills Kit, you can say hello!';
+		const speechText = `Welcome to ${skillName}, you can say hello!`;
 
 		return handlerInput.responseBuilder
 			.speak(speechText)
@@ -344,6 +344,8 @@ const CancelProductResponseHandler = {
 		const locale = handlerInput.requestEnvelope.request.locale;
 		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
 		const productId = handlerInput.requestEnvelope.request.payload.productId;
+		let speechText;
+		let repromptOutput;
     
 		return monetizationClient.getInSkillProducts(locale).then(function(res) {
 			const product = res.inSkillProducts.filter(
@@ -355,35 +357,31 @@ const CancelProductResponseHandler = {
 			);
 
 			if (handlerInput.requestEnvelope.request.status.code === '200') {
+				//Alexa handles the speech response immediately following the cancelation reqquest. 
+				//It then passes the control to our CancelProductResponseHandler() along with the status code (ACCEPTED, DECLINED, NOT_ENTITLED)
+				//We use the status code to stitch additional speech at the end of Alexa's cancelation response. 
+				//Currently, we have the same additional speech (getRandomYesNoQuestion)for accepted, canceled, and not_entitled. You may edit these below, if you like. 
 				if (handlerInput.requestEnvelope.request.payload.purchaseResult === 'ACCEPTED') {
 					//The cancelation confirmation response is handled by Alexa's Purchase Experience Flow.
 					//Simply add to that with getRandomYesNoQuestion()
-					const speechText = `${getRandomYesNoQuestion()}`;
-					const repromptOutput = getRandomYesNoQuestion();
-					return handlerInput.responseBuilder
-						.speak(speechText)
-						.reprompt(repromptOutput)
-						.getResponse();
+					speechText = `${getRandomYesNoQuestion()}`;
+					repromptOutput = getRandomYesNoQuestion();
 				}
 				else if (handlerInput.requestEnvelope.request.payload.purchaseResult === 'DECLINED') {
-					const speechText = `${getRandomYesNoQuestion()}`;
-					const repromptOutput = getRandomYesNoQuestion();
-					return handlerInput.responseBuilder
-						.speak(speechText)
-						.reprompt(repromptOutput)
-						.getResponse();
+					speechText = `${getRandomYesNoQuestion()}`;
+					repromptOutput = getRandomYesNoQuestion();
 				}
 				else if (handlerInput.requestEnvelope.request.payload.purchaseResult === 'NOT_ENTITLED') {
 					//No subscription to cancel. 
 					//The "No subscription to cancel" response is handled by Alexa's Purchase Experience Flow.
 					//Simply add to that with getRandomYesNoQuestion()
-					const speakOutput = `${getRandomYesNoQuestion()}`;
-					const repromptOutput = getRandomYesNoQuestion();
-					return handlerInput.responseBuilder
-						.speak(speakOutput)
-						.reprompt(repromptOutput)
-						.getResponse();
+					speechText = `${getRandomYesNoQuestion()}`;
+					repromptOutput = getRandomYesNoQuestion();
 				}
+				return handlerInput.responseBuilder
+					.speak(speechText)
+					.reprompt(repromptOutput)
+					.getResponse();
 			}
 			// Something failed.
 			console.log(
@@ -576,7 +574,7 @@ function getResponseBasedOnAccessType(handlerInput,res,preSpeechText){
 	else{
 		//Customer has NOT bought neither the Premium Subscription nor the Greetings Pack Product. 
 		//Determine if upsell should be made. returns true/false
-		if (shouldUpsell(greetingsPackProduct,handlerInput)){
+		if (shouldUpsell(handlerInput)){
 			//Upsell Greetings Pack
 			return makeUpsell(greetingsPackProduct,handlerInput);
 		}
@@ -628,7 +626,7 @@ function makeUpsell(greetingsPackProduct,handlerInput){
 		.getResponse();
 }
 
-function shouldUpsell(product, handlerInput) {
+function shouldUpsell(handlerInput) {
 	if (handlerInput.requestEnvelope.request.intent == undefined){
 		//If the last intent was Connections.Response, do not upsell
 		return false;    
