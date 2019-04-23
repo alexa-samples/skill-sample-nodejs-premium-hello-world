@@ -6,7 +6,7 @@ const LaunchRequestHandler = {
 		return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
 	},
 	handle(handlerInput) {
-		const speechText = `Welcome to ${skillName}, you can say hello!`;
+		const speechText = `Welcome to ${skillName}, you can say hello! How can I help?`;
 
 		return handlerInput.responseBuilder
 			.speak(speechText)
@@ -16,27 +16,12 @@ const LaunchRequestHandler = {
 	},
 };
 
-const SimpleHelloIntentHandler = {
-	canHandle(handlerInput) {
-		return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-      && handlerInput.requestEnvelope.request.intent.name === 'SimpleHelloIntent';
-	},
-	handle(handlerInput) {
-		const speechText = `${getSimpleHello()} ${getRandomYesNoQuestion()}`;
-
-		return handlerInput.responseBuilder
-			.speak(speechText)
-			.reprompt(getRandomYesNoQuestion())
-			.withSimpleCard(skillName, speechText)
-			.getResponse();
-	}
-};
-
 const GetAnotherHelloHandler = {
 	canHandle(handlerInput){
 		return(
 			handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-      handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent');
+			(handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent' ||
+			handlerInput.requestEnvelope.request.intent.name === 'SimpleHelloIntent'));
 	},
 	handle(handlerInput){
 		const locale = handlerInput.requestEnvelope.request.locale;
@@ -108,10 +93,88 @@ const WhatCanIBuyIntentHandler = {
 	}
 };
 
+const TellMeMoreAboutGreetingsPackIntentHandler = {
+	canHandle(handlerInput){
+		return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+    handlerInput.requestEnvelope.request.intent.name === 'TellMeMoreAboutGreetingsPackIntent';
+	},
+	handle(handlerInput){
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+
+		return monetizationClient.getInSkillProducts(locale).then(function(res){
+			// Filter the list of products available for purchase to find the product with the reference name "Greetings_Pack"
+			const greetingsPackProduct = res.inSkillProducts.filter(
+				record => record.referenceName === 'Greetings_Pack'
+			);
+
+			// const premiumSubscriptionProduct = res.inSkillProducts.filter(
+			// 	record => record.referenceName === 'Premium_Subscription'
+			// );
+
+			if (isEntitled(greetingsPackProduct)){
+				//Customer has bought the Greetings Pack. They don't need to buy the Greetings Pack. 
+				const speechText = `Good News! You're subscribed to the Premium Subscription, which includes all features of the Greetings Pack. ${getRandomYesNoQuestion()}`;
+				const repromptOutput = `${getRandomYesNoQuestion()}`;
+
+				return handlerInput.responseBuilder
+					.speak(speechText)
+					.reprompt(repromptOutput)
+					.getResponse(); 
+			}
+			else{
+				//Customer has bought neither the Premium Subscription nor the Greetings Pack Product. 
+				//Make the upsell
+				const speechText = 'Sure.';
+				return makeUpsell(speechText,greetingsPackProduct,handlerInput);						
+			}
+		});
+	}
+};
+
+const TellMeMoreAboutPremiumSubscriptionIntentHandler = {
+	canHandle(handlerInput){
+		return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+    handlerInput.requestEnvelope.request.intent.name === 'TellMeMoreAboutPremiumSubscription';
+	},
+	handle(handlerInput){
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+
+		return monetizationClient.getInSkillProducts(locale).then(function(res){
+			// Filter the list of products available for purchase to find the product with the reference name "Greetings_Pack"
+			// const greetingsPackProduct = res.inSkillProducts.filter(
+			// 	record => record.referenceName === 'Greetings_Pack'
+			// );
+
+			const premiumSubscriptionProduct = res.inSkillProducts.filter(
+				record => record.referenceName === 'Premium_Subscription'
+			);
+
+			if (isEntitled(premiumSubscriptionProduct)){
+				//Customer has bought the Greetings Pack. They don't need to buy the Greetings Pack. 
+				const speechText = `Good News! You're subscribed to the Premium Subscription. ${premiumSubscriptionProduct[0].summary} ${getRandomYesNoQuestion()}`;
+				const repromptOutput = `${getRandomYesNoQuestion()}`;
+				
+				return handlerInput.responseBuilder
+					.speak(speechText)
+					.reprompt(repromptOutput)
+					.getResponse(); 
+			}
+			else{
+				//Customer has bought neither the Premium Subscription nor the Greetings Pack Product. 
+				//Make the upsell
+				const speechText = 'Sure.';
+				return makeUpsell(speechText,premiumSubscriptionProduct,handlerInput);						
+			}
+		});
+	}
+};
+
 const BuyGreetingsPackIntentHandler = {
 	canHandle(handlerInput){
 		return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-    handlerInput.requestEnvelope.request.intent.name === 'BuyGreetingsPackIntent';
+		handlerInput.requestEnvelope.request.intent.name === 'BuyGreetingsPackIntent';
 	},
 	handle(handlerInput){
 		const locale = handlerInput.requestEnvelope.request.locale;
@@ -137,20 +200,69 @@ const BuyGreetingsPackIntentHandler = {
 					.reprompt(repromptOutput)
 					.getResponse(); 
 			}
-			else{
-				//Send Connections.SendRequest Directive back to Alexa to switch to Purchase Flow
+			else 	if (isEntitled(greetingsPackProduct)){
+				//Customer has bought the Greetings Pack. Deliver the special greetings
+				const speechText = `Good News! You've already bought the Greetings Pack. ${getRandomYesNoQuestion()}`;
+				const repromptOutput = `${getRandomYesNoQuestion()}`;
+
 				return handlerInput.responseBuilder
-					.addDirective({
-						type: 'Connections.SendRequest',
-						name: 'Buy',
-						payload: {
-							InSkillProduct:{
-								productId: greetingsPackProduct[0].productId
-							}
-						},
-						token:'correlationToken'
-					})
-					.getResponse();						
+					.speak(speechText)
+					.reprompt(repromptOutput)
+					.getResponse(); 
+			}
+			else{
+				//Customer has bought neither the Premium Subscription nor the Greetings Pack Product. 
+				//Make the buy offer for Greetings Pack
+				return makeBuyOffer(greetingsPackProduct,handlerInput);
+			}
+		});
+	}
+};
+
+const GetSpecialGreetingsIntentHandler = {
+	canHandle(handlerInput){
+		return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+		handlerInput.requestEnvelope.request.intent.name === 'GetSpecialGreetingsIntent';
+	},
+	handle(handlerInput){
+		const locale = handlerInput.requestEnvelope.request.locale;
+		const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+
+		return monetizationClient.getInSkillProducts(locale).then(function(res){
+			// Filter the list of products available for purchase to find the product with the reference name "Greetings_Pack"
+			const greetingsPackProduct = res.inSkillProducts.filter(
+				record => record.referenceName === 'Greetings_Pack'
+			);
+
+			const premiumSubscriptionProduct = res.inSkillProducts.filter(
+				record => record.referenceName === 'Premium_Subscription'
+			);
+
+			if (isEntitled(premiumSubscriptionProduct)){
+				//Customer has bought the Premium Subscription. They don't need to buy the Greetings Pack. 
+				const speechText = `Good News! You're subscribed to the Premium Subscription, which includes all features of the Greetings Pack. ${getRandomYesNoQuestion()}`;
+				const repromptOutput = `${getRandomYesNoQuestion()}`;
+
+				return handlerInput.responseBuilder
+					.speak(speechText)
+					.reprompt(repromptOutput)
+					.getResponse(); 
+			}
+			else 	if (isEntitled(greetingsPackProduct)){
+				//Customer has bought the Greetings Pack. Deliver the special greetings
+				const speechText = `Good News! You've already bought the Greetings Pack. ${getRandomYesNoQuestion()}`;
+				const repromptOutput = `${getRandomYesNoQuestion()}`;
+
+				return handlerInput.responseBuilder
+					.speak(speechText)
+					.reprompt(repromptOutput)
+					.getResponse(); 
+			}
+			else{
+				//Customer has bought neither the Premium Subscription nor the Greetings Pack Product. 
+				//Make the upsell
+				const speechText = 'You need the Greetings Pack to get the special greeting.';
+				return makeUpsell(speechText,greetingsPackProduct,handlerInput);						
 			}
 		});
 	}
@@ -172,18 +284,7 @@ const BuyPremiumSubscriptionIntentHandler = {
 			);
       
 			//Send Connections.SendRequest Directive back to Alexa to switch to Purchase Flow
-			return handlerInput.responseBuilder
-				.addDirective({
-					type: 'Connections.SendRequest',
-					name: 'Buy',
-					payload: {
-						InSkillProduct:{
-							productId: premiumSubscriptionProduct[0].productId
-						}
-					},
-					token:'correlationToken'
-				})
-				.getResponse();
+			return makeBuyOffer(premiumSubscriptionProduct,handlerInput);						
 		});
 	}
 };
@@ -238,7 +339,7 @@ const BuyResponseHandler = {
 	}
 };
 
-const PurchaseHistoryHandler = {
+const PurchaseHistoryIntentHandler = {
 	canHandle(handlerInput) {
 		return (
 			handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
@@ -261,7 +362,7 @@ const PurchaseHistoryHandler = {
 					.getResponse();
 			}
 			else{
-				const speechText = 'You haven\'t purchased anything yet. Would you like a simple greeting or special greeting?';
+				const speechText = 'You haven\'t purchased anything yet. To learn more about the products you can buy, say - what can I buy. How can I help?';
 				const repromptOutput = `You asked me for a what you've bought, but you haven't purchased anything yet. You can say - what can I buy, or say yes to get another greeting. ${getRandomYesNoQuestion()}`;
   
 				return handlerInput.responseBuilder
@@ -572,11 +673,13 @@ function getResponseBasedOnAccessType(handlerInput,res,preSpeechText){
 		repromptOutput = `${getRandomYesNoQuestion()}`;
 	}
 	else{
-		//Customer has NOT bought neither the Premium Subscription nor the Greetings Pack Product. 
+		//Customer has bought neither the Premium Subscription nor the Greetings Pack Product. 
 		//Determine if upsell should be made. returns true/false
 		if (shouldUpsell(handlerInput)){
-			//Upsell Greetings Pack
-			return makeUpsell(greetingsPackProduct,handlerInput);
+			//Say the simple greeting, and then Upsell Greetings Pack
+			theGreeting = getSimpleHello();
+			speechText = `Here's your simple greeting: ${theGreeting}. By the way, you can now get greetings in more languages.`;
+			return makeUpsell(speechText,greetingsPackProduct,handlerInput);
 		}
 		else{
 			// Do not make the upsell. Just return Simple Hello Greeting.
@@ -608,8 +711,8 @@ function getAllEntitledProducts(inSkillProductList) {
 	return entitledProductList;
 }
 
-function makeUpsell(greetingsPackProduct,handlerInput){
-	let upsellMessage = `By the way, you can now get greetings in more languages. ${greetingsPackProduct[0].summary}. ${getRandomLearnMorePrompt()}`;
+function makeUpsell(preUpsellMessage,greetingsPackProduct,handlerInput){
+	let upsellMessage = `${preUpsellMessage}. ${greetingsPackProduct[0].summary}. ${getRandomLearnMorePrompt()}`;
     
 	return handlerInput.responseBuilder
 		.addDirective({
@@ -620,6 +723,22 @@ function makeUpsell(greetingsPackProduct,handlerInput){
 					productId: greetingsPackProduct[0].productId
 				},
 				upsellMessage
+			},
+			token: 'correlationToken'
+		})
+		.getResponse();
+}
+
+function makeBuyOffer(theProduct,handlerInput){
+    
+	return handlerInput.responseBuilder
+		.addDirective({
+			type: 'Connections.SendRequest',
+			name: 'Buy',
+			payload: {
+				InSkillProduct: {
+					productId: theProduct[0].productId
+				}
 			},
 			token: 'correlationToken'
 		})
@@ -679,14 +798,16 @@ const skillBuilder = Alexa.SkillBuilders.standard();
 exports.handler = skillBuilder
 	.addRequestHandlers(
 		LaunchRequestHandler,
-		SimpleHelloIntentHandler,
 		GetAnotherHelloHandler,
 		NoIntentHandler,
 		WhatCanIBuyIntentHandler,
+		TellMeMoreAboutGreetingsPackIntentHandler,
+		TellMeMoreAboutPremiumSubscriptionIntentHandler,
 		BuyGreetingsPackIntentHandler,
+		GetSpecialGreetingsIntentHandler,
 		BuyPremiumSubscriptionIntentHandler,
 		BuyResponseHandler,
-		PurchaseHistoryHandler,
+		PurchaseHistoryIntentHandler,
 		RefundGreetingsPackIntentHandler,
 		CancelPremiumSubscriptionIntentHandler,
 		CancelProductResponseHandler,
