@@ -18,7 +18,7 @@ This sample implements a "One-Time Purchase" product called "Greeting Pack", whi
 1. Click **Create in-skill product**.
 1. Enter a Reference name.  This is code-friendly name you want to assign to your in-skill product.  For this sample, the code is expecting the reference name `Greetings_Pack`.
     > Be sure to enter all the reference names exactly as provided.  They are used in the sample code and it won't work properly if the name does not match exactly.
-1. Choose **Subscription**.
+1. Choose **One-Time Purchase**.
 1. Click **Create in-skill product**.
 1. On the **Distribution** sub-section, enter the following details for the subscription:
 
