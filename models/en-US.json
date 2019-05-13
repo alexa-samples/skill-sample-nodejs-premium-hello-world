@@ -43,6 +43,14 @@
                   ]
               },
               {
+                "name": "TellMeMoreAboutGreetingsPackIntent",
+                "slots": [],
+                "samples": [
+                    "tell me more about greetings pack",
+                    "what is greetings pack"
+                ]
+              },
+              {
                   "name": "BuyGreetingsPackIntent",
                   "slots": [],
                   "samples": [
@@ -62,6 +70,14 @@
                       "what have I purchased",
                       "what have I bought"
                   ]
+              },
+              {
+                "name": "TellMeMoreAboutPremiumSubscription",
+                "slots": [],
+                "samples": [
+                    "tell me more about premium subscription",
+                    "what is premium subscription"
+                ]
               },
               {
                   "name": "BuyPremiumSubscriptionIntent",
