@@ -746,7 +746,7 @@ function makeBuyOffer(theProduct,handlerInput){
 }
 
 function shouldUpsell(handlerInput) {
-	if (handlerInput.requestEnvelope.request.intent == undefined){
+	if (handlerInput.requestEnvelope.request.intent === undefined){
 		//If the last intent was Connections.Response, do not upsell
 		return false;    
 	}
