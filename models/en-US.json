@@ -1,96 +1,112 @@
 {
-    "interactionModel": {
-        "languageModel": {
-            "invocationName": "premium hello world",
-            "intents": [
-                {
-                    "name": "AMAZON.CancelIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.HelpIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.StopIntent",
-                    "samples": []
-                },
-                {
-                    "name": "SimpleHelloIntent",
-                    "slots": [],
-                    "samples": [
-                        "hello"
-                    ]
-                },
-                {
-                    "name": "AMAZON.NavigateHomeIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.YesIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.NoIntent",
-                    "samples": []
-                },
-                {
-                    "name": "WhatCanIBuyIntent",
-                    "slots": [],
-                    "samples": [
-                        "what can I purchase",
-                        "what can I buy"
-                    ]
-                },
-                {
-                    "name": "BuyGreetingsPackIntent",
-                    "slots": [],
-                    "samples": [
-                        "give me special greeting",
-                        "special greeting",
-                        "say hello in other languages",
-                        "Get greetings pack",
-                        "Get greeting pack",
-                        "Buy greetings pack"
-                    ]
-                },
-                {
-                    "name": "PurchaseHistoryIntent",
-                    "slots": [],
-                    "samples": [
-                        "order history",
-                        "what have I purchased",
-                        "what have I bought"
-                    ]
-                },
-                {
-                    "name": "BuyPremiumSubscriptionIntent",
-                    "slots": [],
-                    "samples": [
-                        "get premium subscription",
-                        "buy premium subscription"
-                    ]
-                },
-                {
-                    "name": "CancelPremiumSubscriptionIntent",
-                    "slots": [],
-                    "samples": [
-                        "refund subscription",
-                        "cancel subscription",
-                        "cancel premium subscription"
-                    ]
-                },
-                {
-                    "name": "RefundGreetingsPackIntent",
-                    "slots": [],
-                    "samples": [
-                        "return greetings pack",
-                        "refund greetings pack",
-                        "cancel greetings pack"
-                    ]
-                }
-            ],
-            "types": []
-        }
-    }
+  "interactionModel": {
+      "languageModel": {
+          "invocationName": "premium hello world",
+          "intents": [
+              {
+                  "name": "AMAZON.CancelIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.HelpIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.StopIntent",
+                  "samples": []
+              },
+              {
+                  "name": "SimpleHelloIntent",
+                  "slots": [],
+                  "samples": [
+                      "hello"
+                  ]
+              },
+              {
+                  "name": "AMAZON.NavigateHomeIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.YesIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.NoIntent",
+                  "samples": []
+              },
+              {
+                  "name": "WhatCanIBuyIntent",
+                  "slots": [],
+                  "samples": [
+                      "what can I purchase",
+                      "what can I buy"
+                  ]
+              },
+              {
+                "name": "TellMeMoreAboutGreetingsPackIntent",
+                "slots": [],
+                "samples": [
+                    "tell me more about greetings pack",
+                    "what is greetings pack"
+                ]
+              },
+              {
+                  "name": "BuyGreetingsPackIntent",
+                  "slots": [],
+                  "samples": [
+                      "give me special greeting",
+                      "special greeting",
+                      "say hello in other languages",
+                      "Get greetings pack",
+                      "Get greeting pack",
+                      "Buy greetings pack"
+                  ]
+              },
+              {
+                  "name": "PurchaseHistoryIntent",
+                  "slots": [],
+                  "samples": [
+                      "order history",
+                      "what have I purchased",
+                      "what have I bought"
+                  ]
+              },
+              {
+                "name": "TellMeMoreAboutPremiumSubscription",
+                "slots": [],
+                "samples": [
+                    "tell me more about premium subscription",
+                    "what is premium subscription"
+                ]
+              },
+              {
+                  "name": "BuyPremiumSubscriptionIntent",
+                  "slots": [],
+                  "samples": [
+                      "get premium subscription",
+                      "buy premium subscription"
+                  ]
+              },
+              {
+                  "name": "CancelPremiumSubscriptionIntent",
+                  "slots": [],
+                  "samples": [
+                      "refund subscription",
+                      "cancel subscription",
+                      "cancel premium subscription"
+                  ]
+              },
+              {
+                  "name": "RefundGreetingsPackIntent",
+                  "slots": [],
+                  "samples": [
+                      "return greetings pack",
+                      "refund greetings pack",
+                      "cancel greetings pack"
+                  ]
+              }
+          ],
+          "types": []
+      }
+  }
 }
