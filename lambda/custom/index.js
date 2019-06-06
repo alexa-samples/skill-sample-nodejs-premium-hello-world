@@ -575,11 +575,12 @@ function getSimpleHello() {
 
 function getSpecialHello() {
 	const special_greetings = [
-		{ language: 'hindi', greeting: 'Namaste' },
-		{ language: 'french', greeting: 'Bonjour' },
-		{ language: 'spanish', greeting: 'Hola' },
-		{ language: 'japanese', greeting: 'Konichiwa' },
-		{ language: 'italian', greeting: 'Ciao' }
+		{language: 'hindi', greeting: 'Namaste', locale:'en-IN',voice:['Aditi','Raveena']},
+		{language: 'german', greeting: 'Hallo', locale:'de-DE',voice:['Hans', 'Marlene', 'Vicki']},
+		{language: 'spanish', greeting: 'Hola', locale:'es-ES',voice:['Conchita', 'Enrique']},
+		{language: 'french', greeting: 'Bonjour', locale:'fr-FR',voice:['Celine', 'Lea', 'Mathieu']},
+		{language: 'japanese', greeting: 'Konichiwa', locale:'ja-JP',voice:['Mizuki', 'Takumi']},
+		{language: 'italian', greeting: 'Ciao', locale:'it-IT',voice:['Carla', 'Giorgio']}
 	];
 	return randomize(special_greetings);
 }
@@ -612,21 +613,6 @@ function getRandomLearnMorePrompt() {
 	return randomize(questions);
 }
 
-function getVoicePersonality(language){
-	const personalities = [
-		{'language':'hindi','name':['Aditi','Raveena']},
-		{'language':'german','name':['Hans', 'Marlene', 'Vicki']},
-		{'language':'spanish','name':['Conchita', 'Enrique']},
-		{'language':'french','name':['Celine', 'Lea', 'Mathieu']},
-		{'language':'japanese','name':['Mizuki', 'Takumi']},
-		{'language':'italian','name':['Carla', 'Giorgio']}
-	];
-	const personality = personalities.filter(
-		record => record.language === language
-	);
-	return randomize(personality[0].name);
-}
-
 function getSpeakableListOfProducts(entitleProductsList) {
 	const productNameList = entitleProductsList.map(item => item.name);
 	let productListSpeech = productNameList.join(', '); // Generate a single string with comma separated product names
@@ -648,42 +634,43 @@ function getResponseBasedOnAccessType(handlerInput,res,preSpeechText){
 		record => record.referenceName === 'Premium_Subscription'
 	);
 
-	let theGreeting;
+	console.log(
+		`PREMIUM SUBSCRIPTION PRODUCT = ${JSON.stringify(premiumSubscriptionProduct)}`
+	);
+
 	let speechText;
 	let cardText;
 	let repromptOutput;
 	
 	const specialGreeting = getSpecialHello();
-	const greetingLanguage = specialGreeting['language'];
-	const greetingText = specialGreeting['greeting'];
-	
 	const preGreetingSpeechText = `${preSpeechText} Here's your special greeting: `;
-	const postGreetingSpeechText = `That's hello in ${greetingLanguage}.`;
+	const postGreetingSpeechText = `That's hello in ${specialGreeting.language}.`;
+	const langSpecialGreeting = switchLanguage(specialGreeting.greeting + '!', specialGreeting.locale);
 
 	if (isEntitled(premiumSubscriptionProduct)){
 		//Customer has bought the Premium Subscription. Switch to Polly Voice, and return special hello
-		cardText = `${preGreetingSpeechText} ${greetingText} ${postGreetingSpeechText}`;
-		speechText = `${preGreetingSpeechText} ${getVoiceTalentToSay((greetingText + '! ' + postGreetingSpeechText),greetingLanguage)} ${getRandomYesNoQuestion()}`;
+		cardText = `${preGreetingSpeechText} ${specialGreeting.greeting} ${postGreetingSpeechText}`;
+		const randomVoice = randomize(specialGreeting.voice);
+		speechText = `${preGreetingSpeechText} ${switchVoice(langSpecialGreeting, randomVoice)} ${postGreetingSpeechText} ${getRandomYesNoQuestion()}`;
 		repromptOutput = `${getRandomYesNoQuestion()}`;
 	}
 	else if (isEntitled(greetingsPackProduct)) {
 		//Customer has bought the Greetings Pack, but not the Premium Subscription. Return special hello greeting in Alexa voice
-		cardText = `${preGreetingSpeechText} ${greetingText} ${postGreetingSpeechText}`;
-		speechText = `${preGreetingSpeechText} ${specialGreeting['greeting']} ! ${postGreetingSpeechText}. ${getRandomYesNoQuestion()}`;
+		cardText = `${preGreetingSpeechText} ${specialGreeting.greeting} ${postGreetingSpeechText}`;
+		speechText = `${preGreetingSpeechText} ${langSpecialGreeting} ${postGreetingSpeechText}. ${getRandomYesNoQuestion()}`;
 		repromptOutput = `${getRandomYesNoQuestion()}`;
 	}
 	else{
 		//Customer has bought neither the Premium Subscription nor the Greetings Pack Product. 
+		const theGreeting = getSimpleHello();
 		//Determine if upsell should be made. returns true/false
 		if (shouldUpsell(handlerInput)){
 			//Say the simple greeting, and then Upsell Greetings Pack
-			theGreeting = getSimpleHello();
 			speechText = `Here's your simple greeting: ${theGreeting}. By the way, you can now get greetings in more languages.`;
 			return makeUpsell(speechText,greetingsPackProduct,handlerInput);
 		}
 		else{
 			// Do not make the upsell. Just return Simple Hello Greeting.
-			theGreeting = getSimpleHello();
 			cardText = `Here's your simple greeting: ${theGreeting}.`;
 			speechText = `Here's your simple greeting: ${theGreeting}. ${getRandomYesNoQuestion()}`;
 			repromptOutput = `${getRandomYesNoQuestion()}`;
@@ -755,10 +742,18 @@ function shouldUpsell(handlerInput) {
 	}
 }
 
-function getVoiceTalentToSay(speakOutput,language){
-	const personality = getVoicePersonality(language);
-	const generatedSpeech = `<voice name="${personality}"> ${speakOutput} </voice>`;
-	return generatedSpeech;
+function switchVoice(speakOutput, voice_name){
+	if (speakOutput && voice_name){
+		return `<voice name="${voice_name}"> ${speakOutput} </voice>`;
+	}
+	return speakOutput;
+}
+
+function switchLanguage(speakOutput, locale){
+	if (speakOutput && locale){
+		return `<lang xml:lang="${locale}"> ${speakOutput} </lang>`;
+	}
+	return speakOutput;
 }
 
 function getBuyResponseText(productReferenceName,productName){
