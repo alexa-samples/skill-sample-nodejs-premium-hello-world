@@ -4,7 +4,21 @@
       "skill_id": "",
       "was_cloned": false,
       "merge": {
-      }
+      },
+      "in_skill_products": [
+        {
+          "deploy_status": "Add",
+          "filePath": "isps/entitlement/Greetings_Pack.json"
+        },
+        {
+          "deploy_status": "Add",
+          "filePath": "isps/consumable/Goodbyes_Pack.json"
+        },
+        {
+          "deploy_status": "Add",
+          "filePath": "isps/subscription/Premium_Subscription.json"
+        }
+      ]
     }
   }
 }

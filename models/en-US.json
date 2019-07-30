@@ -35,31 +35,11 @@
                     "samples": []
                 },
                 {
-                    "name": "WhatCanIBuyIntent",
+                    "name": "AvailableProductsIntent",
                     "slots": [],
                     "samples": [
                         "what can I purchase",
                         "what can I buy"
-                    ]
-                },
-                {
-                    "name": "TellMeMoreAboutGreetingsPackIntent",
-                    "slots": [],
-                    "samples": [
-                        "tell me more about greetings pack",
-                        "what is greetings pack"
-                    ]
-                },
-                {
-                    "name": "BuyGreetingsPackIntent",
-                    "slots": [],
-                    "samples": [
-                        "give me special greeting",
-                        "special greeting",
-                        "say hello in other languages",
-                        "Get greetings pack",
-                        "Get greeting pack",
-                        "Buy greetings pack"
                     ]
                 },
                 {
@@ -72,41 +52,198 @@
                     ]
                 },
                 {
-                    "name": "TellMeMoreAboutPremiumSubscription",
-                    "slots": [],
+                    "name": "DescribeProductIntent",
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType"
+                        }
+                    ],
                     "samples": [
-                        "tell me more about premium subscription",
-                        "what is premium subscription"
+                        "what is {product}",
+                        "tell me more about {product}"
                     ]
                 },
                 {
-                    "name": "BuyPremiumSubscriptionIntent",
-                    "slots": [],
+                    "name": "BuyProductIntent",
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType",
+                            "samples": [
+                                "I want to buy the {product}",
+                                "I want to buy {product}",
+                                "the {product}",
+                                "{product}"
+                            ]
+                        }
+                    ],
                     "samples": [
-                        "get premium subscription",
-                        "buy premium subscription"
+                        "i want to buy",
+                        "purchase",
+                        "buy",
+                        "give me {product}",
+                        "get {product}",
+                        "buy {product}",
+                        "{product}"
                     ]
                 },
                 {
-                    "name": "CancelPremiumSubscriptionIntent",
-                    "slots": [],
+                    "name": "RefundProductIntent",
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType",
+                            "samples": [
+                                "refund of {product}",
+                                "I want a refund of the {product}",
+                                "I want a refund of {product}",
+                                "the {product}",
+                                "{product}"
+                            ]
+                        }
+                    ],
                     "samples": [
-                        "refund subscription",
-                        "cancel subscription",
-                        "cancel premium subscription"
-                    ]
-                },
-                {
-                    "name": "RefundGreetingsPackIntent",
-                    "slots": [],
-                    "samples": [
-                        "return greetings pack",
-                        "refund greetings pack",
-                        "cancel greetings pack"
+                        "cancel the {product}",
+                        "refund the {product}",
+                        "return the {product}",
+                        "cancel {product}",
+                        "refund {product}",
+                        "return {product}",
+                        "return",
+                        "I want a refund",
+                        "I want a refund of {product}",
+                        "refund"
                     ]
                 }
             ],
-            "types": []
-        }
+            "types": [
+                {
+                    "name": "productType",
+                    "values": [
+                        {
+                            "id": "Premium_Subscription",
+                            "name": {
+                                "value": "premium subscription"
+                            }
+                        },
+                        {
+                            "id": "Goodbyes_Pack",
+                            "name": {
+                                "value": "goodbyes pack",
+                                "synonyms": [
+                                    "special goodbyes",
+                                    "special goodbye"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "Greetings_Pack",
+                            "name": {
+                                "value": "greetings pack",
+                                "synonyms": [
+                                    "special greetings",
+                                    "special greeting"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "DescribeProductIntent",
+                    "delegationStrategy": "SKILL_RESPONSE",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        }
+                    ]
+                },
+                {
+                    "name": "BuyProductIntent",
+                    "delegationStrategy": "ALWAYS",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.595251027713.101054381785"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "RefundProductIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1223818174213.631612009135"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.593674792803.723737651317",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "which product are you interested in?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "interested in greetings pack, premium subscription or goodbyes pack?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.595251027713.101054381785",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "do you want to buy greetings pack, premium subscription or goodbyes pack?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "which product do you want to buy?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1223818174213.631612009135",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "do you want a refund for greetings pack, premium subscription or goodbyes pack?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "which product should I refund?"
+                    }
+                ]
+            }
+        ]
     }
 }

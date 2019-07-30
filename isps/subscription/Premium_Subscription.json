@@ -1,0 +1,107 @@
+{
+  "version": "1.0",
+  "type": "SUBSCRIPTION",
+  "referenceName": "Premium_Subscription",
+  "subscriptionInformation": {
+    "subscriptionPaymentFrequency": "MONTHLY",
+    "subscriptionTrialPeriodDays": 7
+  },
+  "publishingInformation": {
+    "locales": {
+      "en-US": {
+        "name": "Premium Subscription",
+        "summary": "The Premium Subscription greets the user in a variety of voices.",
+        "description": "The Premium Subscription Pack unlocks the magic of Polly Voice, and greets you in a variety of languages, like hindi, spanish, italian, and more.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "For Future Use – Example Phrase 1",
+          "For Future Use – Example Phrase 2",
+          "For Future Use – Example Phrase 3"
+        ],
+        "keywords": [
+          "For Future Use – Keywords"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "The Premium Subscription Pack unlocks the magic of Polly Voice, and greets you in a variety of languages using Amazon Polly.",
+          "boughtCardDescription": "You now have the Premium Subscription, which will greet you in multiple languages in a variety of voices using Amazon Polly."
+        }
+      }
+    },
+    "distributionCountries": [
+      "AT",
+      "BE",
+      "BG",
+      "CY",
+      "CZ",
+      "DE",
+      "DK",
+      "EE",
+      "FI",
+      "GB",
+      "GG",
+      "GI",
+      "GR",
+      "HR",
+      "HU",
+      "IE",
+      "JP",
+      "LI",
+      "LT",
+      "LU",
+      "LV",
+      "MT",
+      "NL",
+      "NO",
+      "PL",
+      "PT",
+      "RO",
+      "SE",
+      "SI",
+      "SK",
+      "UA",
+      "US"
+    ],
+    "pricing": {
+      "amazon.de": {
+        "releaseDate": "2019-06-27T00:00Z",
+        "defaultPriceListing": {
+          "price": 9.99,
+          "currency": "EUR"
+        }
+      },
+      "amazon.com": {
+        "releaseDate": "2019-06-27T00:00Z",
+        "defaultPriceListing": {
+          "price": 9.99,
+          "currency": "USD"
+        }
+      },
+      "amazon.co.uk": {
+        "releaseDate": "2019-06-27T00:00Z",
+        "defaultPriceListing": {
+          "price": 9.99,
+          "currency": "GBP"
+        }
+      },
+      "amazon.co.jp": {
+        "releaseDate": "2019-06-27T00:00Z",
+        "defaultPriceListing": {
+          "price": 999,
+          "currency": "JPY"
+        }
+      }
+    },
+    "taxInformation": {
+      "category": "INFORMATION_SERVICES"
+    }
+  },
+  "privacyAndCompliance": {
+    "locales": {
+      "en-US": {
+        "privacyPolicyUrl": "https://www.amazon.com"
+      }
+    }
+  },
+  "purchasableState": "PURCHASABLE"
+}
