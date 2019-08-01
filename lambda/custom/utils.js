@@ -65,7 +65,7 @@ function getSpecialHello() {
 }
 
 function getGoodbyesCount(handlerInput, product){
-  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
+  console.log('Function: getGoodbyesCount');
   const {attributesManager} = handlerInput;
   const sessionAttributes = attributesManager.getSessionAttributes();
       
@@ -82,7 +82,7 @@ function getGoodbyesCount(handlerInput, product){
 }
 
 function getPremiumOrRandomGoodbye(handlerInput, res) {
-  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
+  console.log('Function: getPremiumOrRandomGoodbye');
   const goodbyesPackProduct = res.inSkillProducts.filter(
     record => record.referenceName === 'Goodbyes_Pack'
   );
@@ -137,7 +137,7 @@ function getRandomLearnMorePrompt() {
 }
 
 function getSpeakableListOfProducts(entitledProductsList) {
-  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
+  console.log('Function: getSpeakableListOfProducts');
   const productNameList = entitledProductsList.map(item => item.name);
   let productListSpeech = productNameList.join(', '); // Generate a single string with comma separated product names
   productListSpeech = productListSpeech.replace(/_([^_]*)$/, 'and $1'); // Replace last comma with an 'and '
@@ -145,7 +145,7 @@ function getSpeakableListOfProducts(entitledProductsList) {
 }
 
 function getResponseBasedOnAccessType(handlerInput, res, preSpeechText) {
-  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
+  console.log('Function: getResponseBasedOnAccessType');
   // The filter() method creates a new array with all elements that pass the test implemented by the provided function.
   const greetingsPackProduct = res.inSkillProducts.filter(
     record => record.referenceName === 'Greetings_Pack',
@@ -207,13 +207,13 @@ function isEntitled(product) {
 }
 
 function getAllEntitledProducts(inSkillProductList) {
-  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
+  console.log('Function: getAllEntitledProducts');
   const entitledProductList = inSkillProductList.filter(record => record.entitled === 'ENTITLED');
   return entitledProductList;
 }
 
 function makeUpsell(preUpsellMessage, product, handlerInput) {
-  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
+  console.log('Function: makeUpsell');
   const upsellMessage = `${preUpsellMessage} ${product[0].summary} ${getRandomLearnMorePrompt()}`;
 
   return handlerInput.responseBuilder
@@ -232,7 +232,7 @@ function makeUpsell(preUpsellMessage, product, handlerInput) {
 }
 
 function makeBuyOffer(theProduct, handlerInput) {
-  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
+  console.log('Function: makeBuyOffer');
   return handlerInput.responseBuilder
     .addDirective({
       type: 'Connections.SendRequest',
@@ -248,6 +248,7 @@ function makeBuyOffer(theProduct, handlerInput) {
 }
 
 function shouldUpsell(handlerInput) {
+  console.log('Function: shouldUpsell');
   if (handlerInput.requestEnvelope.request.intent === undefined) {
     // If the last intent was Connections.Response, do not upsell
     return false;
@@ -271,7 +272,7 @@ function switchLanguage(speakOutput, locale) {
 }
 
 function getBuyResponseText(productReferenceName, productName) {
-  console.log(arguments.callee[.toString().match(/function\s+([^\s\(]+)/)]);
+  console.log('Function: getBuyResponseText');
   if (productReferenceName === 'Greetings_Pack') {
     return `With the ${productName}, I can now say hello in a variety of languages.`;
   } else if (productReferenceName === 'Premium_Subscription') {
