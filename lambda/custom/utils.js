@@ -70,6 +70,7 @@ function getGoodbyesCount(handlerInput, product){
   const sessionAttributes = attributesManager.getSessionAttributes();
       
   const activeEntitlementCount = product[0] ? product[0].activeEntitlementCount : 0;
+  console.log('activeEntitlementCount = ' + activeEntitlementCount);
   const goodbyesUsed = parseInt(sessionAttributes.goodbyesUsed) || 0;
   const goodbyesAvailable = Math.max(0, activeEntitlementCount * 3 - goodbyesUsed);
   
@@ -270,7 +271,7 @@ function switchLanguage(speakOutput, locale) {
 }
 
 function getBuyResponseText(productReferenceName, productName) {
-  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
+  console.log(arguments.callee[.toString().match(/function\s+([^\s\(]+)/)]);
   if (productReferenceName === 'Greetings_Pack') {
     return `With the ${productName}, I can now say hello in a variety of languages.`;
   } else if (productReferenceName === 'Premium_Subscription') {
