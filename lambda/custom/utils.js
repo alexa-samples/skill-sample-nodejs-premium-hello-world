@@ -64,12 +64,12 @@ function getSpecialHello() {
   return randomize(specialGreetings);
 }
 
-function getGoodbyesCount(handlerInput, goodbyesPackProduct){  
-
+function getGoodbyesCount(handlerInput, product){
+  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
   const {attributesManager} = handlerInput;
   const sessionAttributes = attributesManager.getSessionAttributes();
       
-  const activeEntitlementCount = goodbyesPackProduct[0] ? goodbyesPackProduct[0].activeEntitlementCount : 0;
+  const activeEntitlementCount = product[0] ? product[0].activeEntitlementCount : 0;
   const goodbyesUsed = parseInt(sessionAttributes.goodbyesUsed) || 0;
   const goodbyesAvailable = Math.max(0, activeEntitlementCount * 3 - goodbyesUsed);
   
@@ -78,12 +78,10 @@ function getGoodbyesCount(handlerInput, goodbyesPackProduct){
     attributesManager.setSessionAttributes(sessionAttributes);
   }
   return goodbyesAvailable;
-  
-  
 }
 
 function getPremiumOrRandomGoodbye(handlerInput, res) {
-
+  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
   const goodbyesPackProduct = res.inSkillProducts.filter(
     record => record.referenceName === 'Goodbyes_Pack'
   );
@@ -94,7 +92,6 @@ function getPremiumOrRandomGoodbye(handlerInput, res) {
   let cardText;
 
   if (availableGoodbyes > 0){
-
     const specialGoodbye = getSpecialGoodbye();
     const preGoodbyeSpeechText = `Here's your special goodbye: `;
     const postGoodbyeSpeechText = `That's goodbye in ${specialGoodbye.language}`;
@@ -102,7 +99,6 @@ function getPremiumOrRandomGoodbye(handlerInput, res) {
     cardText = `${preGoodbyeSpeechText} ${specialGoodbye.greeting} ${postGoodbyeSpeechText}`;
     const randomVoice = randomize(specialGoodbye.voice);
     speechText = `${preGoodbyeSpeechText} ${switchVoice(langSpecialGoodbye, randomVoice)} ${postGoodbyeSpeechText}.`;
-
   } else {
     console.log("No premium goodbyes available");
     const goodbyes = [
@@ -139,15 +135,16 @@ function getRandomLearnMorePrompt() {
   return randomize(questions);
 }
 
-function getSpeakableListOfProducts(entitleProductsList) {
-  const productNameList = entitleProductsList.map(item => item.name);
+function getSpeakableListOfProducts(entitledProductsList) {
+  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
+  const productNameList = entitledProductsList.map(item => item.name);
   let productListSpeech = productNameList.join(', '); // Generate a single string with comma separated product names
   productListSpeech = productListSpeech.replace(/_([^_]*)$/, 'and $1'); // Replace last comma with an 'and '
   return productListSpeech;
 }
 
-
 function getResponseBasedOnAccessType(handlerInput, res, preSpeechText) {
+  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
   // The filter() method creates a new array with all elements that pass the test implemented by the provided function.
   const greetingsPackProduct = res.inSkillProducts.filter(
     record => record.referenceName === 'Greetings_Pack',
@@ -209,11 +206,13 @@ function isEntitled(product) {
 }
 
 function getAllEntitledProducts(inSkillProductList) {
+  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
   const entitledProductList = inSkillProductList.filter(record => record.entitled === 'ENTITLED');
   return entitledProductList;
 }
 
 function makeUpsell(preUpsellMessage, product, handlerInput) {
+  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
   const upsellMessage = `${preUpsellMessage} ${product[0].summary} ${getRandomLearnMorePrompt()}`;
 
   return handlerInput.responseBuilder
@@ -232,6 +231,7 @@ function makeUpsell(preUpsellMessage, product, handlerInput) {
 }
 
 function makeBuyOffer(theProduct, handlerInput) {
+  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
   return handlerInput.responseBuilder
     .addDirective({
       type: 'Connections.SendRequest',
@@ -270,6 +270,7 @@ function switchLanguage(speakOutput, locale) {
 }
 
 function getBuyResponseText(productReferenceName, productName) {
+  console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
   if (productReferenceName === 'Greetings_Pack') {
     return `With the ${productName}, I can now say hello in a variety of languages.`;
   } else if (productReferenceName === 'Premium_Subscription') {
@@ -298,6 +299,7 @@ const LogRequestInterceptor = {
 
 const LoadAttributesRequestInterceptor = {
   async process(handlerInput) {
+      console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
       const {attributesManager, requestEnvelope} = handlerInput;
       if(requestEnvelope.session['new']){ //is this a new session? this check is not enough if using auto-delegate
           const persistentAttributes = await attributesManager.getPersistentAttributes() || {};
@@ -310,6 +312,7 @@ const LoadAttributesRequestInterceptor = {
 
 const SaveAttributesResponseInterceptor = {
   async process(handlerInput, response) {
+      console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
       if(!response) return; // avoid intercepting calls that have no outgoing response due to errors
       const {attributesManager, requestEnvelope} = handlerInput;
       const sessionAttributes = attributesManager.getSessionAttributes();

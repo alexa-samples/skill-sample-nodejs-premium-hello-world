@@ -21,6 +21,7 @@ const LaunchRequestHandler = {
     return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
   },
   handle(handlerInput) {
+    console.log('Handler: LaunchRequestHandler');
     const speechText = `Welcome to ${skillName}, you can say hello! How can I help?`;
 
     return handlerInput.responseBuilder
@@ -39,6 +40,7 @@ const GetAnotherHelloHandler = {
           || handlerInput.requestEnvelope.request.intent.name === 'SimpleHelloIntent'));
   },
   handle(handlerInput) {
+    console.log('Handler: GetAnotherHelloHandler');
     const {locale} = handlerInput.requestEnvelope.request;
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
     const preSpeechText = '';
@@ -57,6 +59,7 @@ const AvailableProductsIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'AvailableProductsIntent');
   },
   handle(handlerInput) {
+    console.log('Handler: AvailableProductsIntentHandler');
     // Get the list of products available for in-skill purchase
     const {locale} = handlerInput.requestEnvelope.request;
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
@@ -97,6 +100,7 @@ const DescribeProductIntentHandler = {
            && handlerInput.requestEnvelope.request.intent.name === 'DescribeProductIntent';
   },
   handle(handlerInput) {
+    console.log('Handler: DescribeProductIntentHandler');
     const {intent} = handlerInput.requestEnvelope.request;
     const productId = intent.slots.product.resolutions.resolutionsPerAuthority[0].values[0].value.id;
     const productName = intent.slots.product.resolutions.resolutionsPerAuthority[0].values[0].value.name;
@@ -144,6 +148,7 @@ const BuyProductIntentHandler = {
            && handlerInput.requestEnvelope.request.intent.name === 'BuyProductIntent';
   },
   handle(handlerInput) {
+    console.log('Handler: BuyProductIntentHandler');
     const {intent} = handlerInput.requestEnvelope.request;
     const productId = intent.slots.product.resolutions.resolutionsPerAuthority[0].values[0].value.id;
     const productName = intent.slots.product.resolutions.resolutionsPerAuthority[0].values[0].value.name;
@@ -191,6 +196,7 @@ const UpsellBuyResponseHandler = {
                || handlerInput.requestEnvelope.request.name === 'Upsell');
   },
   handle(handlerInput) {
+    console.log('Handler: UpsellBuyResponseHandler');
     const {locale} = handlerInput.requestEnvelope.request;
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
     const {productId} = handlerInput.requestEnvelope.request.payload;
@@ -238,7 +244,8 @@ const PurchaseHistoryIntentHandler = {
     );
   },
   handle(handlerInput) {
-    const locale = handlerInput.requestEnvelope.request.locale;
+    console.log('Handler: PurchaseHistoryIntentHandler');
+    const {locale} = handlerInput.requestEnvelope.request;
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
 
     return monetizationClient.getInSkillProducts(locale).then(function (result) {
@@ -272,6 +279,7 @@ const RefundProductIntentHandler = {
     );
   },
   handle(handlerInput) {
+    console.log('Handler: RefundProductIntentHandler');
     const {intent} = handlerInput.requestEnvelope.request;
     const productId = intent.slots.product.resolutions.resolutionsPerAuthority[0].values[0].value.id;
     const productName = intent.slots.product.resolutions.resolutionsPerAuthority[0].values[0].value.name;
@@ -306,7 +314,8 @@ const CancelProductResponseHandler = {
     );
   },
   handle(handlerInput) {
-    const locale = handlerInput.requestEnvelope.request.locale;
+    console.log('Handler: CancelProductResponseHandler');
+    const {locale} = handlerInput.requestEnvelope.request;
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
     const productId = handlerInput.requestEnvelope.request.payload.productId;
     let speechText;
@@ -364,6 +373,7 @@ const HelpIntentHandler = {
     );
   },
   handle(handlerInput) {
+    console.log('Handler: HelpIntentHandler');
     const speechText = 'You can say hello to me! How can I help?';
 
     return handlerInput.responseBuilder
@@ -382,8 +392,8 @@ const CancelAndStopIntentHandler = {
         || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NoIntent');
   },
   handle(handlerInput) {
-    
-    const locale = handlerInput.requestEnvelope.request.locale;
+    console.log('Handler: CancelAndStopIntentHandler');
+    const {locale} = handlerInput.requestEnvelope.request;
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
 
     return monetizationClient.getInSkillProducts(locale).then((res) => {
@@ -408,7 +418,7 @@ const ErrorHandler = {
     return true;
   },
   handle(handlerInput, error) {
-    console.log(`Error handled: ${error.message}`);
+    console.log(`Error handled: ${JSON.stringify(error)}`);
 
     return handlerInput.responseBuilder
       .speak('Sorry, there was an error. Please say again.')
