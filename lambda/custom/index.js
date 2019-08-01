@@ -210,7 +210,7 @@ const UpsellBuyResponseHandler = {
         let preSpeechText;
 
         // check the Buy status - accepted, declined, already purchased, or something went wrong.
-        console.log(handlerInput.requestEnvelope.request.name + ' connections result: ' + handlerInput.requestEnvelope.request.payload.purchaseResult);
+        console.log(handlerInput.requestEnvelope.request.name + ' connections payload: ' + handlerInput.requestEnvelope.request.payload);
         switch (handlerInput.requestEnvelope.request.payload.purchaseResult) {
           case 'ACCEPTED':
           case 'ALREADY_PURCHASED':
@@ -322,7 +322,7 @@ const CancelProductResponseHandler = {
     let speechText;
     let repromptOutput;
 
-    console.log('Cancel connections result: ' + handlerInput.requestEnvelope.request.payload.purchaseResult);
+    console.log('Cancel connections payload: ' + handlerInput.requestEnvelope.request.payload);
     return monetizationClient.getInSkillProducts(locale).then((res) => {
       const product = res.inSkillProducts.filter(
         record => record.productId === productId,

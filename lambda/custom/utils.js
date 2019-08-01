@@ -275,14 +275,17 @@ function switchLanguage(speakOutput, locale) {
 
 function getBuyResponseText(productReferenceName, productName) {
   console.log('Function: getBuyResponseText');
-  if (productReferenceName === 'Greetings_Pack') {
-    return `With the ${productName}, I can now say hello in a variety of languages.`;
-  } else if (productReferenceName === 'Premium_Subscription') {
-    return `With the ${productName}, I can now say hello in a variety of languages, in different accents using Amazon Polly.`;
+  switch(productReferenceName){
+    case 'Greetings_Pack':
+      return `With the ${productName}, I can now say hello in a variety of languages.`;
+    case 'Premium_Subscription':
+      return `With the ${productName}, I can now say hello in a variety of languages, in different accents using Amazon Polly.`;
+    case 'Goodbyes_Pack':
+      return `With the ${productName}, I can now say goodbye in a variety of languages, in different accents using Amazon Polly.`;
+    default: 
+      console.log('Product Unknown');
+     return '';
   }
-
-  console.log('Product Undefined');
-  return 'Sorry, that\'s not a valid product';
 }
 
 // *****************************************
