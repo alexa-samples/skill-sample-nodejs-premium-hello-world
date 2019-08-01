@@ -299,7 +299,7 @@ const LogRequestInterceptor = {
 
 const LoadAttributesRequestInterceptor = {
   async process(handlerInput) {
-      console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
+    console.log('Interceptor: LoadAttributesRequestInterceptor');
       const {attributesManager, requestEnvelope} = handlerInput;
       if(requestEnvelope.session['new']){ //is this a new session? this check is not enough if using auto-delegate
           const persistentAttributes = await attributesManager.getPersistentAttributes() || {};
@@ -312,7 +312,7 @@ const LoadAttributesRequestInterceptor = {
 
 const SaveAttributesResponseInterceptor = {
   async process(handlerInput, response) {
-      console.log(arguments.callee.toString().match(/function\s+([^\s\(]+)/));
+      console.log('Interceptor: SaveAttributesResponseInterceptor');
       if(!response) return; // avoid intercepting calls that have no outgoing response due to errors
       const {attributesManager, requestEnvelope} = handlerInput;
       const sessionAttributes = attributesManager.getSessionAttributes();
