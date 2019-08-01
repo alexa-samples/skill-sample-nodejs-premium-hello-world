@@ -72,7 +72,9 @@ function getGoodbyesCount(handlerInput, product){
   const activeEntitlementCount = product[0] ? product[0].activeEntitlementCount : 0;
   console.log('activeEntitlementCount = ' + activeEntitlementCount);
   const goodbyesUsed = parseInt(sessionAttributes.goodbyesUsed) || 0;
+  console.log('goodbyesUsed = ' + goodbyesUsed);
   const goodbyesAvailable = Math.max(0, activeEntitlementCount * 3 - goodbyesUsed);
+  console.log('goodbyesAvailable = ' + goodbyesAvailable);
   
   if (goodbyesAvailable > 0){
     sessionAttributes.goodbyesUsed = goodbyesUsed + 1;
