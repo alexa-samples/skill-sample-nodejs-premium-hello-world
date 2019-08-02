@@ -1,4 +1,5 @@
 const skillName = 'Premium Hello World';
+const GOODBYES_PER_ENTITLEMENT = 3;
 
 // *****************************************
 // *********** HELPER FUNCTIONS ************
@@ -73,19 +74,17 @@ function getGoodbyesCount(handlerInput, product){
   console.log('activeEntitlementCount = ' + activeEntitlementCount);
   const goodbyesUsed = parseInt(sessionAttributes.goodbyesUsed) || 0;
   console.log('goodbyesUsed = ' + goodbyesUsed);
-  const goodbyesAvailable = Math.max(0, activeEntitlementCount * 3 - goodbyesUsed);
+  const goodbyesAvailable = Math.max(0, activeEntitlementCount * GOODBYES_PER_ENTITLEMENT - goodbyesUsed);
   console.log('goodbyesAvailable = ' + goodbyesAvailable);
   
-  if (goodbyesAvailable > 0){
-    sessionAttributes.goodbyesUsed = goodbyesUsed + 1;
-    attributesManager.setSessionAttributes(sessionAttributes);
-  }
   return goodbyesAvailable;
 }
 
-function getPremiumOrRandomGoodbye(handlerInput, res) {
+function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
   console.log('Function: getPremiumOrRandomGoodbye');
-  const goodbyesPackProduct = res.inSkillProducts.filter(
+  const {attributesManager} = handlerInput;
+  const sessionAttributes = attributesManager.getSessionAttributes();
+  const goodbyesPackProduct = inSkillProducts.filter(
     record => record.referenceName === 'Goodbyes_Pack'
   );
 
@@ -102,6 +101,8 @@ function getPremiumOrRandomGoodbye(handlerInput, res) {
     cardText = `${preGoodbyeSpeechText} ${specialGoodbye.greeting} ${postGoodbyeSpeechText}`;
     const randomVoice = randomize(specialGoodbye.voice);
     speechText = `${preGoodbyeSpeechText} ${switchVoice(langSpecialGoodbye, randomVoice)} ${postGoodbyeSpeechText}.`;
+    sessionAttributes.goodbyesUsed+=1;
+    attributesManager.setSessionAttributes(sessionAttributes);
   } else {
     console.log("No premium goodbyes available");
     const goodbyes = [

@@ -180,7 +180,7 @@ const BuyProductIntentHandler = {
           .getResponse();
       };
     });
-  },
+  }
 };
 
 const UpsellBuyResponseHandler = {
@@ -266,6 +266,33 @@ const PurchaseHistoryIntentHandler = {
   }
 };
 
+const InventoryIntentHandler = {
+  canHandle(handlerInput) {
+    return (
+      handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'InventoryIntent'
+    );
+  },
+  handle(handlerInput) {
+    console.log('Handler: InventoryIntentHandler');
+    const {locale} = handlerInput.requestEnvelope.request;
+    const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
+
+    return monetizationClient.getInSkillProducts(locale).then(function (res) {
+      const goodbyesPackProduct = res.inSkillProducts.filter(
+        record => record.referenceName === 'Goodbyes_Pack'
+      );
+      const availableGoodbyes = parseInt(getGoodbyesCount(handlerInput, goodbyesPackProduct)) || 0;
+      const speechText = `You have ${availableGoodbyes} premium goodbyes left`;
+      const repromptOutput = `${getRandomYesNoQuestion()}`;
+      return handlerInput.responseBuilder
+        .speak(speechText)
+        .reprompt(repromptOutput)
+        .getResponse();
+    });
+  }
+};
+
 const RefundProductIntentHandler = {
   canHandle(handlerInput) {
     return (
@@ -298,7 +325,7 @@ const RefundProductIntentHandler = {
         })
         .getResponse();
     });
-  },
+  }
 };
 
 const CancelProductResponseHandler = {
@@ -358,7 +385,7 @@ const CancelProductResponseHandler = {
         .speak('There was an error handling your purchase request. Please try again or contact us for help.')
         .getResponse();
     });
-  },
+  }
 };
 
 const HelpIntentHandler = {
@@ -377,7 +404,7 @@ const HelpIntentHandler = {
       .reprompt(speechText)
       .withSimpleCard(skillName, speechText)
       .getResponse();
-  },
+  }
 };
 
 const CancelAndStopIntentHandler = {
@@ -393,9 +420,9 @@ const CancelAndStopIntentHandler = {
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
 
     return monetizationClient.getInSkillProducts(locale).then((res) => {
-      return getPremiumOrRandomGoodbye(handlerInput, res);
+      return getPremiumOrRandomGoodbye(handlerInput, res.inSkillProducts);
     });
-  },
+  }
 };
 
 const SessionEndedRequestHandler = {
@@ -406,7 +433,7 @@ const SessionEndedRequestHandler = {
     console.log(`Session ended with reason: ${handlerInput.requestEnvelope.request.reason}`);
 
     return handlerInput.responseBuilder.getResponse();
-  },
+  }
 };
 
 const ErrorHandler = {
@@ -420,7 +447,7 @@ const ErrorHandler = {
       .speak('Sorry, there was an error. Please try again.')
       .reprompt('Sorry, there was an error. Please try again.')
       .getResponse();
-  },
+  }
 };
 
 
@@ -435,6 +462,7 @@ exports.handler = skillBuilder
     BuyProductIntentHandler,
     UpsellBuyResponseHandler,
     PurchaseHistoryIntentHandler,
+    InventoryIntentHandler,
     RefundProductIntentHandler,
     CancelProductResponseHandler,
     HelpIntentHandler,

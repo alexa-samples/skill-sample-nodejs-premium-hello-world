@@ -95,6 +95,19 @@
                     ]
                 },
                 {
+                    "name": "InventoryIntent",
+                    "slots": [],
+                    "samples": [
+                        "inventory",
+                        "what is my inventory",
+                        "my inventory",
+                        "current inventory",
+                        "what is my goodbyes count",
+                        "how many goodbyes I have left",
+                        "goodbyes left"
+                    ]
+                },
+                {
                     "name": "RefundProductIntent",
                     "slots": [
                         {
@@ -116,7 +129,7 @@
                         "cancel {product}",
                         "refund {product}",
                         "return {product}",
-                        "return",
+                        "return product",
                         "I want a refund",
                         "I want a refund of {product}",
                         "refund"
