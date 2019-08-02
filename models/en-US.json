@@ -49,9 +49,12 @@
                     "name": "PurchaseHistoryIntent",
                     "slots": [],
                     "samples": [
+                        "purchase history",
                         "order history",
                         "what have I purchased",
-                        "what have I bought"
+                        "what have I bought",
+                        "what have I ordered",
+                        "what did I order"
                     ]
                 },
                 {

@@ -19,23 +19,23 @@ function getSimpleHello() {
 function getSpecialGoodbye() {
   const specialGoodbyes = [
     {
-      language: 'hindi', greeting: 'alavida', locale: 'en-IN', voice: ['Aditi', 'Raveena'],
+      language: 'hindi', greeting: 'alavida', locale: 'en-IN', voice: ['Aditi', 'Raveena']
     },
     {
-      language: 'german', greeting: 'auf wiedersehen', locale: 'de-DE', voice: ['Hans', 'Marlene', 'Vicki'],
+      language: 'german', greeting: 'auf wiedersehen', locale: 'de-DE', voice: ['Hans', 'Marlene', 'Vicki']
     },
     {
-      language: 'spanish', greeting: 'hasta luego', locale: 'es-ES', voice: ['Conchita', 'Enrique'],
+      language: 'spanish', greeting: 'hasta luego', locale: 'es-ES', voice: ['Conchita', 'Enrique']
     },
     {
-      language: 'french', greeting: 'au revoir', locale: 'fr-FR', voice: ['Celine', 'Lea', 'Mathieu'],
+      language: 'french', greeting: 'au revoir', locale: 'fr-FR', voice: ['Celine', 'Lea', 'Mathieu']
     },
     {
-      language: 'japanese', greeting: 'sayonara', locale: 'ja-JP', voice: ['Mizuki', 'Takumi'],
+      language: 'japanese', greeting: 'sayonara', locale: 'ja-JP', voice: ['Mizuki', 'Takumi']
     },
     {
-      language: 'italian', greeting: 'arrivederci', locale: 'it-IT', voice: ['Carla', 'Giorgio'],
-    },
+      language: 'italian', greeting: 'arrivederci', locale: 'it-IT', voice: ['Carla', 'Giorgio']
+    }
   ];
   return randomize(specialGoodbyes);
 }
@@ -43,23 +43,23 @@ function getSpecialGoodbye() {
 function getSpecialHello() {
   const specialGreetings = [
     {
-      language: 'hindi', greeting: 'Namaste', locale: 'en-IN', voice: ['Aditi', 'Raveena'],
+      language: 'hindi', greeting: 'Namaste', locale: 'en-IN', voice: ['Aditi', 'Raveena']
     },
     {
-      language: 'german', greeting: 'Hallo', locale: 'de-DE', voice: ['Hans', 'Marlene', 'Vicki'],
+      language: 'german', greeting: 'Hallo', locale: 'de-DE', voice: ['Hans', 'Marlene', 'Vicki']
     },
     {
-      language: 'spanish', greeting: 'Hola', locale: 'es-ES', voice: ['Conchita', 'Enrique'],
+      language: 'spanish', greeting: 'Hola', locale: 'es-ES', voice: ['Conchita', 'Enrique']
     },
     {
-      language: 'french', greeting: 'Bonjour', locale: 'fr-FR', voice: ['Celine', 'Lea', 'Mathieu'],
+      language: 'french', greeting: 'Bonjour', locale: 'fr-FR', voice: ['Celine', 'Lea', 'Mathieu']
     },
     {
-      language: 'japanese', greeting: 'Konichiwa', locale: 'ja-JP', voice: ['Mizuki', 'Takumi'],
+      language: 'japanese', greeting: 'Konichiwa', locale: 'ja-JP', voice: ['Mizuki', 'Takumi']
     },
     {
-      language: 'italian', greeting: 'Ciao', locale: 'it-IT', voice: ['Carla', 'Giorgio'],
-    },
+      language: 'italian', greeting: 'Ciao', locale: 'it-IT', voice: ['Carla', 'Giorgio']
+    }
   ];
   return randomize(specialGreetings);
 }
@@ -204,14 +204,23 @@ function getResponseBasedOnAccessType(handlerInput, res, preSpeechText) {
 function isProduct(product) {
   return product && product.length > 0;
 }
+
 function isEntitled(product) {
   return isProduct(product) && product[0].entitled === 'ENTITLED';
 }
 
+function isPurchasable(product) {
+  return isProduct(product) && product[0].purchasable === 'PURCHASABLE';
+}
+
 function getAllEntitledProducts(inSkillProductList) {
   console.log('Function: getAllEntitledProducts');
-  const entitledProductList = inSkillProductList.filter(record => record.entitled === 'ENTITLED');
-  return entitledProductList;
+  return inSkillProductList.filter(record => record.entitled === 'ENTITLED');
+}
+
+function getAllPurchasableProducts(inSkillProductList) {
+  console.log('Function: getAllPurchasableProducts');
+  return inSkillProductList.filter(record => record.purchasable === 'PURCHASABLE');
 }
 
 function makeUpsell(preUpsellMessage, product, handlerInput) {
@@ -255,20 +264,19 @@ function shouldUpsell(handlerInput) {
     // If the last intent was Connections.Response, do not upsell
     return false;
   }
-
   return randomize([true, false]); // randomize upsell
 }
 
 function switchVoice(speakOutput, voiceName) {
   if (speakOutput && voiceName) {
-    return `<voice name="${voiceName}"> ${speakOutput} </voice>`;
+    return `<voice name="${voiceName}">${speakOutput}</voice>`;
   }
   return speakOutput;
 }
 
 function switchLanguage(speakOutput, locale) {
   if (speakOutput && locale) {
-    return `<lang xml:lang="${locale}"> ${speakOutput} </lang>`;
+    return `<lang xml:lang="${locale}">${speakOutput}</lang>`;
   }
   return speakOutput;
 }
@@ -291,18 +299,6 @@ function getBuyResponseText(productReferenceName, productName) {
 // *****************************************
 // *********** Interceptors ************
 // *****************************************
-const LogResponseInterceptor = {
-  process(handlerInput) {
-    console.log(`RESPONSE = ${JSON.stringify(handlerInput.responseBuilder.getResponse())}`);
-  },
-};
-
-const LogRequestInterceptor = {
-  process(handlerInput) {
-    console.log(`REQUEST ENVELOPE = ${JSON.stringify(handlerInput.requestEnvelope)}`);
-  },
-};
-
 
 const LoadAttributesRequestInterceptor = {
   async process(handlerInput) {
@@ -335,15 +331,15 @@ const SaveAttributesResponseInterceptor = {
 
 module.exports = {
     isEntitled,
+    isPurchasable,
     isProduct,
     makeUpsell,
     getAllEntitledProducts,
+    getAllPurchasableProducts,
     shouldUpsell,
     makeBuyOffer,
     SaveAttributesResponseInterceptor,
     LoadAttributesRequestInterceptor,
-    LogRequestInterceptor,
-    LogResponseInterceptor,
     getBuyResponseText,
     switchLanguage,
     switchVoice,

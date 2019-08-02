@@ -1,13 +1,14 @@
 const Alexa = require('ask-sdk');
 
-const {isEntitled,
+const {
+  isEntitled,
+  isPurchasable,
   makeUpsell,
   getAllEntitledProducts,
+  getAllPurchasableProducts,
   makeBuyOffer,
   SaveAttributesResponseInterceptor,
   LoadAttributesRequestInterceptor,
-  LogRequestInterceptor,
-  LogResponseInterceptor,
   getBuyResponseText,
   getResponseBasedOnAccessType,
   getSpeakableListOfProducts,
@@ -29,7 +30,7 @@ const LaunchRequestHandler = {
       .reprompt(speechText)
       .withSimpleCard(skillName, speechText)
       .getResponse();
-  },
+  }
 };
 
 const GetAnotherHelloHandler = {
@@ -49,7 +50,7 @@ const GetAnotherHelloHandler = {
       // Use the helper function getResponseBasedOnAccessType to determine the response based on the products the customer has purchased
       return getResponseBasedOnAccessType(handlerInput, res, preSpeechText);
     });
-  },
+  }
 };
 
 // Respond to the utterance "what can I buy"
@@ -58,40 +59,37 @@ const AvailableProductsIntentHandler = {
     return (handlerInput.requestEnvelope.request.type === 'IntentRequest'
       && handlerInput.requestEnvelope.request.intent.name === 'AvailableProductsIntent');
   },
-  handle(handlerInput) {
+  async handle(handlerInput) {
     console.log('Handler: AvailableProductsIntentHandler');
     // Get the list of products available for in-skill purchase
     const {locale} = handlerInput.requestEnvelope.request;
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    return monetizationClient.getInSkillProducts(locale).then((res) => {
-      // res contains the list of all ISP products for this skill.
-      // We now need to filter this to find the ISP products that are available for purchase (NOT ENTITLED)
-      const purchasableProducts = res.inSkillProducts.filter(
-        record => record.entitled === 'NOT_ENTITLED' &&
-          record.purchasable === 'PURCHASABLE',
-      );
-
-      // Say the list of products
-      if (purchasableProducts.length > 0) {
-        // One or more products are available for purchase. say the list of products
-        const speechText = `Products available for purchase at this time are ${getSpeakableListOfProducts(purchasableProducts)}. 
-                            To learn more about a product, say 'Tell me more about' followed by the product name. 
-                            If you are ready to buy, say, 'Buy' followed by the product name. So what can I help you with?`;
-        const repromptOutput = 'I didn\'t catch that. What can I help you with?';
-        return handlerInput.responseBuilder
-          .speak(speechText)
-          .reprompt(repromptOutput)
-          .getResponse();
-      }
-      // no products are available for purchase. Ask if they would like to hear another greeting
-      const speechText = 'There are no products to offer to you right now. Sorry about that. Would you like a greeting instead?';
-      const repromptOutput = 'I didn\'t catch that. What can I help you with?';
+    // res contains the list of all ISP products for this skill.
+    const res = await monetizationClient.getInSkillProducts(locale);
+    // We now need to filter this to find the ISP products that are available for purchase
+    const purchasableProducts = getAllPurchasableProducts(res.inSkillProducts);
+    // Say the list of products
+    let speechText, repromptOutput;
+    if (purchasableProducts.length > 0) {
+      // One or more products are available for purchase. say the list of products
+      speechText = `Products available for purchase at this time are ${getSpeakableListOfProducts(purchasableProducts)}. 
+                    To learn more about a product, say 'Tell me more about' followed by the product name. 
+                    If you are ready to buy, say, 'Buy' followed by the product name. So what can I help you with?`;
+      repromptOutput = 'I didn\'t catch that. What can I help you with?';
       return handlerInput.responseBuilder
         .speak(speechText)
         .reprompt(repromptOutput)
         .getResponse();
-    });
-  },
+    }
+    console.log(5);
+    // no products are available for purchase. Ask if they would like to hear another greeting
+    speechText = 'There are no products to offer to you right now. Sorry about that. Would you like a greeting instead?';
+    repromptOutput = 'I didn\'t catch that. What can I help you with?';
+    return handlerInput.responseBuilder
+      .speak(speechText)
+      .reprompt(repromptOutput)
+      .getResponse();
+  }
 };
 
 const DescribeProductIntentHandler = {
@@ -113,9 +111,7 @@ const DescribeProductIntentHandler = {
       const product = res.inSkillProducts.filter(
         record => record.referenceName === productId
       );
-      //special entitlement handling so that we can count if enough consumables are available
-      const entitled = productId !== 'Goodbyes_Pack' ? isEntitled(product) : (getGoodbyesCount(handlerInput, product) > 0);
-      if (entitled) {
+      if (!isPurchasable(product)) {
         // Product previously bought
         speechText = `Good News! You already have the ${productName}. ${getRandomYesNoQuestion()}`;
         repromptOutput = `${getRandomYesNoQuestion()}`;
@@ -125,7 +121,7 @@ const DescribeProductIntentHandler = {
           .reprompt(repromptOutput)
           .getResponse();
       }
-      // Not owned. Make the upsell
+      // Purchasable. Make the upsell
       speechText = 'Sure.';
       if (product.length > 0){
         return makeUpsell(speechText, product, handlerInput);
@@ -137,9 +133,9 @@ const DescribeProductIntentHandler = {
           .speak(speechText)
           .reprompt(repromptOutput)
           .getResponse();
-      };
+      }
     });
-  },
+  }
 };
 
 const BuyProductIntentHandler = {
@@ -161,9 +157,7 @@ const BuyProductIntentHandler = {
       const product = res.inSkillProducts.filter(
         record => record.referenceName === productId
       );
-      //special entitlement handling so that we can count if enough consumables are available
-      const entitled = productId !== 'Goodbyes_Pack' ? isEntitled(product) : (getGoodbyesCount(handlerInput, product) > 0);
-      if (entitled) {
+      if (!isPurchasable(product)) {
         // Product previously bought
         speechText = `Good News! You already have the ${productName}. ${getRandomYesNoQuestion()}`;
         repromptOutput = `${getRandomYesNoQuestion()}`;
@@ -173,7 +167,7 @@ const BuyProductIntentHandler = {
           .reprompt(repromptOutput)
           .getResponse();
       };
-      // Not owned. Make the buy offer
+      // Purchasable. Make the buy offer
       if (product.length > 0){
         return makeBuyOffer(product, handlerInput);
       } else {
@@ -234,7 +228,7 @@ const UpsellBuyResponseHandler = {
         .speak('There was an error handling your purchase request. Please try again or contact us for help.')
         .getResponse();
     });
-  },
+  }
 };
 
 const PurchaseHistoryIntentHandler = {
@@ -269,7 +263,7 @@ const PurchaseHistoryIntentHandler = {
         .reprompt(repromptOutput)
         .getResponse();
     });
-  },
+  }
 };
 
 const RefundProductIntentHandler = {
@@ -423,8 +417,8 @@ const ErrorHandler = {
     console.log(`Error handled: ${JSON.stringify(error)}`);
 
     return handlerInput.responseBuilder
-      .speak('Sorry, there was an error. Please say again.')
-      .reprompt('Sorry, there was an error. Please say again.')
+      .speak('Sorry, there was an error. Please try again.')
+      .reprompt('Sorry, there was an error. Please try again.')
       .getResponse();
   },
 };
@@ -448,8 +442,8 @@ exports.handler = skillBuilder
     SessionEndedRequestHandler,
   )
   .addErrorHandlers(ErrorHandler)
-  .addRequestInterceptors(LogRequestInterceptor, LoadAttributesRequestInterceptor)
-  .addResponseInterceptors(LogResponseInterceptor, SaveAttributesResponseInterceptor)
+  .addRequestInterceptors(LoadAttributesRequestInterceptor)
+  .addResponseInterceptors(SaveAttributesResponseInterceptor)
   .withTableName("premium-hello-world") // requires DynamoDB access in your Lambda role!
   .withAutoCreateTable(true)
   .lambda();
