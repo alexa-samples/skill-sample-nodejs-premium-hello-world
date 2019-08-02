@@ -65,19 +65,31 @@ function getSpecialHello() {
   return randomize(specialGreetings);
 }
 
-function getGoodbyesCount(handlerInput, product){
-  console.log('Function: getGoodbyesCount');
+function getRemainingCredits(handlerInput, consumable, usedSessionAttributeName, creditsPerEntitlement){
+  console.log('Function: getRemainingCredits');
   const {attributesManager} = handlerInput;
   const sessionAttributes = attributesManager.getSessionAttributes();
-      
-  const activeEntitlementCount = product[0] ? product[0].activeEntitlementCount : 0;
-  console.log('activeEntitlementCount = ' + activeEntitlementCount);
-  const goodbyesUsed = parseInt(sessionAttributes.goodbyesUsed) || 0;
-  console.log('goodbyesUsed = ' + goodbyesUsed);
-  const goodbyesAvailable = Math.max(0, activeEntitlementCount * GOODBYES_PER_ENTITLEMENT - goodbyesUsed);
-  console.log('goodbyesAvailable = ' + goodbyesAvailable);
+  if(!sessionAttributes[usedSessionAttributeName])
+    sessionAttributes[usedSessionAttributeName] = 0;
+  const activeEntitlementCount = consumable[0] ? consumable[0].activeEntitlementCount : 0;
+  let usedCredits = parseInt(sessionAttributes[usedSessionAttributeName]);
+  const ownedCredits = activeEntitlementCount * creditsPerEntitlement;
+  if(ownedCredits < usedCredits) {
+    // we assume the ISP was reset so we also reset the used count
+    sessionAttributes[usedSessionAttributeName] = 0;
+    usedCredits = 0;
+  }
+  const availableCredits = Math.max(0, ownedCredits - usedCredits);
+  const creditStatus = {
+    activeEntitlementCount: activeEntitlementCount,
+    creditsPerEntitlement: creditsPerEntitlement,
+    ownedCredits: ownedCredits,
+    usedCredits: usedCredits,
+    availableCredits: availableCredits
+  };
+  console.log(creditStatus);
   
-  return goodbyesAvailable;
+  return creditStatus;
 }
 
 function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
@@ -88,7 +100,7 @@ function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
     record => record.referenceName === 'Goodbyes_Pack'
   );
 
-  const availableGoodbyes = parseInt(getGoodbyesCount(handlerInput, goodbyesPackProduct)) || 0;
+  const availableGoodbyes = parseInt(getRemainingCredits(handlerInput, goodbyesPackProduct, 'goodbyesUsed', GOODBYES_PER_ENTITLEMENT).availableCredits) || 0;
 
   let speechText;
   let cardText;
@@ -101,7 +113,7 @@ function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
     cardText = `${preGoodbyeSpeechText} ${specialGoodbye.greeting} ${postGoodbyeSpeechText}`;
     const randomVoice = randomize(specialGoodbye.voice);
     speechText = `${preGoodbyeSpeechText} ${switchVoice(langSpecialGoodbye, randomVoice)} ${postGoodbyeSpeechText}.`;
-    sessionAttributes.goodbyesUsed+=1;
+    sessionAttributes.goodbyesUsed += 1;
     attributesManager.setSessionAttributes(sessionAttributes);
   } else {
     console.log("No premium goodbyes available");
@@ -349,10 +361,11 @@ module.exports = {
     getRandomLearnMorePrompt,
     getRandomYesNoQuestion,
     getPremiumOrRandomGoodbye,
-    getGoodbyesCount,
+    getRemainingCredits,
     getSpecialHello,
     getSpecialGoodbye,
     getSimpleHello,
     randomize,
-    skillName
+    skillName,
+    GOODBYES_PER_ENTITLEMENT
 }

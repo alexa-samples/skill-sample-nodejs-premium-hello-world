@@ -91,7 +91,8 @@
                         "give me {product}",
                         "get {product}",
                         "buy {product}",
-                        "{product}"
+                        "{product}",
+                        "sign up to {product}"
                     ]
                 },
                 {
@@ -103,7 +104,9 @@
                         "my inventory",
                         "current inventory",
                         "what is my goodbyes count",
+                        "what is my current goodbyes count",
                         "how many goodbyes I have left",
+                        "how many goodbyes do I have",
                         "goodbyes left"
                     ]
                 },
