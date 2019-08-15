@@ -1,34 +1,45 @@
-# Build An Alexa Skill with In-Skill Purchases - Premium Hello World
+# プレミアムハローワールド - スキル内課金を使ったスキルの作成
 <img src="https://m.media-amazon.com/images/G/01/mobile-apps/dex/alexa/alexa-skills-kit/tutorials/fact/header._TTH_.png" />
 
-Adding premium content to your skill is a way for you to monetize your skill.  This Alexa sample skill is a template for a basic ISP skill. It takes the hello world skill and adds greetings in a variety of languages as premium content. This premium content is accessed through a one-time purchase of the "Greetings Pack". It also includes a monthly "Premium Subscription", which greets the customer in multiple languages in a variety of voices using Amazon Polly.
+スキルにプレミアムコンテンツを追加すると、スキルで収益化を目指すことができます。 このAlexaサンプルスキルは、基本的なISPスキルのテンプレートです。 Hello Worldのスキルを流用して、さまざまな言語の挨拶をプレミアムコンテンツとして追加します。 このプレミアムコンテンツは「挨拶パック(Greetings Pack)」という名前の買い切り型の商品を購入することでアクセスできるようになります。また、毎月支払うサブスクリプション型商品の「プレミアムサブスクリプション」を購入すると、Amazon Pollyを使用したリアルな音声で、まざまな言語の挨拶を聞くことができるようになります。
 
-## Skill Architecture
-Each skill consists of two basic parts, a front end and a back end.
-1. The front end is the voice interface, or VUI. The voice interface is configured through the voice interaction model.
-2. The back end is where the logic of your skill resides.
+## スキルのアーキテクチャー
 
-## Three Options for Skill Setup
-There are a number of different ways for you to setup your skill, depending on your experience and what tools you have available - Alexa Hosted, AWS Hosted, ASK CLI. For this Hello World Skill, we will be using the Alexa Hosted option. If you'd like to  use the AWS Hosted, or ASK CLI methods, you can check out the instructions here for the Sample Fact skill - [AWS Hosted Instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/setup-vui-aws-hosted.md) | [ASK CLI instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/cli.md)
+スキルは、フロントエンドとバックエンドの2つの基本的なパーツで構成されています。
+
+1. フロントエンドは音声インターフェイス、つまりVUIです。音声インターフェースは、音声対話モデルによって構成されます。 
+2. バックエンドは、スキルのロジックが置かれる場所です。
+
+## スキルをセットアップする３つの方法
+
+Alexa Hosted、AWS Hosted、ASK CLIなど、スキル開発の経験と使用可能なツールに応じて、スキルをセットアップする方法が多数あります。このプレミアムトリビアスキルでは、Alexa Hostedを使用します。
+AWS HostedまたはASK CLIメソッドを使用する場合は、サンプルのFactスキルに関するこちらの手順をご覧ください。- [AWS Hosted Instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/setup-vui-aws-hosted.md) | [ASK CLI instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/cli.md)
 
 
 ## Alexa Hosted
-With an Alexa-hosted skill, you can build, edit, and publish a skill without leaving the developer console. The skill includes a code editor for managing and deploying the backend code for your skill. For details on what the Alexa-Hosted skills service provides, open this page in a new tab.
 
-To **Get Started** using the Alexa Developer Console, click the button below:
+Alexa-Hostedスキルサービスを使用すると、開発者コンソールから離れることなく、スキルのビルド、編集、公開ができます。 スキルには、スキルのバックエンドコードを管理しデプロイするためのコードエディターが含まれます。 Alexa-Hostedスキルサービスが提供する機能の詳細について知りたい場合は、このページとは別に新しいタブを開いてください。
 
-[![Get Started](./getting-started.png)](./instructions/1-setup-vui-alexa-hosted.md)
+Alexa 開発者コンソールを使って **開始** するには次のボタンをクリックしてください。
 
-## Additional Resources
+[![始めましょう!](./getting-started.png)](./instructions/1-setup-vui-alexa-hosted.md)
 
-### Community
-* [Amazon Developer Forums](https://forums.developer.amazon.com/spaces/165/index.html) - Join the conversation!
-* [Hackster.io](https://www.hackster.io/amazon-alexa) - See what others are building with Alexa.
+## 追加情報
 
-### Tutorials & Guides
-* [Voice Design Guide](https://developer.amazon.com/designing-for-voice/) - A great resource for learning conversational and voice user interface design.
-* [Codecademy: Learn Alexa](https://www.codecademy.com/learn/learn-alexa) - Learn how to build an Alexa Skill from within your browser with this beginner friendly tutorial on Codecademy!
+### 開発者サイト
+* [Alexa Skills Kit 開発者サイト](https://developer.amazon.com/ja/alexa-skills-kit/learn)
 
-### Documentation
-* [Official Alexa Skills Kit SDK for Node.js](http://alexa.design/node-sdk-docs) - The Official Node.js SDK Documentation
-* [Official Alexa Skills Kit Documentation](https://developer.amazon.com/docs/ask-overviews/build-skills-with-the-alexa-skills-kit.html) - Official Alexa Skills Kit Documentation
+### コミュニティ
+* [Amazon Developer Forums](https://forums.developer.amazon.com/spaces/293/index.html) - 会話に参加してみましょう。
+* [Hackster.io](https://www.hackster.io/amazon-alexa) - 他の人がどんなスキルを作成しているか参考になります。
+
+### チュートリアルとガイド
+* [音声デザインガイド](https://developer.amazon.com/designing-for-voice/) - 対話と音声インターフェイスに関して学べます。
+
+### ドキュメント
+* [Alexa Skills Kit SDK for Node.js ドキュメント](https://ask-sdk-for-nodejs.readthedocs.io/en/latest/)
+*  [Alexa Skills Kit 技術文書](https://developer.amazon.com/docs/ask-overviews/build-skills-with-the-alexa-skills-kit.html)
+
+### ライセンス
+
+This sample code is made available under a modified MIT license. See the LICENSE file.

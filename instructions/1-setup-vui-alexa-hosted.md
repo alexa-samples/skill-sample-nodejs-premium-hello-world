@@ -1,46 +1,44 @@
-# Build An Alexa Skill with In-Skill Purchases - Premium Hello World
-
+# プレミアムハローワールド - スキル内課金を使ったスキルの作成
 <img src="https://m.media-amazon.com/images/G/01/mobile-apps/dex/alexa/alexa-skills-kit/tutorials/quiz-game/header._TTH_.png" />
 
+Alexa-Hosted スキルを使うと、開発者コンソールから離れることなく、スキルのビルド、編集、公開できます。
 
-With an Alexa-hosted skill, you can build, edit, and publish a skill without leaving the developer console.
-The skill includes a code editor for managing and deploying the backend code for your skill.
-For details on what the Alexa-Hosted skills service provides, open [this page](https://developer.amazon.com/docs/hosted-skills/build-a-skill-end-to-end-using-an-alexa-hosted-skill.html) in a new tab.
-
-### Steps
-1.  **Go to the [Amazon Developer Portal](http://developer.amazon.com/alexa?&sc_category=Owned&sc_channel=RD&sc_campaign=Evangelism2018&sc_publisher=github&sc_content=Survey&sc_detail=fact-nodejs-V2_GUI-1&sc_funnel=Convert&sc_country=WW&sc_medium=Owned_RD_Evangelism2018_github_Survey_fact-nodejs-V2_GUI-1_Convert_WW_beginnersdevs&sc_segment=beginnersdevs).  In the top-right corner of the screen, click the "Sign In" button.**
-(If you don't already have an account, you will be able to create a new one for free.)
-
-2.  Once you have signed in, move your mouse over the **Your Alexa Consoles** text at the top of the screen and Select the **Skills** Link.
-
-3.  From the **Alexa Skills Console** select the **Create Skill** button near the top-right of the list of your Alexa Skills.
-
-4. Give your new skill a **Name**. This is the name that will be shown in the Alexa Skills Store, and the name your users will refer to. Also change the locale if so desired.
-
-5. Keep the default **Custom** model selected, and scroll the page down.
-
-6. Choose **Alexa-Hosted** for the method to host your skill's backend resources.  Scroll backup and select the **Create Skill** button at the top right.
-It will take a minute to create your Alexa hosted skill, then you will be taken to the Build tab of the console.
+Alexa-Hostedスキルが提供するサービスの詳細については、新しいタブを開き、[こちら](https://developer.amazon.com/docs/hosted-skills/build-a-skill-end-to-end-using-an-alexa-hosted-skill.html)を参照してください。
 
 
-7. **Build the Interaction Model for your skill**
-	1. On the left hand navigation panel, select the **JSON Editor** tab under **Interaction Model**. In the textfield provided, replace any existing code with the code provided in the [Interaction Model](../models) (make sure to pick the model that matches your skill's language).  Click **Save Model**.
-    2. If you want to change the skill invocation name, select the **Invocation** tab. Enter a **Skill Invocation Name**. This is the name that your users will need to say to start your skill.
-    3. Click "Build Model".
-
-	**Note:** You should notice that **Intents** and **Slot Types** will auto populate based on the JSON Interaction Model that you have now applied to your skill. Feel free to explore the changes here, to learn about **Intents**, **Slots**, and **Utterances** open our [technical documentation in a new tab](https://developer.amazon.com/docs/custom-skills/create-intents-utterances-and-slots.html?&sc_category=Owned&sc_channel=RD&sc_campaign=Evangelism2018&sc_publisher=github&sc_content=Survey&sc_detail=fact-nodejs-V2_GUI-1&sc_funnel=Convert&sc_country=WW&sc_medium=Owned_RD_Evangelism2018_github_Survey_fact-nodejs-V2_GUI-1_Convert_WW_beginnersdevs&sc_segment=beginnersdevs).
-
-8. **Optional:** Select an intent by expanding the **Intents** from the left side navigation panel. Add some more sample utterances for your newly generated intents. Think of all the different ways that a user could request to make a specific intent happen. A few examples are provided. Be sure to click **Save Model** and **Build Model** after you're done making changes here.
-
-9. If your interaction model builds successfully, proceed to the next step. If not, you should see an error.
-Try to resolve the errors. In our next step of this guide, we will be creating our code.
+### 手順
+1.  **[Alexaの開発者ポータル](https://developer.amazon.com/ja/alexa)** を開き、画面右上の「ログイン」をクリックします。
+(開発者アカウントをお持ちでない場合は、**[Amazon Developerアカウントを作成]ボタンをクリックせず**、お手持ちのAmazonアカウントでログインします。詳しい理由は[こちら](https://developer.amazon.com/ja/blogs/alexa/post/9f852a38-3a44-48bd-b78f-22050269d7c7/hamaridokoro)を参照してください。)
 
 
-     If you get an error from your interaction model, check through this list:
+2. サインインしたら、上の「Alexa」メニューにマウスオーバーして、**Alexa Skills Kit**をクリックします。
 
-     *  **Did you copy & paste the provided code correctly?**
-     *  **Did you accidentally add any characters to the Interaction Model or Sample Utterances?**
+3.  **Alexa 開発者コンソール** が開いたら、右上の **「スキル作成」** ボタンをクリックします。
 
+4. **スキル名**を入力します。この名前はスキルを公開する際、スキルストアに表示され、ユーザーが参照する名前になります。デフォルトの言語は**日本語**を選択します。
 
-#### NEXT: Review and Deploy the Alexa-Hosted Code
-[![Next](https://m.media-amazon.com/images/G/01/mobile-apps/dex/alexa/alexa-skills-kit/tutorials/general/buttons/next._TTH_.png)](./2-create-alexa-hosted-function.md)
+5. **スキルに追加するモデル**は**カスタム**を選択します。
+
+6. **スキルのバックエンドリソースをホスティングする方法を選択** では、**Alexaがホスト**を選択します。スクロールして画面の上の方まで戻り、**スキルを作成**ボタンをクリックします。
+これには数分かかる場合があります。作成が完了するとコンソールの**ビルド**タブに遷移します。
+
+7. **スキルの対話モデルを作成する**
+	1. 左のナビゲーションパネルの**対話モデル**のグループの一番下にある**JSONエディター**をクリックします。画面中央に大きなテキストエディターが表示されます。そこに **models** フォルダの下の[ja-JP.json](../models/ja-JP.json) 
+    のコードを丸ごとコピーして、ここに上書きペーストして置き換えます。置き換えたら**モデルを保存**ボタンをクリックします。
+    2. スキルの呼び出し名を変えたい場合は、**呼び出し名**タブを選択します。(呼び出し名とは、ユーザーがスキルを呼び出す際に使うフレーズのことです。ユーザーは「アレクサ、<起動フレーズ>を開いて」のように話しかけてスキルを起動します。)
+    3. **モデルをビルド** をクリックします。
+
+	**補足** コピーしたJSON形式の対話モデルに基づいて、インテントやスロットタイプなどが自動的に反映されていることに気づいたでしょうか。ここで対話モデルがどのような設定になっているかをしばらく探索してみてください。インテント、スロット、発話などについて詳しく知りたい場合は、新しいタブを開いて[技術文書:インテント、発話、スロットの作成](https://developer.amazon.com/ja/docs/custom-skills/create-intents-utterances-and-slots.html)を参照してください。
+
+8. **オプション** 左のナビゲーションパネルの**インテント**をクリックして拡張してください。いくつかのサンプル発話が既に入力されています。さらにサンプル発話を追加してみましょう。特定のインテントを呼び出すのに、ユーザーはどのような言い回しでリクエストするかを考えてみましょう。
+モデルに何か変更を加えたら、必ず**モデルを保存**と**モデルをビルド**をクリックしてください。
+
+9. モデルのビルドに成功したら、次のステップに進みます。ビルドに失敗した場合は、エラーメッセージを参考にトラブルシューティングを行ってください。次のステップでは、プログラムコードを作成します。
+
+     対話モデルにエラーがある場合は、以下のリストをチェックしてみてください。
+
+     *  **GitHubのコードから正しくコピー&ペーストしましたか？**
+     *  **対話モデルやサンプル発話の中に、意図しない文字や、使用できない文字(絵文字、記号など)が紛れ込んでいませんか？**
+
+#### Next: Alexa-Hosted のコードをレビューしデプロイする
+[![次](https://m.media-amazon.com/images/G/01/mobile-apps/dex/alexa/alexa-skills-kit/tutorials/general/buttons/next._TTH_.png)](./2-create-alexa-hosted-function.md)

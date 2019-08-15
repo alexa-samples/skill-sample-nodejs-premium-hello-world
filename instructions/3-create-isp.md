@@ -1,86 +1,68 @@
-# Build An Alexa Skill with In-Skill Purchases - Premium Hello World
+# プレミアムハローワールド - スキル内課金を使ったスキルの作成
 <img src="https://m.media-amazon.com/images/G/01/mobile-apps/dex/alexa/alexa-skills-kit/tutorials/quiz-game/header._TTH_.png" />
 
 # Create In-Skill Products
 
-On [page #1](./1-setup-vui-alexa-hosted.md) of this guide, we created a voice user interface for the intents and utterances we expect from our users.  On [page #2](./2-create-alexa-hosted-function.md), we created the Alexa Hosted Lambda function that contains all of our logic for the skill. Now we will create the in-skill products that customers can purchase.
+このガイドの [1ページ目](./1-setup-vui-alexa-hosted.md) では、音声ユーザーインターフェイスの対話モデルを作成しました。 [2ページ目](./2-create-alexa-hosted-function.md) では、スキルのロジックを定義する Lambda 関数を作成しました。 今回は、ユーザーが購入できるスキル内商品を作成します。
 
-This sample implements a "One-Time Purchase" product called "Greeting Pack", which provides greetings in a variety of languages as premium content, and a monthly subscription called "Premium Subscription", which greets the customer using a variety of voices using Amazon Polly.
+このサンプルでは２つのスキル内商品を実装します。
+ひとつは「挨拶パック(Greeting Pack)」という名前の買い切り型商品で、プレミアムコンテンツとして、いろんな言語の挨拶を聞くことができます。もう一つは「プレミアムサブスクリプション(Premium Subscription)」という名前の月々払いのサブスクリプション商品で、Amazon Pollyの声を使って、より自然な発音で各国の挨拶を聞くことができます。
 
+1. **買い切り型商品**を作成する
+2. **サブスクリプション商品**を作成する
 
-1. Create a "One-Time Purchase"
-2. Create a "Subscription"
+## **買い切り型商品**を作成する
 
+1. 開発者コンソールの **ビルド** タブで、左側の **スキル内商品** セクションをクリックして、マネタイゼーションツールを開きます。
+1. 画面右上の **スキル内商品を作成** をクリックします。
+1. スキル内商品の参照名を入力します。これはコードからスキル内商品を参照するための識別子です。スペースや特殊記号を含まない英語名で入力します。このサンプルのコードでは、`Greetings_Pack` という参照名を想定しています。
+    > 全ての参照名を指定どおり正確に入力するように注意してください。これらの名前はサンプルコードから利用するため、一致しないとサンプルコードが動作しません。
+1. **買い切り型**を選択します。
+1. 画面右上の **スキル内商品を作成** ボタンをクリックします。
+1. **サポートされる言語** の下の **新しい言語を追加** をクリックします。
+1. **日本語(日本)** を選択します。
+1. 商品の詳細情報を以下のように入力します。
+    項目|説明|サンプル値
+    ---|----|--------
+    **表示名**|この商品の表示名。 ユーザーはこの名前を見たり聞いたりします。| 挨拶パック|
+    **説明**| 商品の簡単な説明。 ユーザーはこの説明を聞くことになります。| 挨拶パックでは、フランス語、スペイン語、ヒンズー語など、様々な言語の挨拶を聞くことができます。|
+    **詳細な説明**| 商品の機能や使用要件など詳細な説明。 ユーザーはこの説明を見ます。| 挨拶パックでは、フランス語、スペイン語、ヒンズー語など、様々な言語の挨拶を聞くことができます。|
+    **小さいアイコン**| スキルストアや Alexa アプリで商品表示に利用する小さいアイコン。  もしお持ちでなければ、このプレースフォルダーアイコンを利用することもできます。| https://skillsassets.s3-ap-northeast-1.amazonaws.com/icons/GreetingsPack_108.png|
+    **大きいアイコン**| スキルストアや Alexa アプリで商品表示に利用する大きいアイコン。 もしお持ちでなければ、この代用アイコンを利用することもできます。| https://skillsassets.s3-ap-northeast-1.amazonaws.com/icons/GreetingsPack_512.png|
+    **購入プロンプトの説明**| 商品を購入したりサブスクリプションをキャンセルするときにユーザーが聞く商品の説明。| 挨拶パックを購入すると、フランス語、スペイン語、ヒンズー語など、様々な言語の挨拶を聞くことができます。|
+    **購入確認の説明**| Alexa アプリのスキルカードで表示される商品の説明。ユーザーはこれを目にします。| 挨拶パックを購入しました。フランス語、スペイン語、ヒンズー語など、様々な言語の挨拶を聞くことができます。|
+    > ISPやスキルのアイコン作成にお困りなら、[Alexa Skill Icon Builder](https://developer.amazon.com/docs/tools/icon-builder.html) を参照してください。
+1. **保存** をクリックします。
+1. **価格設定と購入可能状況** セクションを設定します。このサンプルスキルでは、購入可能状況は amazon.co.jp、価格は100円 (JPY)を、税金のカテゴリーでは **ソフトウェア** を選択します。実際の商品にはどの選択を使うべきか、税務の専門家に相談してください。税金のカテゴリーに指定できるオプションは [ここ](https://developer.amazon.com/docs/in-skill-purchase/create-isp-dev-console.html#tax-category) にリストされています。
+1. 通常、審査チームがスキル内商品を見つけたりテストするために、テスト手順を提供します。(ここでは、**認定** タブで指定する一般的なスキルのテスト手順とは別に、このスキル内商品に特化したテスト手順を入力します。) ここでは、ひとまずブランクのままとします。
+1. 画面右上の**保存**ボタンをクリックします。
+1. 必要な情報がすべて正しく入力されてると、スキルにスキル内商品をリンクさせるための **スキルへのリンク** がクリックできるはずです。そうでない場合、**継続** をクリックして不足している情報を補ってください。
+1. お疲れ様でした! 以上で、スキルにサブスクリプションが追加できました。
 
-## Create a "One-Time Purchase"
-1. Navigate to the Monetization Tool by clicking on the **In-Skill Products** section while on the **Build** tab of the Developer Console. 
-    > If you cannot see the correct section in the left nav, click on the **Permissions** section, then click on **In-Skill Products**.
-1. Click **Create in-skill product**.
-1. Enter a Reference name.  This is code-friendly name you want to assign to your in-skill product.  For this sample, the code is expecting the reference name `Greetings_Pack`.
-    > Be sure to enter all the reference names exactly as provided.  They are used in the sample code and it won't work properly if the name does not match exactly.
-1. Choose **Subscription**.
-1. Click **Create in-skill product**.
-1. On the **Distribution** sub-section, enter the following details for the subscription:
+## **サブスクリプション商品**を作成する
+1. 次に、買い切り型商品と同様の手順で、サブスクリプション商品を登録します。以下の表を使って必要な情報を入力してください。記載のない値（価格など）は任意に設定してください。**特に参照名のスペルは間違えないように注意してください。**
 
-    Field|Description|Value for Sample
-    -----|-----------|------------------
-    **Display Name**|The display name of the product.  Customers will see and hear this.  | Greetings Pack
-    **One sentence description**| Summary description of the product. Customers will hear this. | The Greetings Pack says hello in a variety of languages like French, Spanish, Hindi, and more.
-    **Detailed Description**|A full description explaining the product's functionality and any prerequisites to using it. Customers will see this.| The Greetings Pack says hello in a variety of languages like French, Spanish, Hindi, and more.
-    **Example Phrases**| Example phrases customers can use to access your in-skill products. You should populate all three examples. | say hello in other languages, give me the special greeting, get greetings pack
-    **Small Icon**| Small icon used with product when displayed in the skill store or Alexa app.  You can use this placeholder icon if you don't have an image you would like to use. | https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png
-    **Large Icon**| Large icon used with product when displayed in the skill store or Alexa app. You can use this placeholder icon if you don't have an image you would like to use. | https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png
-    **Keywords** | Keywords that will be used with search. | greetings
-    **Purchase prompt description**| The description of the product a customer hears when making a purchase or when they cancel a subscription.| The Greetings Pack says hello in a variety of languages like French, Spanish, Hindi, and more.
-    **Purchase confirmation description**|A description of the product that displays on the skill card in the Alexa app. Customers will see this. | You now have the Greetings Pack, which says hello in a variety of languages like French, Spanish, Hindi, and more.
-    **Privacy Policy URL**|A URL to the privacy policy for this locale. For this sample, we'll use a placeholder value. |https://localhost/privacy.html
+   項目|説明|サンプル値
+    ---|----|--------
+    **表示名**|この商品の表示名。 ユーザーはこの名前を見たり聞いたりします。| プレミアムサブスクリプション|
+    **説明**| 商品の簡単な説明。 ユーザーはこの説明を聞くことになります。| プレミアムサブスクリプションでは、いろんな国の挨拶をよりリアルな発音で聞くことができます。|
+    **詳細な説明**| 商品の機能や使用要件など詳細な説明。 ユーザーはこの説明を見ます。| プレミアムサブスクリプションでは、いろんな国の挨拶をよりリアルな発音で聞くことができます。|
+    **小さいアイコン**| スキルストアや Alexa アプリで商品表示に利用する小さいアイコン。  もしお持ちでなければ、このプレースフォルダーアイコンを利用することもできます。| https://skillsassets.s3-ap-northeast-1.amazonaws.com/icons/PremiumSubscription_108.png|
+    **大きいアイコン**| スキルストアや Alexa アプリで商品表示に利用する大きいアイコン。 もしお持ちでなければ、この代用アイコンを利用することもできます。| https://skillsassets.s3-ap-northeast-1.amazonaws.com/icons/PremiumSubscription_512.png|
+    **購入プロンプトの説明**| 商品を購入したりサブスクリプションをキャンセルするときにユーザーが聞く商品の説明。| プレミアムサブスクリプションを購入すると、Amazon Pollyの様々な声を使って、ヒンズー語、スペイン語、イタリア語など、様々な言語の挨拶を、よりリアルな発音で聞くことができます。|
+    **購入確認の説明**| Alexa アプリのスキルカードで表示される商品の説明。ユーザーはこれを目にします。| プレミアムサブスクリプションを購入しました。様々な国の挨拶を、よりリアルな発音で聞くことができます。|
 
-    > Need help creating icons for your ISP or skill? Check out the [Alexa Skill Icon Builder](https://developer.amazon.com/docs/tools/icon-builder.html)
+1. **保存** をクリックします。
+1. **価格設定と購入可能状況** セクションを設定します。このサンプルスキルでは、購入可能状況は amazon.co.jp、価格は100円 (JPY)を、税金のカテゴリーでは **ソフトウェア** を選択します。実際の商品にはどの選択を使うべきか、税務の専門家に相談してください。税金のカテゴリーに指定できるオプションは [ここ](https://developer.amazon.com/docs/in-skill-purchase/create-isp-dev-console.html#tax-category) にリストされています。
+1. **請求** のセクションを設定します。請求の頻度は**毎月**、試用期間は7日に設定します。必要に応じて変更してください。
+1. 通常、審査チームがスキル内商品を見つけたりテストするために、テスト手順を提供します。(ここでは、**認定** タブで指定する一般的なスキルのテスト手順とは別に、このスキル内商品に特化したテスト手順を入力します。) ここでは、ひとまずブランクのままとします。
+1. 画面右上の**保存**ボタンをクリックします。
+1. 必要な情報がすべて正しく入力されてると、スキルにスキル内商品をリンクさせるための **スキルへのリンク** がクリックできるはずです。そうでない場合、**継続** をクリックして不足している情報を補ってください。
 
-1. Click **Save and continue**.
-1. On the **Pricing** sub-section, the default values (amazon.com, $0.99 USD, releasing "today") are fine for the sample, however you can change the values if you like.
-1. Set the **Tax Category** to 'Information Services'.  This is suitable for this sample, however you should consult your tax professional for guidance on what to choose for this value.  The available options are listed [here](https://developer.amazon.com/docs/in-skill-purchase/3-create-isp-dev-console.html#tax-category)
-1. Click **Save and continue**.
-1. Normally you would provide testing instructions to help the certification team find and test your in-skill product.  (These testing instructions are specific to this in-skill product, and are in addition to the skill testing instructions you will provide on the **Certification** tab.)  We're going to leave them blank for now.
-1. Click **Save and finish**.
-1. If you've provided all the necessary information, you will be able to click **Link to skill** which will link this in-skill product with your skill.  If that's not an option, click **Continue** and then go back and fill in any missing information.
-1. Congrats!  You have added a "One-time Purchase" product to your skill. Now you are ready to test!
+お疲れ様でした!  以上でサンプルスキルのためのスキル内商品を追加することができました。早速テストしてみましょう。
 
-> Before leaving the In-skill Products page, take a note of the links which say **Reset test purchases**.  During testing if you want to 'un-buy' one of your products so you can re-buy it, click on these links.
+ > このサンプルスキルでは、これらの値のままで大丈夫ですが、実際のスキル内商品を作成するときには、独自のアイコンなど各設定値は適切に入力してください。サンプルの値のままだと審査には通過できないでしょう。
 
-## Create a "Subscription"
-1. Navigate to the Monetization Tool by clicking on the **In-Skill Products** section while on the **Build** tab of the Developer Console. 
-    > If you cannot see the correct section in the left nav, click on the **Permissions** section, then click on **In-Skill Products**.
-1. Click **Create in-skill product**.
-1. Enter a Reference name.  This is code-friendly name you want to assign to your in-skill product.  For this sample, the code is expecting the reference name `Premium_Subscription`.
-    > Be sure to enter all the reference names exactly as provided.  They are used in the sample code and it won't work properly if the name does not match exactly.
-1. Choose **Subscription**.
-1. Click **Create in-skill product**.
-1. On the **Distribution** sub-section, enter the following details for the subscription:
+> スキル内商品のページから離れる前に、**テスト購入をリセット** というリンクがあることを覚えておいてください。テストで購入した商品をリセットするとき、これらのリンクを使います。
 
-    Field|Description|Value for Sample
-    -----|-----------|------------------
-    **Display Name**|The display name of the product.  Customers will see and hear this.  | Premium Subscription
-    **One sentence description**| Summary description of the product. Customers will hear this. | The Premium Subscription greets the user in a variety of voices.
-    **Detailed Description**|A full description explaining the product's functionality and any prerequisites to using it. Customers will see this.| The Premium Subscription Pack unlocks the magic of Polly Voice, and greets you in a variety of languages, like hindi, spanish, italian, and more.
-    **Example Phrases**| Example phrases customers can use to access your in-skill products. You should populate all three examples. | Surprise me, switch personality
-    **Small Icon**| Small icon used with product when displayed in the skill store or Alexa app.  You can use this placeholder icon if you don't have an image you would like to use. | https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png
-    **Large Icon**| Large icon used with product when displayed in the skill store or Alexa app. You can use this placeholder icon if you don't have an image you would like to use. | https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png
-    **Keywords** | Keywords that will be used with search. | personality,polly,voice
-    **Purchase prompt description**| The description of the product a customer hears when making a purchase or when they cancel a subscription.| The Premium Subscription Pack unlocks the magic of Polly Voice, and greets you in a variety of languages using Amazon Polly.
-    **Purchase confirmation description**|A description of the product that displays on the skill card in the Alexa app. Customers will see this. | You now have the Premium Subscription, which will greet you in multiple languages in a variety of voices using Amazon Polly.
-    **Privacy Policy URL**|A URL to the privacy policy for this locale. For this sample, we'll use a placeholder value. |https://localhost/privacy.html
-
-    > Need help creating icons for your ISP or skill? Check out the [Alexa Skill Icon Builder](https://developer.amazon.com/docs/tools/icon-builder.html)
-
-1. Click **Save and continue**.
-1. On the **Pricing** sub-section, the default values (amazon.com, $2.99 USD, Monthly billing, 7 day trial, releasing "today") are fine for the sample, however you can change the values if you like.
-1. Set the **Tax Category** to 'Information Services'.  This is suitable for this sample, however you should consult your tax professional for guidance on what to choose for this value.  The available options are listed [here](https://developer.amazon.com/docs/in-skill-purchase/3-create-isp-dev-console.html#tax-category)
-1. Click **Save and continue**.
-1. Normally you would provide testing instructions to help the certification team find and test your in-skill product.  (These testing instructions are specific to this in-skill product, and are in addition to the skill testing instructions you will provide on the **Certification** tab.)  We're going to leave them blank for now.
-1. Click **Save and finish**.
-1. If you've provided all the necessary information, you will be able to click **Link to skill** which will link this in-skill product with your skill.  If that's not an option, click **Continue** and then go back and fill in any missing information.
-1. Congrats!  You have added a "One-time Purchase" product to your skill. Now you are ready to test!
-
-[![Next](https://m.media-amazon.com/images/G/01/mobile-apps/dex/alexa/alexa-skills-kit/tutorials/general/buttons/button_next_testing._TTH_.png)](./4-testing.md)
-
+[![Next](./next.png)](./4-testing.md)

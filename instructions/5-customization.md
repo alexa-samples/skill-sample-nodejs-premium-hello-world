@@ -1,38 +1,39 @@
-# Build An Alexa Skill with In-Skill Purchases - Premium Hello World
+# プレミアムハローワールド - スキル内課金を使ったスキルの作成
 <img src="https://m.media-amazon.com/images/G/01/mobile-apps/dex/alexa/alexa-skills-kit/tutorials/quiz-game/header._TTH_.png" />
 
-## Customization / Next Steps
+## カスタマイズ / 次のステップ
 
-At this point, you should have a working copy of your skill. This is a clone of a sample skill, so if you want to publish the skill, you will first need to customize it so it offers content/functionality not currently available via the Alexa Skill Store.
+ここまでの手順で、スキルのワーキングコピーの準備ができました。 このままではサンプルスキルのままですので、実際に公開するには、あなた独自のコンテンツや機能を持った、オリジナルのスキルにカスタマイズする必要があります。
 
-### Update greetings for "Greetings Pack"
+### 「挨拶パック」の挨拶を編集する
 
-You can expand the "Greetings pack" with greetings in more languages by updating the object `special_greetings` inside index.js.
+inde.js に書かれている `special_greetings` オブジェクトの定義を編集し、さらに多くの言語に対応できるよう「挨拶パック」を拡張してみましょう。
+
   ```
-  const special_greetings = [
-    { language: "hindi", greeting: "Namaste" },
-    { language: "french", greeting: "Bonjour" },
-    { language: "spanish", greeting: "Hola" },
-    { language: "japanese", greeting: "Konichiwa" },
-    { language: "italian", greeting: "Ciao" }
-  ];
+	const special_greetings = [
+		{ language: 'フランス語', greeting: 'Bonjour', lang: 'fr-FR' },
+		{ language: 'スペイン語', greeting: 'Hola', lang: 'es-ES' },
+		{ language: 'ドイツ語', greeting: 'Hallo', lang: 'de-DE' },
+		{ language: '英語', greeting: 'Hello', lang: 'en-US' },
+		{ language: 'イタリア語', greeting: 'Ciao', lang: 'it-IT' }
+	];
 ```
-## Update/Create In-Skill Products
+## スキル内商品の更新/作成
 
-In the developer console, switch to the **In-Skill Products** sub-section of the **Build** tab.  Unlink/delete/modify products you don't intend to keep in your skill.  Repeat the process we used to add new in-skill products which match your categories.
+開発者コンソールの **ビルド** タブ内の左側パネルから **スキル内商品** を選択してください。 ここでスキルで保持しておく必要がなくなった商品のリンクを解除、削除、もしくは編集してください。そして、あなたのスキルにマッチする新しいスキル内商品を、これまでと同様の手順で追加してください。
 
-### In-Skill Product Testing Instructions and Other Placeholders
+### スキル内商品のテスト手順とその他のプレースホルダー
 
-You may recall we didn't provide testing instructions for our sample in-skill products.  When you are updating your in-skill products, be sure to include those testing instructions.  It does not have to be complex.  At a minimum, provide a simple scenario for how to invoke your skill and request your in-skill product.
+これまでサンプルのスキル内商品をテストする手順を説明してこなかったことに気づいたでしょうか。スキル内商品を更新した時には、それらのテスト手順を含めるようにしてください。 複雑にする必要はありません。少なくとも、スキルを呼び出して、スキル内製品の購入をリクエストする方法について、簡単なシナリオを提供してください。
 
-Also update the privacy policy, icons and other placeholder values used as part of the sample.  As previously mentioned, your skill won't pass certification with placeholder values.
+また、サンプルスキルの中で使用されるプライバシーポリシー、アイコン、その他のプレースホルダーの値を更新します。前述のように、あなたのスキルはプレースホルダーの値そのままでは認定を通過するのは難しいでしょう。
 
-## Test, Test, Test
+## テスト、テスト、テスト
 
-After making the above changes, be sure to test thoroughly.  After you're done testing, have a friend or colleague test as well.
+修正が一通り終わったら、徹底的にテストをしましょう。 ベータテスト機能を使って友人や同僚にもテストを依頼するとよいでしょう。
 
-## Publication
+## スキルの公開
 
-Once you've customized your skill, proceed to the certification / publication step.
+スキルのカスタマイズが完了したら、審査・公開のステップに進みましょう。
 
 [![Next](./next.png)](./6-submit-for-certification.md)
