@@ -1,0 +1,50 @@
+{
+  "version": "1.0",
+  "type": "ENTITLEMENT",
+  "referenceName": "Greetings_Pack",
+  "publishingInformation": {
+    "locales": {
+      "ja-JP": {
+        "name": "挨拶パック",
+        "summary": "挨拶パックでは、フランス語、スペイン語、ヒンズー語など、様々な言語の挨拶を聞くことができます。",
+        "description": "挨拶パックでは、フランス語、スペイン語、ヒンズー語など、様々な言語の挨拶を聞くことができます。",
+        "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/c9b3/c3065e654cbb4f22a2aff2a610ab33bd/APP_ICON?versionId=H4PXuvUr5njDEgaKLXLbdbx3pEJ5Pak_&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190815T145706Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86399&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=ed08f3b725d3ede0e528c7ab76449978a9a1fd43a1e8274eed5c15b6af6a0e49",
+        "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/c8a5/952ce4ed34b2413bac316fdf834bb301/APP_ICON_LARGE?versionId=bXKyKIjvHLKtJ05BJuIdKLFL4paQ1RIa&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190815T145706Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=b0c048cfcece415dfc5e22199bbd2b1d2b093ad1ceafec61882073734824193c",
+        "examplePhrases": [
+          "他の言語でこんにちはと言って。スペシャルな挨拶をして。挨拶パックを購入"
+        ],
+        "keywords": [
+          "挨拶"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "挨拶パックを購入すると、フランス語、スペイン語、ヒンズー語など、様々な言語の挨拶を聞くことができます。",
+          "boughtCardDescription": "挨拶パックを購入しました。フランス語、スペイン語、ヒンズー語など、様々な言語の挨拶を聞くことができます。"
+        }
+      }
+    },
+    "distributionCountries": [
+      "JP"
+    ],
+    "pricing": {
+      "amazon.co.jp": {
+        "releaseDate": "2019-08-01T00:00Z",
+        "defaultPriceListing": {
+          "price": 100,
+          "currency": "JPY"
+        }
+      }
+    },
+    "taxInformation": {
+      "category": "SOFTWARE"
+    }
+  },
+  "privacyAndCompliance": {
+    "locales": {
+      "ja-JP": {
+        "privacyPolicyUrl": "https://localhost/privacy.html"
+      }
+    }
+  },
+  "testingInstructions": "挨拶パックを購入と言ってください。",
+  "purchasableState": "PURCHASABLE"
+}

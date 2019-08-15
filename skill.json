@@ -2,25 +2,26 @@
   "manifest": {
     "publishingInformation": {
       "locales": {
-        "en-US": {
-          "summary": "Sample Short Description",
+        "ja-JP": {
+          "summary": "スキルの短い説明",
           "examplePhrases": [
-            "Alexa open Premium Hello World",
-            "give me a premium greeting"
+            "アレクサ、プレミアムハローワールドを開いて",
+            "プレミアムな挨拶をして"
           ],
-          "name": "Hello World Sample w/In Skill Purchasing",
-          "description": "Sample Full Description"
+          "name": "プレミアムハローワールド",
+          "description": "スキルの長い説明"
         }
       },
       "isAvailableWorldwide": true,
-      "testingInstructions": "Sample Testing Instructions.",
+      "testingInstructions": "テスト手順のサンプル",
       "category": "EDUCATION_AND_REFERENCE",
       "distributionCountries": []
     },
     "apis": {
       "custom": {
         "endpoint": {
-          "sourceDir": "lambda/custom"
+          "sourceDir": "lambda/custom",
+          "uri": "ask-premium-helloworld"
         }
       }
     },

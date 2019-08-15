@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "type": "SUBSCRIPTION",
+  "referenceName": "Premium_Subscription",
+  "subscriptionInformation": {
+    "subscriptionPaymentFrequency": "MONTHLY",
+    "subscriptionTrialPeriodDays": 0
+  },
+  "publishingInformation": {
+    "locales": {
+      "ja-JP": {
+        "name": "プレミアムサブスクリプション",
+        "summary": "プレミアムサブスクリプションでは、いろんな国の挨拶をよりリアルな発音で聞くことができます。",
+        "description": "プレミアムサブスクリプションでは、Amazon Pollyの様々な声を使って、ヒンズー語、スペイン語、イタリア語など、様々な言語の挨拶を、よりリアルな発音で聞くことができます。",
+        "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/8bb1/055d8f346acc40b78dd177f0b12d7e23/APP_ICON?versionId=eyv791sUpZICJwHeRwEaJVSgEn.WhZTB&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190815T145709Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=90bc05d55b842a1714a16563abeb9f93164459ddd475e7c6b62d698a55592b8a",
+        "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/70c7/844799ab01594dfe80d41b418eaea749/APP_ICON_LARGE?versionId=S9sPEXxMHyYH2ZSnb3MfWOfZ.lIhOuUY&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190815T145709Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190815%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=5c2e372d6195e75015ce983454d862cbca28d41ce7147da89d796bba69a7dac0",
+        "examplePhrases": [
+          "プレミアムサブスクリプションを買う。プレミアムサブスクリプションを購入"
+        ],
+        "keywords": [
+          "パーソナリティ, Polly, ボイス"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "プレミアムサブスクリプションを購入すると、Amazon Pollyの様々な声を使って、ヒンズー語、スペイン語、イタリア語など、様々な言語の挨拶を、よりリアルな発音で聞くことができます。",
+          "boughtCardDescription": "プレミアムサブスクリプションを購入しました。様々な国の挨拶を、よりリアルな発音で聞くことができます。"
+        }
+      }
+    },
+    "distributionCountries": [
+      "JP"
+    ],
+    "pricing": {
+      "amazon.co.jp": {
+        "releaseDate": "2019-08-01T00:00Z",
+        "defaultPriceListing": {
+          "price": 100,
+          "currency": "JPY"
+        }
+      }
+    },
+    "taxInformation": {
+      "category": "SOFTWARE"
+    }
+  },
+  "privacyAndCompliance": {
+    "locales": {
+      "ja-JP": {
+        "privacyPolicyUrl": "https://localhost/privacy.html"
+      }
+    }
+  },
+  "testingInstructions": "プレミアムサブスクリプションを購入と言ってください。",
+  "purchasableState": "PURCHASABLE"
+}

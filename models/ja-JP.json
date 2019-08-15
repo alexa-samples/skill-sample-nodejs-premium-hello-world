@@ -1,0 +1,106 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "プレミアムハローワールド",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "SimpleHelloIntent",
+                    "slots": [],
+                    "samples": [
+                        "ハロー",
+                        "こんにちは"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.YesIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NoIntent",
+                    "samples": []
+                },
+                {
+                    "name": "WhatCanIBuyIntent",
+                    "slots": [],
+                    "samples": [
+                        "買う",
+                        "買いたい",
+                        "購入する",
+                        "何を買える",
+                        "何が買える"
+                    ]
+                },
+                {
+                    "name": "BuyGreetingsPackIntent",
+                    "slots": [],
+                    "samples": [
+                        "挨拶パックを購入する",
+                        "挨拶パックを買う",
+                        "挨拶パックについて教えて",
+                        "挨拶パックについて詳しく教えて"
+                    ]
+                },
+                {
+                    "name": "PurchaseHistoryIntent",
+                    "slots": [],
+                    "samples": [
+                        "購入履歴",
+                        "購入履歴を教えて",
+                        "買ったものを教えて",
+                        "何を買ってる"
+                    ]
+                },
+                {
+                    "name": "BuyPremiumSubscriptionIntent",
+                    "slots": [],
+                    "samples": [
+                        "プレミアムサブスクリプションを買う",
+                        "プレミアムサブスクリプションを購入する",
+                        "サブスクリプションを買う",
+                        "サブスクリプションを購入する",
+                        "プレミアムサブスクリプションについて教えて",
+                        "プレミアムサブスクリプションについて詳しく教えて",
+                        "サブスクリプションについて教えて",
+                        "サブスクリプションについて詳しく教えて"
+                    ]
+                },
+                {
+                    "name": "CancelPremiumSubscriptionIntent",
+                    "slots": [],
+                    "samples": [
+                        "プレミアムサブスクリプションを返金して",
+                        "プレミアムサブスクリプションをキャンセル",
+                        "サブスクリプションを返金して",
+                        "サブスクリプションをキャンセル"
+                    ]
+                },
+                {
+                    "name": "RefundGreetingsPackIntent",
+                    "slots": [],
+                    "samples": [
+                        "挨拶パックを返品して",
+                        "挨拶パックを返金して",
+                        "挨拶パックをキャンセル"
+                    ]
+                }
+            ],
+            "types": []
+        }
+    }
+}
