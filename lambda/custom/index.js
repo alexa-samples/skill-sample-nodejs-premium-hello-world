@@ -82,7 +82,6 @@ const AvailableProductsIntentHandler = {
         .reprompt(repromptOutput)
         .getResponse();
     }
-    console.log(5);
     // no products are available for purchase. Ask if they would like to hear another greeting
     speechText = 'There are no products to offer to you right now. Sorry about that. Would you like a greeting instead?';
     repromptOutput = 'I didn\'t catch that. What can I help you with?';
@@ -96,7 +95,7 @@ const AvailableProductsIntentHandler = {
 const DescribeProductIntentHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-           && handlerInput.requestEnvelope.request.intent.name === 'DescribeProductIntent';
+          && handlerInput.requestEnvelope.request.intent.name === 'DescribeProductIntent';
   },
   async handle(handlerInput) {
     console.log('Handler: DescribeProductIntentHandler');
@@ -142,7 +141,7 @@ const DescribeProductIntentHandler = {
 const BuyProductIntentHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-           && handlerInput.requestEnvelope.request.intent.name === 'BuyProductIntent';
+          && handlerInput.requestEnvelope.request.intent.name === 'BuyProductIntent';
   },
   async handle(handlerInput) {
     console.log('Handler: BuyProductIntentHandler');
@@ -187,8 +186,8 @@ const BuyProductIntentHandler = {
 const UpsellBuyResponseHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'Connections.Response'
-           && (handlerInput.requestEnvelope.request.name === 'Buy'
-               || handlerInput.requestEnvelope.request.name === 'Upsell');
+          && (handlerInput.requestEnvelope.request.name === 'Buy'
+              || handlerInput.requestEnvelope.request.name === 'Upsell');
   },
   async handle(handlerInput) {
     console.log('Handler: UpsellBuyResponseHandler');
