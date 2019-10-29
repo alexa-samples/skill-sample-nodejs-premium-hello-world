@@ -118,6 +118,9 @@
     "locales": {
       "en-US": {
         "privacyPolicyUrl": "http://www.amazon.com/privacy"
+      },
+      "es-ES": {
+        "privacyPolicyUrl": "https://www.amazon.com"
       }
     }
   },
