@@ -102,7 +102,7 @@ function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
 
   const availableGoodbyes = parseInt(getRemainingCredits(handlerInput, goodbyesPackProduct, 'goodbyesUsed', GOODBYES_PER_ENTITLEMENT).availableCredits) || 0;
 
-  let speechText;
+  let speechOutput;
   let cardText;
 
   if (availableGoodbyes > 0){
@@ -112,7 +112,7 @@ function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
     const langSpecialGoodbye = switchLanguage(`${specialGoodbye.greeting}!`, specialGoodbye.locale);
     cardText = `${preGoodbyeSpeechText} ${specialGoodbye.greeting} ${postGoodbyeSpeechText}`;
     const randomVoice = randomize(specialGoodbye.voice);
-    speechText = `${preGoodbyeSpeechText} ${switchVoice(langSpecialGoodbye, randomVoice)} ${postGoodbyeSpeechText}.`;
+    speechOutput = `${preGoodbyeSpeechText} ${switchVoice(langSpecialGoodbye, randomVoice)} ${postGoodbyeSpeechText}.`;
     sessionAttributes.goodbyesUsed += 1;
     attributesManager.setSessionAttributes(sessionAttributes);
   } else {
@@ -122,11 +122,11 @@ function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
       'Have a great day!',
       'Come back again soon!',
     ];
-    speechText = randomize(goodbyes);
+    speechOutput = randomize(goodbyes);
   }
 
   return handlerInput.responseBuilder
-    .speak(speechText)
+    .speak(speechOutput)
     .withShouldEndSession(true)
     .getResponse();
 
@@ -170,7 +170,7 @@ function getResponseBasedOnAccessType(handlerInput, res, preSpeechText) {
     record => record.referenceName === 'Premium_Subscription',
   );
 
-  let speechText;
+  let speechOutput;
   let cardText;
   let repromptOutput;
 
@@ -183,12 +183,12 @@ function getResponseBasedOnAccessType(handlerInput, res, preSpeechText) {
     // Customer has bought the Premium Subscription. Switch to Polly Voice, and return special hello
     cardText = `${preGreetingSpeechText} ${specialGreeting.greeting} ${postGreetingSpeechText}`;
     const randomVoice = randomize(specialGreeting.voice);
-    speechText = `${preGreetingSpeechText} ${switchVoice(langSpecialGreeting, randomVoice)} ${postGreetingSpeechText} ${getRandomYesNoQuestion()}`;
+    speechOutput = `${preGreetingSpeechText} ${switchVoice(langSpecialGreeting, randomVoice)} ${postGreetingSpeechText} ${getRandomYesNoQuestion()}`;
     repromptOutput = `${getRandomYesNoQuestion()}`;
   } else if (isEntitled(greetingsPackProduct)) {
     // Customer has bought the Greetings Pack, but not the Premium Subscription. Return special hello greeting in Alexa voice
     cardText = `${preGreetingSpeechText} ${specialGreeting.greeting} ${postGreetingSpeechText}`;
-    speechText = `${preGreetingSpeechText} ${langSpecialGreeting} ${postGreetingSpeechText} ${getRandomYesNoQuestion()}`;
+    speechOutput = `${preGreetingSpeechText} ${langSpecialGreeting} ${postGreetingSpeechText} ${getRandomYesNoQuestion()}`;
     repromptOutput = `${getRandomYesNoQuestion()}`;
   } else {
     // Customer has bought neither the Premium Subscription nor the Greetings Pack Product.
@@ -197,18 +197,18 @@ function getResponseBasedOnAccessType(handlerInput, res, preSpeechText) {
     if (shouldUpsell(handlerInput) && greetingsPackProduct[0]) {
       console.log("Triggering upsell" + JSON.stringify(greetingsPackProduct));
       // Say the simple greeting, and then Upsell Greetings Pack
-      speechText = `Here's your simple greeting: ${theGreeting}. By the way, you can now get greetings in more languages.`;
-      return makeUpsell(speechText, greetingsPackProduct, handlerInput);
+      speechOutput = `Here's your simple greeting: ${theGreeting}. By the way, you can now get greetings in more languages.`;
+      return makeUpsell(speechOutput, greetingsPackProduct, handlerInput);
     }
 
     // Do not make the upsell. Just return Simple Hello Greeting.
     cardText = `Here's your simple greeting: ${theGreeting}.`;
-    speechText = `Here's your simple greeting: ${theGreeting}. ${getRandomYesNoQuestion()}`;
+    speechOutput = `Here's your simple greeting: ${theGreeting}. ${getRandomYesNoQuestion()}`;
     repromptOutput = `${getRandomYesNoQuestion()}`;
   }
 
   return handlerInput.responseBuilder
-    .speak(speechText)
+    .speak(speechOutput)
     .reprompt(repromptOutput)
     .withSimpleCard(skillName, cardText)
     .getResponse();
