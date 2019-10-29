@@ -6,12 +6,12 @@
     "locales": {
       "en-US": {
         "name": "Goodbyes Pack",
-        "summary": "The Goodbyes Pack says goodbye a limited number of times in a variety of languages like French, Spanish, Hindi, and more.",
+        "summary": "The Goodbyes Pack says goodbye a limited number of times in a variety of languages.",
         "description": "The Goodbyes Pack says goodbye a limited number of times in a variety of languages like French, Spanish, Hindi, and more.",
         "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
         "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
         "examplePhrases": [
-          "Alexa, buy goodbyes pack"
+          "Alexa, buy the goodbyes pack"
         ],
         "keywords": [
           "goodbyes"
@@ -19,6 +19,23 @@
         "customProductPrompts": {
           "purchasePromptDescription": "The Goodbyes Pack says goodbye a limited number of times in a variety of languages like French, Spanish, Hindi, and more.",
           "boughtCardDescription": "You now have the Goodbyes Pack, which says goodbye a limited number of times in a variety of languages like French, Spanish, Hindi, and more."
+        }
+      },
+      "es-ES": {
+        "name": "Paquete de Despedidas",
+        "summary": "El Paquete de Despedidas te dice adiós, un número limitado de veces, en otros idiomas como Hindi, Francés, Español y más.",
+        "description": "Pack de Despedidas te dice adiós, un número limitado de veces, en otros idiomas como Hindi, Francés, Español y más.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, compra el paquete de despedidas"
+        ],
+        "keywords": [
+          "despedidas"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "El Paquete de Despedidas te dice adiós un número limitado de veces en otros idiomas como Hindi, Francés, Español y más.",
+          "boughtCardDescription": "Ahora tienes el Paquete de Despedidas, que te dice adiós, un número limitado de veces, en otros idiomas como Hindi, Francés, Español y más."
         }
       }
     },
@@ -83,6 +100,13 @@
         "defaultPriceListing": {
           "price": 99,
           "currency": "JPY"
+        }
+      },
+      "amazon.es": {
+        "releaseDate": "2019-06-26T00:00Z",
+        "defaultPriceListing": {
+          "price": 0.99,
+          "currency": "EUR"
         }
       }
     },
