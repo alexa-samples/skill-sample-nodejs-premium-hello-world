@@ -3,13 +3,20 @@
     "publishingInformation": {
       "locales": {
         "en-US": {
-          "summary": "Sample Short Description",
+          "summary": "Premium Hello World greets you in a variety of languages",
           "examplePhrases": [
-            "Alexa open Premium Hello World",
-            "give me a premium greeting"
+            "Alexa open Premium Hello World"
           ],
-          "name": "Hello World Sample w/In Skill Purchasing",
-          "description": "Sample Full Description"
+          "name": "Premium Hello World",
+          "description": "Premium Hello World greets you in a variety of languages"
+        },
+        "es-ES": {
+          "summary": "Hola Mundo Premium te saluda en distintos idiomas.",
+          "examplePhrases": [
+            "Alexa abre Hola Mundo Premium"
+          ],
+          "name": "Hola Mundo Premium",
+          "description": "Hola Mundo Premium te saluda en distintos idiomas."
         }
       },
       "isAvailableWorldwide": true,
