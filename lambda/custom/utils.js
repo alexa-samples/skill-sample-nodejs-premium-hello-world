@@ -1,3 +1,4 @@
+const Alexa = require('ask-sdk');
 const skillName = 'Premium Hello World';
 const GOODBYES_PER_ENTITLEMENT = 3;
 
@@ -159,14 +160,14 @@ function getSpeakableListOfProducts(entitledProductsList) {
   return productListSpeech;
 }
 
-function getResponseBasedOnAccessType(handlerInput, res, preSpeechText) {
+function getResponseBasedOnAccessType(handlerInput, productList, preSpeechText) {
   console.log('Function: getResponseBasedOnAccessType');
   // The filter() method creates a new array with all elements that pass the test implemented by the provided function.
-  const greetingsPackProduct = res.inSkillProducts.filter(
+  const greetingsPackProduct = productList.inSkillProducts.filter(
     record => record.referenceName === 'Greetings_Pack',
   );
 
-  const premiumSubscriptionProduct = res.inSkillProducts.filter(
+  const premiumSubscriptionProduct = productList.inSkillProducts.filter(
     record => record.referenceName === 'Premium_Subscription',
   );
 
@@ -305,7 +306,7 @@ function getBuyResponseText(productReferenceName, productName) {
       return `With the ${productName}, I can now say goodbye in a variety of languages, in different accents using Amazon Polly.`;
     default: 
       console.log('Product Unknown');
-     return '';
+    return '';
   }
 }
 
@@ -315,9 +316,8 @@ function getBuyResponseText(productReferenceName, productName) {
 
 const LoadAttributesRequestInterceptor = {
   async process(handlerInput) {
-    console.log('Interceptor: LoadAttributesRequestInterceptor');
       const {attributesManager, requestEnvelope} = handlerInput;
-      if(requestEnvelope.session['new']){ //is this a new session? this check is not enough if using auto-delegate
+      if(Alexa.isNewSession(requestEnvelope)){ //is this a new session? this check is not enough if using auto-delegate
           const persistentAttributes = await attributesManager.getPersistentAttributes() || {};
           console.log("Retrieved persistentAttributes: " + JSON.stringify(persistentAttributes));
           //copy persistent attribute to session attributes
@@ -328,7 +328,6 @@ const LoadAttributesRequestInterceptor = {
 
 const SaveAttributesResponseInterceptor = {
   async process(handlerInput, response) {
-      console.log('Interceptor: SaveAttributesResponseInterceptor');
       if(!response) return; // avoid intercepting calls that have no outgoing response due to errors
       const {attributesManager, requestEnvelope} = handlerInput;
       const sessionAttributes = attributesManager.getSessionAttributes();

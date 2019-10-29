@@ -9,7 +9,7 @@ Each skill consists of two basic parts, a front end and a back end.
 2. The back end is where the logic of your skill resides.
 
 ## Three Options for Skill Setup
-There are a number of different ways for you to setup your skill, depending on your experience and what tools you have available - Alexa Hosted, AWS Hosted, ASK CLI. For this Hello World Skill, we will be using the Alexa Hosted option. If you'd like to  use the AWS Hosted, or ASK CLI methods, you can check out the instructions here for the Sample Fact skill - [AWS Hosted Instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/setup-vui-aws-hosted.md) | [ASK CLI instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/cli.md)
+There are a number of different ways for you to setup your skill, depending on your experience and what tools you have available - Alexa Hosted, AWS Hosted, ASK CLI. For this Hello World Skill, we will be using the Alexa Hosted option. If you'd like to  use the AWS Hosted, or ASK CLI methods, you can check out the instructions here for the Sample Fact skill - [AWS Hosted Instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/setup-vui-aws-hosted.md) | [ASK CLI instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/cli.md). If you don't use Alexa Hosted you'll have to add DynamoDB access permissions to your lambda role (as consumables are tracked in persistent storage).
 
 
 ## Alexa Hosted

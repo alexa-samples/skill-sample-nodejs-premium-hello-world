@@ -3,7 +3,7 @@ const utils = require("./utils");
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
-    return  Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
   },
   handle(handlerInput) {
     console.log('Handler: LaunchRequestHandler');
@@ -19,10 +19,9 @@ const LaunchRequestHandler = {
 
 const GetAnotherHelloHandler = {
   canHandle(handlerInput) {
-    return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-      && ( Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.YesIntent'
-          ||  Alexa.getIntentName(handlerInput.requestEnvelope) === 'SimpleHelloIntent'));
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.YesIntent'
+          ||  Alexa.getIntentName(handlerInput.requestEnvelope) === 'SimpleHelloIntent');
   },
   handle(handlerInput) {
     console.log('Handler: GetAnotherHelloHandler');
@@ -40,18 +39,18 @@ const GetAnotherHelloHandler = {
 // Respond to the utterance "what can I buy"
 const AvailableProductsIntentHandler = {
   canHandle(handlerInput) {
-    return ( Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-      &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'AvailableProductsIntent');
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'AvailableProductsIntent';
   },
   async handle(handlerInput) {
     console.log('Handler: AvailableProductsIntentHandler');
     // Get the list of products available for in-skill purchase
     const locale = Alexa.getLocale(handlerInput.requestEnvelope);
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    // res contains the list of all ISP products for this skill.
-    const res = await monetizationClient.getInSkillProducts(locale);
+    // productList contains the list of all ISP products for this skill.
+    const productList = await monetizationClient.getInSkillProducts(locale);
     // We now need to filter this to find the ISP products that are available for purchase
-    const purchasableProducts = utils.getAllPurchasableProducts(res.inSkillProducts);
+    const purchasableProducts = utils.getAllPurchasableProducts(productList.inSkillProducts);
     // Say the list of products
     let speechOutput, repromptOutput;
     if (purchasableProducts.length > 0) {
@@ -77,7 +76,7 @@ const AvailableProductsIntentHandler = {
 
 const DescribeProductIntentHandler = {
   canHandle(handlerInput) {
-    return  Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
           &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'DescribeProductIntent';
   },
   async handle(handlerInput) {
@@ -88,10 +87,10 @@ const DescribeProductIntentHandler = {
     let speechOutput, repromptOutput;
 
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    // res contains the list of all ISP products for this skill.
-    const res = await monetizationClient.getInSkillProducts(locale);
+    // productList contains the list of all ISP products for this skill.
+    const productList = await monetizationClient.getInSkillProducts(locale);
     // Filter the list of products available for purchase to find the product with a matching id
-    const product = res.inSkillProducts.filter(
+    const product = productList.inSkillProducts.filter(
       record => record.referenceName === productId
     );
     if (!utils.isPurchasable(product)) {
@@ -122,7 +121,7 @@ const DescribeProductIntentHandler = {
 
 const BuyProductIntentHandler = {
   canHandle(handlerInput) {
-    return  Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
           &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'BuyProductIntent';
   },
   async handle(handlerInput) {
@@ -133,10 +132,10 @@ const BuyProductIntentHandler = {
     let speechOutput, repromptOutput;
 
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    // res contains the list of all ISP products for this skill.
-    const res = await monetizationClient.getInSkillProducts(locale);
+    // productList contains the list of all ISP products for this skill.
+    const productList = await monetizationClient.getInSkillProducts(locale);
     // Filter the list of products available for purchase to find the product with a matching id
-    const product = res.inSkillProducts.filter(
+    const product = productList.inSkillProducts.filter(
       record => record.referenceName === productId
     );
     if (!utils.isPurchasable(product)) {
@@ -166,28 +165,29 @@ const BuyProductIntentHandler = {
 
 const UpsellBuyResponseHandler = {
   canHandle(handlerInput) {
-    return  Alexa.getRequestType(handlerInput.requestEnvelope) === 'Connections.Response'
-          && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'Buy'
-              || Alexa.getIntentName(handlerInput.requestEnvelope) === 'Upsell');
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'Connections.Response'
+          && (handlerInput.requestEnvelope.request.name === 'Buy'
+              || handlerInput.requestEnvelope.request.name === 'Upsell');
   },
   async handle(handlerInput) {
     console.log('Handler: UpsellBuyResponseHandler');
     const locale = Alexa.getLocale(handlerInput.requestEnvelope);
-    const {productId} = handlerInput.requestEnvelope.request.payload;
+    const {request} = handlerInput.requestEnvelope;
+    const {productId} = request.payload;
 
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    // res contains the list of all ISP products for this skill.
-    const res = await monetizationClient.getInSkillProducts(locale);
-    const product = res.inSkillProducts.filter(
-      record => record.productId === productId,
+    // productList contains the list of all ISP products for this skill.
+    const productList = await monetizationClient.getInSkillProducts(locale);
+    const product = productList.inSkillProducts.filter(
+      record => record.productId === productId
     );
 
-    if (handlerInput.requestEnvelope.request.status.code === '200') {
+    if (request.status.code === '200' && request.payload.purchaseResult !== 'ERROR') {
       let preSpeechText;
 
-      // check the Buy status - accepted, declined, already purchased, or something went wrong.
-      console.log(handlerInput.requestEnvelope.request.name + ' connections payload: ' + handlerInput.requestEnvelope.request.payload);
-      switch (handlerInput.requestEnvelope.request.payload.purchaseResult) {
+      // check the status - accepted, declined, already purchased, or something went wrong.
+      console.log(request.name + ' connections payload: ' + request.payload);
+      switch (request.payload.purchaseResult) {
         case 'ACCEPTED':
         case 'ALREADY_PURCHASED':
           preSpeechText = utils.getBuyResponseText(product[0].referenceName, product[0].name);
@@ -200,33 +200,31 @@ const UpsellBuyResponseHandler = {
           break;
       }
       // respond back to the customer
-      return utils.getResponseBasedOnAccessType(handlerInput, res, preSpeechText);
+      return utils.getResponseBasedOnAccessType(handlerInput, productList, preSpeechText);
     }
-    // Request Status Code NOT 200. Something has failed with the connection.
+    // Request Status Error. Something has failed with the connection.
     console.log(
-      `Connections.Response indicated failure. error: + ${handlerInput.requestEnvelope.request.status.message}`,
+      `Connections.Response indicated failure. error: + ${request.payload.message}`,
     );
     return handlerInput.responseBuilder
-      .speak('There was an error handling your request. Please try again or contact us for help.')
+      .speak('Sorry, there was an error with ISP. Please make sure you unblock purchases and try again.')
       .getResponse();
   }
 };
 
 const PurchaseHistoryIntentHandler = {
   canHandle(handlerInput) {
-    return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-      &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'PurchaseHistoryIntent'
-    );
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'PurchaseHistoryIntent';
   },
   async handle(handlerInput) {
     console.log('Handler: PurchaseHistoryIntentHandler');
     const locale = Alexa.getLocale(handlerInput.requestEnvelope);
 
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    // res contains the list of all ISP products for this skill.
-    const res = await monetizationClient.getInSkillProducts(locale);
-    const entitledProducts = utils.getAllEntitledProducts(res.inSkillProducts);
+    // productList contains the list of all ISP products for this skill.
+    const productList = await monetizationClient.getInSkillProducts(locale);
+    const entitledProducts = utils.getAllEntitledProducts(productList.inSkillProducts);
     if (entitledProducts && entitledProducts.length > 0) {
       const speechOutput = `You have bought the following items: ${utils.getSpeakableListOfProducts(entitledProducts)}. ${utils.getRandomYesNoQuestion()}`;
       const repromptOutput = `You asked me for a what you've bought, here's a list ${utils.getSpeakableListOfProducts(entitledProducts)}`;
@@ -249,19 +247,17 @@ const PurchaseHistoryIntentHandler = {
 
 const InventoryIntentHandler = {
   canHandle(handlerInput) {
-    return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-      &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'InventoryIntent'
-    );
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'InventoryIntent';
   },
   async handle(handlerInput) {
     console.log('Handler: InventoryIntentHandler');
     const locale = Alexa.getLocale(handlerInput.requestEnvelope);
 
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    // res contains the list of all ISP products for this skill.
-    const res = await monetizationClient.getInSkillProducts(locale);
-    const goodbyesPackProduct = res.inSkillProducts.filter(
+    // productList contains the list of all ISP products for this skill.
+    const productList = await monetizationClient.getInSkillProducts(locale);
+    const goodbyesPackProduct = productList.inSkillProducts.filter(
       record => record.referenceName === 'Goodbyes_Pack'
     );
     const availableGoodbyes = parseInt(utils.getRemainingCredits(handlerInput, goodbyesPackProduct, 'goodbyesUsed', utils.GOODBYES_PER_ENTITLEMENT).availableCredits) || 0;
@@ -277,10 +273,8 @@ const InventoryIntentHandler = {
 
 const RefundProductIntentHandler = {
   canHandle(handlerInput) {
-    return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-      &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'RefundProductIntent'
-    );
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'RefundProductIntent';
   },
   async handle(handlerInput) {
     console.log('Handler: RefundProductIntentHandler');
@@ -288,9 +282,9 @@ const RefundProductIntentHandler = {
     const locale = Alexa.getLocale(handlerInput.requestEnvelope);
 
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    // res contains the list of all ISP products for this skill.
-    const res = await monetizationClient.getInSkillProducts(locale);
-    const premiumProduct = res.inSkillProducts.filter(
+    // productList contains the list of all ISP products for this skill.
+    const productList = await monetizationClient.getInSkillProducts(locale);
+    const premiumProduct = productList.inSkillProducts.filter(
       record => record.referenceName === productId
     );
     return handlerInput.responseBuilder
@@ -310,10 +304,8 @@ const RefundProductIntentHandler = {
 
 const CancelProductResponseHandler = {
   canHandle(handlerInput) {
-    return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === 'Connections.Response'
-      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'Cancel'
-    );
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'Connections.Response'
+      && handlerInput.requestEnvelope.request.name === 'Cancel';
   },
   async handle(handlerInput) {
     console.log('Handler: CancelProductResponseHandler');
@@ -323,9 +315,9 @@ const CancelProductResponseHandler = {
     console.log('Cancel connections payload: ' + handlerInput.requestEnvelope.request.payload);
 
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-    // res contains the list of all ISP products for this skill.
-    const res = await monetizationClient.getInSkillProducts(locale);
-    const product = res.inSkillProducts.filter(
+    // productList contains the list of all ISP products for this skill.
+    const productList = await monetizationClient.getInSkillProducts(locale);
+    const product = productList.inSkillProducts.filter(
       record => record.productId === productId,
     );
 
@@ -369,10 +361,8 @@ const CancelProductResponseHandler = {
 
 const HelpIntentHandler = {
   canHandle(handlerInput) {
-    return (
-      Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-      &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent'
-    );
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      &&  Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
   },
   handle(handlerInput) {
     console.log('Handler: HelpIntentHandler');
@@ -388,25 +378,23 @@ const HelpIntentHandler = {
 
 const CancelAndStopIntentHandler = {
   canHandle(handlerInput) {
-    return  Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-      && ( Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
         ||  Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent'
         ||  Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.NoIntent');
   },
-  handle(handlerInput) {
+  async handle(handlerInput) {
     console.log('Handler: CancelAndStopIntentHandler');
     const locale = Alexa.getLocale(handlerInput.requestEnvelope);
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
-
-    return monetizationClient.getInSkillProducts(locale).then((res) => {
-      return utils.getPremiumOrRandomGoodbye(handlerInput, res.inSkillProducts);
-    });
+    const productList = await monetizationClient.getInSkillProducts(locale);
+    return utils.getPremiumOrRandomGoodbye(handlerInput, productList.inSkillProducts);
   }
 };
 
 const SessionEndedRequestHandler = {
   canHandle(handlerInput) {
-    return  Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
   },
   handle(handlerInput) {
     console.log(`Session ended with reason: ${handlerInput.requestEnvelope.request.reason}`);
@@ -446,8 +434,7 @@ exports.handler = skillBuilder
     CancelProductResponseHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
-    SessionEndedRequestHandler,
-  )
+    SessionEndedRequestHandler)
   .addErrorHandlers(ErrorHandler)
   .addRequestInterceptors(utils.LoadAttributesRequestInterceptor)
   .addResponseInterceptors(utils.SaveAttributesResponseInterceptor)
