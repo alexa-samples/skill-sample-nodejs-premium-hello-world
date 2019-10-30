@@ -7,12 +7,12 @@ const LaunchRequestHandler = {
   },
   handle(handlerInput) {
     console.log('Handler: LaunchRequestHandler');
-    const speechOutput = `Welcome to Premium Hello World! You can say hello! How can I help?`;
+    const speechOutput = handlerInput.t('WELCOME_MSG');
 
     return handlerInput.responseBuilder
       .speak(speechOutput)
       .reprompt(speechOutput)
-      .withSimpleCard('Premium Hello World', speechOutput)
+      .withSimpleCard(handlerInput.t('SKILL_NAME'), speechOutput)
       .getResponse();
   }
 };
@@ -23,16 +23,15 @@ const GetAnotherHelloHandler = {
       && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.YesIntent'
           ||  Alexa.getIntentName(handlerInput.requestEnvelope) === 'SimpleHelloIntent');
   },
-  handle(handlerInput) {
+  async handle(handlerInput) {
     console.log('Handler: GetAnotherHelloHandler');
     const locale = Alexa.getLocale(handlerInput.requestEnvelope);
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
     const preSpeechText = '';
-
-    return monetizationClient.getInSkillProducts(locale).then((res) => {
-      // Use the helper function getResponseBasedOnAccessType to determine the response based on the products the customer has purchased
-      return utils.getResponseBasedOnAccessType(handlerInput, res, preSpeechText);
-    });
+    // productList contains the list of all ISP products for this skill.
+    const productList = await monetizationClient.getInSkillProducts(locale);
+    // Use the helper function getResponseBasedOnAccessType to determine the response based on the products the customer has purchased
+    return utils.getResponseBasedOnAccessType(handlerInput, productList, preSpeechText);
   }
 };
 
@@ -55,18 +54,16 @@ const AvailableProductsIntentHandler = {
     let speechOutput, repromptOutput;
     if (purchasableProducts.length > 0) {
       // One or more products are available for purchase. say the list of products
-      speechOutput = `Products available for purchase at this time are ${utils.getSpeakableListOfProducts(purchasableProducts)}. 
-                    To learn more about a product, say 'Tell me more about' followed by the product name. 
-                    If you are ready to buy, say 'Buy' followed by the product name. So what can I help you with?`;
-      repromptOutput = 'I didn\'t catch that. What can I help you with?';
+      speechOutput = handlerInput.t('PRODUCT_LIST_MSG', {products: utils.getSpeakableListOfProducts(purchasableProducts)});
+      repromptOutput = handlerInput.t('REPROMPT_MSG');
       return handlerInput.responseBuilder
         .speak(speechOutput)
         .reprompt(repromptOutput)
         .getResponse();
     }
     // no products are available for purchase. Ask if they would like to hear another greeting
-    speechOutput = 'There are no products to offer to you right now. Sorry about that. Would you like a greeting instead?';
-    repromptOutput = 'I didn\'t catch that. What can I help you with?';
+    speechOutput = handlerInput.t('NO_PURCHASEABLE_PRODUCTS_MSG')+ ' ' + utils.getRandomYesNoQuestion(handlerInput);
+    repromptOutput = handlerInput.t('REPROMPT_MSG');
     return handlerInput.responseBuilder
       .speak(speechOutput)
       .reprompt(repromptOutput)
@@ -95,8 +92,8 @@ const DescribeProductIntentHandler = {
     );
     if (!utils.isPurchasable(product)) {
       // Product previously bought
-      speechOutput = `Good News! You already have the ${productName}. ${utils.getRandomYesNoQuestion()}`;
-      repromptOutput = `${utils.getRandomYesNoQuestion()}`;
+      speechOutput = handlerInput.t('PRODUCT_OWNED_MSG', {productName: productName}) + ' ' + utils.getRandomYesNoQuestion(handlerInput);
+      repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
 
       return handlerInput.responseBuilder
         .speak(speechOutput)
@@ -108,8 +105,8 @@ const DescribeProductIntentHandler = {
     if (product.length > 0){
       return utils.makeUpsell(speechOutput, product, handlerInput);
     } else {
-      speechOutput = `There are no products to offer to you right now. Sorry about that. ${utils.getRandomYesNoQuestion()}`;
-      repromptOutput = `${utils.getRandomYesNoQuestion()}`;
+      speechOutput = handlerInput.t('NO_PURCHASEABLE_PRODUCTS_MSG') + ' ' + utils.getRandomYesNoQuestion(handlerInput);
+      repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
 
       return handlerInput.responseBuilder
         .speak(speechOutput)
@@ -140,8 +137,8 @@ const BuyProductIntentHandler = {
     );
     if (!utils.isPurchasable(product)) {
       // Product previously bought
-      speechOutput = `Good News! You already have the ${productName}. ${utils.getRandomYesNoQuestion()}`;
-      repromptOutput = `${utils.getRandomYesNoQuestion()}`;
+      speechOutput = handlerInput.t('PRODUCT_OWNED_MSG', {productName: productName}) + ' ' + utils.getRandomYesNoQuestion(handlerInput);
+      repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
 
       return handlerInput.responseBuilder
         .speak(speechOutput)
@@ -152,8 +149,8 @@ const BuyProductIntentHandler = {
     if (product.length > 0){
       return utils.makeBuyOffer(product, handlerInput);
     } else {
-      speechOutput = `There are no products to offer to you right now. Sorry about that. ${utils.getRandomYesNoQuestion()}`;
-      repromptOutput = `${utils.getRandomYesNoQuestion()}`;
+      speechOutput = handlerInput.t('NO_PURCHASEABLE_PRODUCTS_MSG') + ' ' + utils.getRandomYesNoQuestion(handlerInput);
+      repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
 
       return handlerInput.responseBuilder
         .speak(speechOutput)
@@ -207,7 +204,7 @@ const UpsellBuyResponseHandler = {
       `Connections.Response indicated failure. error: + ${request.payload.message}`,
     );
     return handlerInput.responseBuilder
-      .speak('Sorry, there was an error with ISP. Please make sure you unblock purchases and try again.')
+      .speak('Sorry, there was an error with ISP. Please make sure you unblock purchases in the Alexa app and try again.')
       .getResponse();
   }
 };
@@ -226,8 +223,8 @@ const PurchaseHistoryIntentHandler = {
     const productList = await monetizationClient.getInSkillProducts(locale);
     const entitledProducts = utils.getAllEntitledProducts(productList.inSkillProducts);
     if (entitledProducts && entitledProducts.length > 0) {
-      const speechOutput = `You have bought the following items: ${utils.getSpeakableListOfProducts(entitledProducts)}. ${utils.getRandomYesNoQuestion()}`;
-      const repromptOutput = `You asked me for a what you've bought, here's a list ${utils.getSpeakableListOfProducts(entitledProducts)}`;
+      const speechOutput = `You have bought the following items: ${utils.getSpeakableListOfProducts(entitledProducts)}. ` + utils.getRandomYesNoQuestion(handlerInput);
+      const repromptOutput = `You asked me for what you've bought, here's a list ${utils.getSpeakableListOfProducts(entitledProducts)}`;
 
       return handlerInput.responseBuilder
         .speak(speechOutput)
@@ -236,7 +233,7 @@ const PurchaseHistoryIntentHandler = {
     }
 
     const speechOutput = 'You haven\'t purchased anything yet. To learn more about the products you can buy, say - what can I buy. How can I help?';
-    const repromptOutput = `You asked me for a what you've bought, but you haven't purchased anything yet. You can say - what can I buy, or say yes to get another greeting. ${utils.getRandomYesNoQuestion()}`;
+    const repromptOutput = `You asked me for a what you've bought, but you haven't purchased anything yet. You can say - what can I buy, or say yes to get another greeting. ` + utils.getRandomYesNoQuestion(handlerInput);
 
     return handlerInput.responseBuilder
       .speak(speechOutput)
@@ -263,7 +260,7 @@ const InventoryIntentHandler = {
     const availableGoodbyes = parseInt(utils.getRemainingCredits(handlerInput, goodbyesPackProduct, 'goodbyesUsed', utils.GOODBYES_PER_ENTITLEMENT).availableCredits) || 0;
     let speechOutput = `You have ${availableGoodbyes} premium goodbyes left. `;
     availableGoodbyes ? speechOutput += `Just say stop and you'll use one!` : speechOutput += 'You can buy more by saying, buy goodbyes pack.';
-    const repromptOutput = `${utils.getRandomYesNoQuestion()}`;
+    const repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
     return handlerInput.responseBuilder
       .speak(speechOutput)
       .reprompt(repromptOutput)
@@ -333,17 +330,17 @@ const CancelProductResponseHandler = {
       if (handlerInput.requestEnvelope.request.payload.purchaseResult === 'ACCEPTED') {
         // The cancellation confirmation response is handled by Alexa's Purchase Experience Flow.
         // Simply add to that with getRandomYesNoQuestion()
-        speechOutput = `${utils.getRandomYesNoQuestion()}`;
-        repromptOutput = utils.getRandomYesNoQuestion();
+        speechOutput = utils.getRandomYesNoQuestion(handlerInput);
+        repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
       } else if (handlerInput.requestEnvelope.request.payload.purchaseResult === 'DECLINED') {
-        speechOutput = `${utils.getRandomYesNoQuestion()}`;
-        repromptOutput = utils.getRandomYesNoQuestion();
+        speechOutput = utils.getRandomYesNoQuestion(handlerInput);
+        repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
       } else if (handlerInput.requestEnvelope.request.payload.purchaseResult === 'NOT_ENTITLED') {
         // No subscription to cancel.
         // The "No subscription to cancel" response is handled by Alexa's Purchase Experience Flow.
         // Simply add to that with getRandomYesNoQuestion()
-        speechOutput = `${utils.getRandomYesNoQuestion()}`;
-        repromptOutput = utils.getRandomYesNoQuestion();
+        speechOutput = utils.getRandomYesNoQuestion(handlerInput);
+        repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
       }
       return handlerInput.responseBuilder
         .speak(speechOutput)
@@ -371,7 +368,7 @@ const HelpIntentHandler = {
     return handlerInput.responseBuilder
       .speak(speechOutput)
       .reprompt(speechOutput)
-      .withSimpleCard('Premium Hello World', speechOutput)
+      .withSimpleCard(handlerInput.t('SKILL_NAME'), speechOutput)
       .getResponse();
   }
 };
@@ -417,7 +414,6 @@ const ErrorHandler = {
   }
 };
 
-
 const skillBuilder = Alexa.SkillBuilders.standard();
 
 exports.handler = skillBuilder
@@ -436,7 +432,9 @@ exports.handler = skillBuilder
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler)
   .addErrorHandlers(ErrorHandler)
-  .addRequestInterceptors(utils.LoadAttributesRequestInterceptor)
+  .addRequestInterceptors(
+    utils.LoadAttributesRequestInterceptor,
+    utils.LocalisationRequestInterceptor)
   .addResponseInterceptors(utils.SaveAttributesResponseInterceptor)
   .withTableName("premium-hello-world") // requires that you allow DynamoDB access in your Lambda role!
   .withAutoCreateTable(true)

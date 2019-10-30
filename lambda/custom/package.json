@@ -10,6 +10,7 @@
   "license": "ASL",
   "dependencies": {
     "ask-sdk": "^2.7.0",
+    "i18next": "^15.0.5",
     "aws-sdk": "^2.326.0"
   }
 }

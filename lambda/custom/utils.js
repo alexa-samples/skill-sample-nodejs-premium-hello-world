@@ -1,5 +1,6 @@
 const Alexa = require('ask-sdk');
-const skillName = 'Premium Hello World';
+const i18n = require('i18next');
+const languageStrings = require('./localisation');
 const GOODBYES_PER_ENTITLEMENT = 3;
 
 // *****************************************
@@ -11,11 +12,8 @@ function randomize(array) {
   return randomItem;
 }
 
-function getSimpleHello() {
-  const simpleGreetings = ['Howdy!', 'Hello!', 'How are you?', 'Hiya!'];
-  return simpleGreetings[
-    Math.floor(Math.random() * simpleGreetings.length)
-  ];
+function getSimpleHello(handlerInput) {
+  return handlerInput.t('SIMPLE_GREETINGS');
 }
 
 function getSpecialGoodbye() {
@@ -118,12 +116,7 @@ function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
     attributesManager.setSessionAttributes(sessionAttributes);
   } else {
     console.log("No premium goodbyes available");
-    const goodbyes = [
-      'OK.  Goodbye!',
-      'Have a great day!',
-      'Come back again soon!',
-    ];
-    speechOutput = randomize(goodbyes);
+    speechOutput = handlerInput.t('SIMPLE_GOODBYES');
   }
 
   return handlerInput.responseBuilder
@@ -133,23 +126,12 @@ function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
 
 }
 
-function getRandomYesNoQuestion() {
-  const questions = [
-    'Would you like another greeting?',
-    'Can I give you another greeting?',
-    'Do you want to hear another greeting?',
-  ];
-  return randomize(questions);
+function getRandomYesNoQuestion(handlerInput) {
+  return handlerInput.t('YES_NO_QUESTION');
 }
 
-function getRandomLearnMorePrompt() {
-  const questions = [
-    'Want to learn more about it?',
-    'Should I tell you more about it?',
-    'Want to learn about it?',
-    'Interested in learning more about it?',
-  ];
-  return randomize(questions);
+function getRandomLearnMorePrompt(handlerInput) {
+  return handlerInput.t('LEARN_MORE_PROMPT');
 }
 
 function getSpeakableListOfProducts(entitledProductsList) {
@@ -184,34 +166,34 @@ function getResponseBasedOnAccessType(handlerInput, productList, preSpeechText) 
     // Customer has bought the Premium Subscription. Switch to Polly Voice, and return special hello
     cardText = `${preGreetingSpeechText} ${specialGreeting.greeting} ${postGreetingSpeechText}`;
     const randomVoice = randomize(specialGreeting.voice);
-    speechOutput = `${preGreetingSpeechText} ${switchVoice(langSpecialGreeting, randomVoice)} ${postGreetingSpeechText} ${getRandomYesNoQuestion()}`;
-    repromptOutput = `${getRandomYesNoQuestion()}`;
+    speechOutput = `${preGreetingSpeechText} ${switchVoice(langSpecialGreeting, randomVoice)} ${postGreetingSpeechText} ${getRandomYesNoQuestion(handlerInput)}`;
+    repromptOutput = `${getRandomYesNoQuestion(handlerInput)}`;
   } else if (isEntitled(greetingsPackProduct)) {
     // Customer has bought the Greetings Pack, but not the Premium Subscription. Return special hello greeting in Alexa voice
     cardText = `${preGreetingSpeechText} ${specialGreeting.greeting} ${postGreetingSpeechText}`;
-    speechOutput = `${preGreetingSpeechText} ${langSpecialGreeting} ${postGreetingSpeechText} ${getRandomYesNoQuestion()}`;
-    repromptOutput = `${getRandomYesNoQuestion()}`;
+    speechOutput = `${preGreetingSpeechText} ${langSpecialGreeting} ${postGreetingSpeechText} ${getRandomYesNoQuestion(handlerInput)}`;
+    repromptOutput = `${getRandomYesNoQuestion(handlerInput)}`;
   } else {
     // Customer has bought neither the Premium Subscription nor the Greetings Pack Product.
-    const theGreeting = getSimpleHello();
+    const theGreeting = getSimpleHello(handlerInput);
     // Determine if upsell should be made. returns true/false
     if (shouldUpsell(handlerInput) && greetingsPackProduct[0]) {
       console.log("Triggering upsell" + JSON.stringify(greetingsPackProduct));
       // Say the simple greeting, and then Upsell Greetings Pack
-      speechOutput = `Here's your simple greeting: ${theGreeting}. By the way, you can now get greetings in more languages.`;
+      speechOutput = handlerInput.t('SIMPLE_GREETING', {greeting: theGreeting}) + ' ' + `By the way, you can now get greetings in more languages.`;
       return makeUpsell(speechOutput, greetingsPackProduct, handlerInput);
     }
 
     // Do not make the upsell. Just return Simple Hello Greeting.
-    cardText = `Here's your simple greeting: ${theGreeting}.`;
-    speechOutput = `Here's your simple greeting: ${theGreeting}. ${getRandomYesNoQuestion()}`;
-    repromptOutput = `${getRandomYesNoQuestion()}`;
+    cardText = handlerInput.t('SIMPLE_GREETING', {greeting: theGreeting});
+    speechOutput = cardText + ' ' + getRandomYesNoQuestion(handlerInput);
+    repromptOutput = getRandomYesNoQuestion(handlerInput);
   }
 
   return handlerInput.responseBuilder
     .speak(speechOutput)
     .reprompt(repromptOutput)
-    .withSimpleCard(skillName, cardText)
+    .withSimpleCard(handlerInput.t('SKILL_NAME'), cardText)
     .getResponse();
 }
 
@@ -239,7 +221,7 @@ function getAllPurchasableProducts(inSkillProductList) {
 
 function makeUpsell(preUpsellMessage, product, handlerInput) {
   console.log('Function: makeUpsell');
-  const upsellMessage = `${preUpsellMessage} ${product[0].summary} ${getRandomLearnMorePrompt()}`;
+  const upsellMessage = `${preUpsellMessage} ${product[0].summary} ${getRandomLearnMorePrompt(handlerInput)}`;
 
   return handlerInput.responseBuilder
     .addDirective({
@@ -340,31 +322,43 @@ const SaveAttributesResponseInterceptor = {
   }
 };
 
+// This request interceptor will bind a translation function 't' to the handlerInput
+// Additionally it will handle picking a random value if instead of a string it receives an array
+const LocalisationRequestInterceptor = {
+  process(handlerInput) {
+      const localisationClient = i18n.init({
+          lng: Alexa.getLocale(handlerInput.requestEnvelope),
+          resources: languageStrings,
+          returnObjects: true
+      });
+      localisationClient.localise = function localise() {
+          const args = arguments;
+          const value = i18n.t(...args);
+          if (Array.isArray(value)) {
+              return value[Math.floor(Math.random() * value.length)];
+          }
+          return value;
+      };
+      handlerInput.t = function translate(...args) {
+          return localisationClient.localise(...args);
+      }
+  }
+};
 
 module.exports = {
-    isEntitled,
     isPurchasable,
-    isProduct,
     makeUpsell,
     getAllEntitledProducts,
     getAllPurchasableProducts,
-    shouldUpsell,
     makeBuyOffer,
     SaveAttributesResponseInterceptor,
     LoadAttributesRequestInterceptor,
+    LocalisationRequestInterceptor,
     getBuyResponseText,
-    switchLanguage,
-    switchVoice,
     getResponseBasedOnAccessType,
     getSpeakableListOfProducts,
-    getRandomLearnMorePrompt,
     getRandomYesNoQuestion,
     getPremiumOrRandomGoodbye,
     getRemainingCredits,
-    getSpecialHello,
-    getSpecialGoodbye,
-    getSimpleHello,
-    randomize,
-    skillName,
     GOODBYES_PER_ENTITLEMENT
 }
