@@ -433,4 +433,5 @@ exports.handler = skillBuilder
   .addResponseInterceptors(utils.SaveAttributesResponseInterceptor)
   .withTableName("premium-hello-world") // requires that you allow DynamoDB access in your Lambda role!
   .withAutoCreateTable(true)
+  .withCustomUserAgent('sample/premium-hello-world/v1.2')
   .lambda();

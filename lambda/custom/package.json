@@ -1,6 +1,6 @@
 {
   "name": "skill-sample-nodejs-premium-hello-world",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "In Skill Purchasing sample skill",
   "main": "index.js",
   "scripts": {
