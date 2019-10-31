@@ -41,6 +41,23 @@
           "purchasePromptDescription": "La Suscripción Premium utiliza las voces de Amazon Polly para saludarte en otros idiomas como Hindi, Francés, Español y más.",
           "boughtCardDescription": "Ahora tienes la Suscripción Premium, que te saluda utilizando distintas voces de Amazon Polly."
         }
+      },
+      "es-US": {
+        "name": "Suscripción Premium",
+        "summary": "La Suscripción Premium te saluda utilizando distintas voces de Amazon Polly.",
+        "description": "La Suscripción Premium utiliza las voces de Amazon Polly para saludarte en otros idiomas como Hindi, Francés, Español y más.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, buy the premium subscription"
+        ],
+        "keywords": [
+          "subscriptions"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "La Suscripción Premium utiliza las voces de Amazon Polly para saludarte en otros idiomas como Hindi, Francés, Español y más.",
+          "boughtCardDescription": "Ahora tienes la Suscripción Premium, que te saluda utilizando distintas voces de Amazon Polly."
+        }
       }
     },
     "distributionCountries": [
@@ -79,6 +96,13 @@
       "ES"
     ],
     "pricing": {
+      "amazon.es": {
+        "releaseDate": "2019-06-27T00:00Z",
+        "defaultPriceListing": {
+          "price": 9.99,
+          "currency": "EUR"
+        }
+      },
       "amazon.de": {
         "releaseDate": "2019-06-27T00:00Z",
         "defaultPriceListing": {
@@ -106,13 +130,6 @@
           "price": 999,
           "currency": "JPY"
         }
-      },
-      "amazon.es": {
-        "releaseDate": "2019-06-27T00:00Z",
-        "defaultPriceListing": {
-          "price": 9.99,
-          "currency": "EUR"
-        }
       }
     },
     "taxInformation": {
@@ -125,6 +142,9 @@
         "privacyPolicyUrl": "https://www.amazon.com"
       },
       "es-ES": {
+        "privacyPolicyUrl": "https://www.amazon.com"
+      },
+      "es-US": {
         "privacyPolicyUrl": "https://www.amazon.com"
       }
     }

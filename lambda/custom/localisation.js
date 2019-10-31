@@ -104,5 +104,10 @@ module.exports = {
         translation: {
             SURE_MSG: 'Sale.'
         }
+    },
+    'es-US': {
+        translation: {
+            SURE_MSG: 'Okey.'
+        }
     }
 }

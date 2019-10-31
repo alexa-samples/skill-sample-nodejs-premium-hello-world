@@ -37,6 +37,23 @@
           "purchasePromptDescription": "El Paquete de Bienvenidas te saluda en otros idiomas como Hindi, Francés, Español y más.",
           "boughtCardDescription": "Ahora tienes el Paquete de Bienvenidas, que te saluda çç"
         }
+      },
+      "es-US": {
+        "name": "Paquete de Bienvenidas",
+        "summary": "El Paquete de Bienvenidas te saluda en otros idiomas como Hindi, Francés, Español y más.",
+        "description": "El Paquete de Bienvenidas te saluda en otros idiomas como Hindi, Francés, Español y más.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, compra el paquete de bienvenidas"
+        ],
+        "keywords": [
+          "bienvenidas"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "El Paquete de Bienvenidas te saluda en otros idiomas como Hindi, Francés, Español y más.",
+          "boughtCardDescription": "Ahora tienes el Paquete de Bienvenidas, que te saluda çç"
+        }
       }
     },
     "distributionCountries": [
@@ -75,6 +92,13 @@
       "ES"
     ],
     "pricing": {
+      "amazon.es": {
+        "releaseDate": "2019-06-26T00:00Z",
+        "defaultPriceListing": {
+          "price": 0.99,
+          "currency": "EUR"
+        }
+      },
       "amazon.de": {
         "releaseDate": "2019-06-26T00:00Z",
         "defaultPriceListing": {
@@ -102,13 +126,6 @@
           "price": 99,
           "currency": "JPY"
         }
-      },
-      "amazon.es": {
-        "releaseDate": "2019-06-26T00:00Z",
-        "defaultPriceListing": {
-          "price": 0.99,
-          "currency": "EUR"
-        }
       }
     },
     "taxInformation": {
@@ -121,6 +138,9 @@
         "privacyPolicyUrl": "https://www.amazon.com"
       },
       "es-ES": {
+        "privacyPolicyUrl": "https://www.amazon.com"
+      },
+      "es-US": {
         "privacyPolicyUrl": "https://www.amazon.com"
       }
     }

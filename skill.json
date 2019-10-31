@@ -17,6 +17,14 @@
           ],
           "name": "Hola Mundo Premium",
           "description": "Hola Mundo Premium te saluda en distintos idiomas."
+        },
+        "es-US": {
+          "summary": "Hola Mundo Premium te saluda en distintos idiomas.",
+          "examplePhrases": [
+            "Alexa abre Hola Mundo Premium"
+          ],
+          "name": "Hola Mundo Premium",
+          "description": "Hola Mundo Premium te saluda en distintos idiomas."
         }
       },
       "isAvailableWorldwide": true,
