@@ -221,7 +221,7 @@ const PurchaseHistoryIntentHandler = {
     const productList = await monetizationClient.getInSkillProducts(locale);
     const entitledProducts = utils.getAllEntitledProducts(productList.inSkillProducts);
     if (entitledProducts && entitledProducts.length > 0) {
-      const speechOutput = handlerInput.t('BOUGH_SOMETHING_MSG') + ' ' + utils.getSpeakableListOfProducts(entitledProducts)+ ' ' + utils.getRandomYesNoQuestion(handlerInput);
+      const speechOutput = handlerInput.t('BOUGHT_SOMETHING_MSG') + ' ' + utils.getSpeakableListOfProducts(entitledProducts)+ '. ' + utils.getRandomYesNoQuestion(handlerInput);
 
       return handlerInput.responseBuilder
         .speak(speechOutput)

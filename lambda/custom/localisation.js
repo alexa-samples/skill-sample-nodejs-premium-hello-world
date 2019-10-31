@@ -68,7 +68,7 @@ module.exports = {
             BUY_UNKNOWN_RESULT_MSG: 'Ha ocurrido algo raro, pero gracias por tu interés en {{productName}}.',
             BUY_ERROR_MSG: 'Perdona, ha habido un error con las compras in skill. Asegurate de que no estás bloqueando las compras en tu app Alexa.',
             BOUGHT_SOMETHING_MSG: 'Has comprado los siguientes productos:',
-            BOUGHT_NOTHING_MSG: 'No has comprado nada aun. To learn more about the products you can buy, try saying. what can I buy. or just say yes to get another greeting.',
+            BOUGHT_NOTHING_MSG: 'No has comprado nada aun. Si quieres saber que puedes comprar sólo dí. que puedo comprar. o sólo dí sí para obtener otro saludo.',
             AVAILABLE_CREDITS_MSG: 'Te queda {{count}} adiós premium. ',
             AVAILABLE_CREDITS_MSG_plural: 'Te quedan {{count}} adioses premium. ',
             CREDITS_FOLLOWUP_STOCK: 'Sólo di. para. y gastarás uno!',
