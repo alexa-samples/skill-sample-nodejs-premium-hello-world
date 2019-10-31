@@ -101,7 +101,7 @@ const DescribeProductIntentHandler = {
         .getResponse();
     }
     // Purchasable. Make the upsell
-    speechOutput = 'Sure.';
+    speechOutput = handlerInput.t('SURE_MSG');
     if (product.length > 0){
       return utils.makeUpsell(speechOutput, product, handlerInput);
     } else {
@@ -187,24 +187,22 @@ const UpsellBuyResponseHandler = {
       switch (request.payload.purchaseResult) {
         case 'ACCEPTED':
         case 'ALREADY_PURCHASED':
-          preSpeechText = utils.getBuyResponseText(product[0].referenceName, product[0].name);
+          preSpeechText = utils.getBuyResponseText(handlerInput, product[0].referenceName, product[0].name);
           break;
         case 'DECLINED':
           preSpeechText = '';
           break;
         default:
-          preSpeechText = `Something unexpected happened, but thanks for your interest in the ${product[0].name}.`;
+          preSpeechText = handlerInput.t('BUY_UNKNOWN_RESULT_MSG', {productName: product[0].name});
           break;
       }
       // respond back to the customer
       return utils.getResponseBasedOnAccessType(handlerInput, productList, preSpeechText);
     }
     // Request Status Error. Something has failed with the connection.
-    console.log(
-      `Connections.Response indicated failure. error: + ${request.payload.message}`,
-    );
+    console.log('Connections.Response indicated failure. error: ' + request.payload.message);
     return handlerInput.responseBuilder
-      .speak('Sorry, there was an error with ISP. Please make sure you unblock purchases in the Alexa app and try again.')
+      .speak(handlerInput.t('BUY_ERROR_MESSAGE'))
       .getResponse();
   }
 };
@@ -223,21 +221,19 @@ const PurchaseHistoryIntentHandler = {
     const productList = await monetizationClient.getInSkillProducts(locale);
     const entitledProducts = utils.getAllEntitledProducts(productList.inSkillProducts);
     if (entitledProducts && entitledProducts.length > 0) {
-      const speechOutput = `You have bought the following items: ${utils.getSpeakableListOfProducts(entitledProducts)}. ` + utils.getRandomYesNoQuestion(handlerInput);
-      const repromptOutput = `You asked me for what you've bought, here's a list ${utils.getSpeakableListOfProducts(entitledProducts)}`;
+      const speechOutput = handlerInput.t('BOUGH_SOMETHING_MSG') + ' ' + utils.getSpeakableListOfProducts(entitledProducts)+ ' ' + utils.getRandomYesNoQuestion(handlerInput);
 
       return handlerInput.responseBuilder
         .speak(speechOutput)
-        .reprompt(repromptOutput)
+        .reprompt(speechOutput)
         .getResponse();
     }
 
-    const speechOutput = 'You haven\'t purchased anything yet. To learn more about the products you can buy, say - what can I buy. How can I help?';
-    const repromptOutput = `You asked me for a what you've bought, but you haven't purchased anything yet. You can say - what can I buy, or say yes to get another greeting. ` + utils.getRandomYesNoQuestion(handlerInput);
+    const speechOutput = handlerInput.t('BOUGHT_NOTHING_MSG') + ' ' + utils.getRandomYesNoQuestion(handlerInput);
 
     return handlerInput.responseBuilder
       .speak(speechOutput)
-      .reprompt(repromptOutput)
+      .reprompt(speechOutput)
       .getResponse();
   }
 };
@@ -258,8 +254,8 @@ const InventoryIntentHandler = {
       record => record.referenceName === 'Goodbyes_Pack'
     );
     const availableGoodbyes = parseInt(utils.getRemainingCredits(handlerInput, goodbyesPackProduct, 'goodbyesUsed', utils.GOODBYES_PER_ENTITLEMENT).availableCredits) || 0;
-    let speechOutput = `You have ${availableGoodbyes} premium goodbyes left. `;
-    availableGoodbyes ? speechOutput += `Just say stop and you'll use one!` : speechOutput += 'You can buy more by saying, buy goodbyes pack.';
+    let speechOutput = handlerInput.t('AVAILABLE_CREDITS_MSG', {count: availableGoodbyes});
+    availableGoodbyes ? speechOutput += handlerInput.t('CREDITS_FOLLOWUP_STOCK') : speechOutput += handlerInput.t('CREDITS_FOLLOWUP_NO_STOCK');
     const repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
     return handlerInput.responseBuilder
       .speak(speechOutput)
@@ -306,10 +302,12 @@ const CancelProductResponseHandler = {
   },
   async handle(handlerInput) {
     console.log('Handler: CancelProductResponseHandler');
-    const productId = Alexa.getSlot(handlerInput.requestEnvelope, 'product').resolutions.resolutionsPerAuthority[0].values[0].value.id;
     const locale = Alexa.getLocale(handlerInput.requestEnvelope);
-    let speechOutput, repromptOutput;
-    console.log('Cancel connections payload: ' + handlerInput.requestEnvelope.request.payload);
+    const {payload} =  handlerInput.requestEnvelope.request;
+    console.log('Cancel connections payload: ' + payload);
+    const productId = payload.productId;
+
+    let speechOutput;
 
     const monetizationClient = handlerInput.serviceClientFactory.getMonetizationServiceClient();
     // productList contains the list of all ISP products for this skill.
@@ -318,9 +316,7 @@ const CancelProductResponseHandler = {
       record => record.productId === productId,
     );
 
-    console.log(
-      `PRODUCT = ${JSON.stringify(product)}`,
-    );
+    console.log(`PRODUCT = ${JSON.stringify(product)}`);
 
     if (handlerInput.requestEnvelope.request.status.code === '200') {
       // Alexa handles the speech response immediately following the cancellation request.
@@ -331,27 +327,25 @@ const CancelProductResponseHandler = {
         // The cancellation confirmation response is handled by Alexa's Purchase Experience Flow.
         // Simply add to that with getRandomYesNoQuestion()
         speechOutput = utils.getRandomYesNoQuestion(handlerInput);
-        repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
       } else if (handlerInput.requestEnvelope.request.payload.purchaseResult === 'DECLINED') {
+        // Not possible to cancel
         speechOutput = utils.getRandomYesNoQuestion(handlerInput);
-        repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
       } else if (handlerInput.requestEnvelope.request.payload.purchaseResult === 'NOT_ENTITLED') {
         // No subscription to cancel.
         // The "No subscription to cancel" response is handled by Alexa's Purchase Experience Flow.
         // Simply add to that with getRandomYesNoQuestion()
         speechOutput = utils.getRandomYesNoQuestion(handlerInput);
-        repromptOutput = utils.getRandomYesNoQuestion(handlerInput);
       }
       return handlerInput.responseBuilder
         .speak(speechOutput)
-        .reprompt(repromptOutput)
+        .reprompt(speechOutput)
         .getResponse();
     }
     // Something failed.
     console.log(`Connections.Response indicated failure. error: ${handlerInput.requestEnvelope.request.status.message}`);
 
     return handlerInput.responseBuilder
-      .speak('There was an error handling your request. Please try again or contact us for help.')
+      .speak(handlerInput.t('CANCEL_PRODUCT_ERROR_MSG'))
       .getResponse();
   }
 };
@@ -363,7 +357,7 @@ const HelpIntentHandler = {
   },
   handle(handlerInput) {
     console.log('Handler: HelpIntentHandler');
-    const speechOutput = 'You can say hello to me! How can I help?';
+    const speechOutput = handlerInput.t('HELP_MSG');
 
     return handlerInput.responseBuilder
       .speak(speechOutput)
@@ -406,10 +400,11 @@ const ErrorHandler = {
   },
   handle(handlerInput, error) {
     console.log(`Error handled: ${JSON.stringify(error)}`);
+    const speechOutput = handlerInput.t('ERROR_MSG');
 
     return handlerInput.responseBuilder
-      .speak('Sorry, there was an error. Please try again.')
-      .reprompt('Sorry, there was an error. Please try again.')
+      .speak(speechOutput)
+      .reprompt(speechOutput)
       .getResponse();
   }
 };

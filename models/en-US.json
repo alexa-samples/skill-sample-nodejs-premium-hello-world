@@ -65,7 +65,8 @@
                     ],
                     "samples": [
                         "what is {product}",
-                        "tell me more about {product}"
+                        "tell me more about {product}",
+                        "more information about {product}"
                     ]
                 },
                 {

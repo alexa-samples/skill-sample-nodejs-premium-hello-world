@@ -99,15 +99,17 @@ function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
     record => record.referenceName === 'Goodbyes_Pack'
   );
 
-  const availableGoodbyes = parseInt(getRemainingCredits(handlerInput, goodbyesPackProduct, 'goodbyesUsed', GOODBYES_PER_ENTITLEMENT).availableCredits) || 0;
+  const creditStatus = getRemainingCredits(handlerInput, goodbyesPackProduct, 'goodbyesUsed', GOODBYES_PER_ENTITLEMENT);
+  const availableGoodbyes = parseInt(creditStatus.availableCredits) || 0;
 
   let speechOutput;
   let cardText;
 
   if (availableGoodbyes > 0){
+    console.log("Goodbye credits are available");
     const specialGoodbye = getSpecialGoodbye();
-    const preGoodbyeSpeechText = `Here's your special goodbye: `;
-    const postGoodbyeSpeechText = `That's goodbye in ${specialGoodbye.language}`;
+    const preGoodbyeSpeechText = handlerInput.t('SPECIAL_GOODBYE_MSG');
+    const postGoodbyeSpeechText = handlerInput.t('SPECIAL_GOODBYE_LANG_MSG', {lang: specialGoodbye.language});
     const langSpecialGoodbye = switchLanguage(`${specialGoodbye.greeting}!`, specialGoodbye.locale);
     cardText = `${preGoodbyeSpeechText} ${specialGoodbye.greeting} ${postGoodbyeSpeechText}`;
     const randomVoice = randomize(specialGoodbye.voice);
@@ -115,7 +117,7 @@ function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
     sessionAttributes.goodbyesUsed += 1;
     attributesManager.setSessionAttributes(sessionAttributes);
   } else {
-    console.log("No premium goodbyes available");
+    console.log("No premium goodbye credits available");
     speechOutput = handlerInput.t('SIMPLE_GOODBYES');
   }
 
@@ -158,8 +160,8 @@ function getResponseBasedOnAccessType(handlerInput, productList, preSpeechText) 
   let repromptOutput;
 
   const specialGreeting = getSpecialHello();
-  const preGreetingSpeechText = `${preSpeechText} Here's your special greeting: `;
-  const postGreetingSpeechText = `That's hello in ${specialGreeting.language}.`;
+  const preGreetingSpeechText = `${preSpeechText} ${handlerInput.t('SPECIAL_GREETING_MSG')}`;
+  const postGreetingSpeechText = handlerInput.t('SPECIAL_GREETING_LANG_MSG', {lang: specialGreeting.language});
   const langSpecialGreeting = switchLanguage(`${specialGreeting.greeting}!`, specialGreeting.locale);
 
   if (isEntitled(premiumSubscriptionProduct)) {
@@ -180,7 +182,7 @@ function getResponseBasedOnAccessType(handlerInput, productList, preSpeechText) 
     if (shouldUpsell(handlerInput) && greetingsPackProduct[0]) {
       console.log("Triggering upsell" + JSON.stringify(greetingsPackProduct));
       // Say the simple greeting, and then Upsell Greetings Pack
-      speechOutput = handlerInput.t('SIMPLE_GREETING', {greeting: theGreeting}) + ' ' + `By the way, you can now get greetings in more languages.`;
+      speechOutput = handlerInput.t('SIMPLE_GREETING', {greeting: theGreeting}) + ' ' + handlerInput.t('UPSELL_MSG');
       return makeUpsell(speechOutput, greetingsPackProduct, handlerInput);
     }
 
@@ -277,15 +279,15 @@ function switchLanguage(speakOutput, locale) {
   return speakOutput;
 }
 
-function getBuyResponseText(productReferenceName, productName) {
+function getBuyResponseText(handlerInput, productReferenceName, productName) {
   console.log('Function: getBuyResponseText');
   switch(productReferenceName){
     case 'Greetings_Pack':
-      return `With the ${productName}, I can now say hello in a variety of languages.`;
+      return handlerInput.t('ENTITLEMENT_INFO_MSG', {productName: productName});
     case 'Premium_Subscription':
-      return `With the ${productName}, I can now say hello in a variety of languages, in different accents using Amazon Polly.`;
+        return handlerInput.t('SUBSCRIPTION_INFO_MSG', {productName: productName});
     case 'Goodbyes_Pack':
-      return `With the ${productName}, I can now say goodbye in a variety of languages, in different accents using Amazon Polly.`;
+        return handlerInput.t('CONSUMABLE_INFO_MSG', {productName: productName});
     default: 
       console.log('Product Unknown');
     return '';

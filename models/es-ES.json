@@ -67,7 +67,16 @@
                         "qué es el {product}",
                         "qué es la {product}",
                         "quiero saber más sobre el {product}",
-                        "quiero saber más sobre la {product}"
+                        "quiero saber más sobre la {product}",
+                        "más información sobre el {product}",
+                        "más información sobre la {product}",
+                        "más información sobre {product}",
+                        "dame más información sobre el {product}",
+                        "dame más información sobre la {product}",
+                        "dame más información sobre {product}",
+                        "quiero más información sobre el {product}",
+                        "quiero más información sobre la {product}",
+                        "quiero más información sobre {product}"
                     ]
                 },
                 {

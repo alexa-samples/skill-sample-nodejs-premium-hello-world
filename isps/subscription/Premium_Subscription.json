@@ -26,7 +26,7 @@
         }
       },
       "es-ES": {
-        "name": "Premium Subscription",
+        "name": "Suscripción Premium",
         "summary": "La Suscripción Premium te saluda utilizando distintas voces de Amazon Polly.",
         "description": "La Suscripción Premium utiliza las voces de Amazon Polly para saludarte en otros idiomas como Hindi, Francés, Español y más.",
         "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
@@ -76,8 +76,6 @@
       "SK",
       "UA",
       "US",
-      "FR",
-      "IT",
       "ES"
     ],
     "pricing": {
