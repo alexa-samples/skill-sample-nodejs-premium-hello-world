@@ -32,15 +32,22 @@ module.exports = {
             CREDITS_FOLLOWUP_NO_STOCK: 'You can buy more by saying. buy goodbyes pack.',
             HELP_MSG: 'You can say hello to me or ask for what you can buy! How can I help?',
             ERROR_MSG: 'Sorry, there was an error. Please try again.',
-            SPECIAL_GOODBYE_MSG: 'Here\'s your special goodbye: ',
+            SPECIAL_GOODBYE_MSG: 'Here\'s your special goodbye. ',
             SPECIAL_GOODBYE_LANG_MSG: 'That\'s goodbye in {{lang}}',
-            SPECIAL_GREETING_MSG: 'Here\'s your special greeting: ',
+            SPECIAL_GREETING_MSG: 'Here\'s your special greeting. ',
             SPECIAL_GREETING_LANG_MSG: 'That\'s hello in {{lang}}.',
             UPSELL_MSG: 'By the way, you can now get greetings in more languages.',
             ENTITLEMENT_INFO_MSG: 'Con {{productName}}, ahora puedo decir hello en distintos idiomas.',
             SUBSCRIPTION_INFO_MSG: 'Con {{productName}}, ahora puedo decir hello en distintos idiomas, con distintos acentos usando Amazon Polly.',
             CONSUMABLE_INFO_MSG: 'Con {{productName}}, ahora puedo decir goodbye en distintos idiomas, con distintos acentos usando Amazon Polly.',
-            CANCEL_PRODUCT_ERROR_MSG: 'There was an error handling your product cancellation request. Please try again or contact us for help.'
+            CANCEL_PRODUCT_ERROR_MSG: 'There was an error handling your product cancellation request. Please try again or contact us for help.',
+            HINDI_LANG: 'Hindi',
+            GERMAN_LANG: 'German',
+            PORTUGUESE_LANG: 'Portuguese',
+            SPANISH_LANG: 'Spanish',
+            FRENCH_LANG: 'French',
+            JAPANESE_LANG: 'Japanese',
+            ITALIAN_LANG: 'Italian'
         }
     },
     es: {
@@ -75,15 +82,22 @@ module.exports = {
             CREDITS_FOLLOWUP_NO_STOCK: 'Puedes comprar más diciendo. comprar paquete de despedidas.',
             HELP_MSG: 'Puedes decirme hola y preguntarme por lo que puedes comprar. Como te puedo ayudar?',
             ERROR_MSG: 'Perdona, tha ocurrido un error. Por favor inténtalo otra vez.',
-            SPECIAL_GOODBYE_MSG: 'Aquí está tu despedida especial: ',
+            SPECIAL_GOODBYE_MSG: 'Aquí está tu despedida especial. ',
             SPECIAL_GOODBYE_LANG_MSG: 'Significa adiós en {{lang}}',
-            SPECIAL_GREETING_MSG: 'Aquí está tu bienvenida especial: ',
+            SPECIAL_GREETING_MSG: 'Aquí está tu bienvenida especial. ',
             SPECIAL_GREETING_LANG_MSG: 'Significa hola en {{lang}}.',
             UPSELL_MSG: 'Por cierto, ahora puedes obtener saludos en otros idiomas.',
             ENTITLEMENT_INFO_MSG: 'Con {{productName}}, ahora puedo decir hola en varios idiomas.',
             SUBSCRIPTION_INFO_MSG: 'Con {{productName}}, ahora puedo decir hola en varios idiomas, con distintos acentos usando Amazon Polly.',
             CONSUMABLE_INFO_MSG: 'Con {{productName}}, ahora puedo decir adiós en varios idiomas, con distintos acentos usando Amazon Polly.',
-            CANCEL_PRODUCT_ERROR_MSG: 'Hubo un error procesando la cancelación del producto. Por favor inténtalo otra vez o contáctanos para obtener ayuda.'
+            CANCEL_PRODUCT_ERROR_MSG: 'Hubo un error procesando la cancelación del producto. Por favor inténtalo otra vez o contáctanos para obtener ayuda.',
+            HINDI_LANG: 'Hindi',
+            GERMAN_LANG: 'Alemán',
+            PORTUGUESE_LANG: 'Portugués',
+            SPANISH_LANG: 'Español',
+            FRENCH_LANG: 'Francés',
+            JAPANESE_LANG: 'Japonés',
+            ITALIAN_LANG: 'Italiano'
         }
     },
     'es-MX': {

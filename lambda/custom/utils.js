@@ -16,49 +16,55 @@ function getSimpleHello(handlerInput) {
   return handlerInput.t('SIMPLE_GREETINGS');
 }
 
-function getSpecialGoodbye() {
+function getSpecialGoodbye(handlerInput) {
   const specialGoodbyes = [
     {
-      language: 'hindi', greeting: 'alavida', locale: 'en-IN', voice: ['Aditi', 'Raveena']
+      language: handlerInput.t('HINDI_LANG'), greeting: 'alavida', locale: 'en-IN', voice: ['Aditi', 'Raveena']
     },
     {
-      language: 'german', greeting: 'auf wiedersehen', locale: 'de-DE', voice: ['Hans', 'Marlene', 'Vicki']
+      language: handlerInput.t('GERMAN_LANG'), greeting: 'auf wiedersehen', locale: 'de-DE', voice: ['Hans', 'Marlene', 'Vicki']
+    },
+    /*{
+      language: handlerInput.t('PORTUGUESE_LANG'), greeting: 'tchau', locale: 'pt-BR', voice: ['Camila', 'Ricardo']
+    },*/
+    /*{
+      language: handlerInput.t('SPANISH_LANG'), greeting: 'hasta luego', locale: 'es-ES', voice: ['Conchita', 'Enrique']
+    },*/
+    {
+      language: handlerInput.t('FRENCH_LANG'), greeting: 'au revoir', locale: 'fr-FR', voice: ['Celine', 'Lea', 'Mathieu']
     },
     {
-      language: 'spanish', greeting: 'hasta luego', locale: 'es-ES', voice: ['Conchita', 'Enrique']
+      language: handlerInput.t('JAPANESE_LANG'), greeting: 'sayonara', locale: 'ja-JP', voice: ['Mizuki', 'Takumi']
     },
     {
-      language: 'french', greeting: 'au revoir', locale: 'fr-FR', voice: ['Celine', 'Lea', 'Mathieu']
-    },
-    {
-      language: 'japanese', greeting: 'sayonara', locale: 'ja-JP', voice: ['Mizuki', 'Takumi']
-    },
-    {
-      language: 'italian', greeting: 'arrivederci', locale: 'it-IT', voice: ['Carla', 'Giorgio']
+      language: handlerInput.t('ITALIAN_LANG'), greeting: 'arrivederci', locale: 'it-IT', voice: ['Carla', 'Giorgio']
     }
   ];
   return randomize(specialGoodbyes);
 }
 
-function getSpecialHello() {
+function getSpecialHello(handlerInput) {
   const specialGreetings = [
     {
-      language: 'hindi', greeting: 'Namaste', locale: 'en-IN', voice: ['Aditi', 'Raveena']
+      language: handlerInput.t('HINDI_LANG'), greeting: 'Namaste', locale: 'en-IN', voice: ['Aditi', 'Raveena']
     },
     {
-      language: 'german', greeting: 'Hallo', locale: 'de-DE', voice: ['Hans', 'Marlene', 'Vicki']
+      language: handlerInput.t('GERMAN_LANG'), greeting: 'Hallo', locale: 'de-DE', voice: ['Hans', 'Marlene', 'Vicki']
+    },
+    /*{
+      language: handlerInput.t('PORTUGUESE_LANG'), greeting: 'Olá', locale: 'pt-BR', voice: ['Camila', 'Ricardo']
+    },*/
+    /*{
+      language: handlerInput.t('SPANISH_LANG'), greeting: 'Hola', locale: 'es-ES', voice: ['Conchita', 'Enrique']
+    }*/
+    {
+      language: handlerInput.t('FRENCH_LANG'), greeting: 'Bonjour', locale: 'fr-FR', voice: ['Celine', 'Lea', 'Mathieu']
     },
     {
-      language: 'spanish', greeting: 'Hola', locale: 'es-ES', voice: ['Conchita', 'Enrique']
+      language: handlerInput.t('JAPANESE_LANG'), greeting: 'Konichiwa', locale: 'ja-JP', voice: ['Mizuki', 'Takumi']
     },
     {
-      language: 'french', greeting: 'Bonjour', locale: 'fr-FR', voice: ['Celine', 'Lea', 'Mathieu']
-    },
-    {
-      language: 'japanese', greeting: 'Konichiwa', locale: 'ja-JP', voice: ['Mizuki', 'Takumi']
-    },
-    {
-      language: 'italian', greeting: 'Ciao', locale: 'it-IT', voice: ['Carla', 'Giorgio']
+      language: handlerInput.t('ITALIAN_LANG'), greeting: 'Ciao', locale: 'it-IT', voice: ['Carla', 'Giorgio']
     }
   ];
   return randomize(specialGreetings);
@@ -107,7 +113,7 @@ function getPremiumOrRandomGoodbye(handlerInput, inSkillProducts) {
 
   if (availableGoodbyes > 0){
     console.log("Goodbye credits are available");
-    const specialGoodbye = getSpecialGoodbye();
+    const specialGoodbye = getSpecialGoodbye(handlerInput);
     const preGoodbyeSpeechText = handlerInput.t('SPECIAL_GOODBYE_MSG');
     const postGoodbyeSpeechText = handlerInput.t('SPECIAL_GOODBYE_LANG_MSG', {lang: specialGoodbye.language});
     const langSpecialGoodbye = switchLanguage(`${specialGoodbye.greeting}!`, specialGoodbye.locale);
@@ -159,7 +165,7 @@ function getResponseBasedOnAccessType(handlerInput, productList, preSpeechText) 
   let cardText;
   let repromptOutput;
 
-  const specialGreeting = getSpecialHello();
+  const specialGreeting = getSpecialHello(handlerInput);
   const preGreetingSpeechText = `${preSpeechText} ${handlerInput.t('SPECIAL_GREETING_MSG')}`;
   const postGreetingSpeechText = handlerInput.t('SPECIAL_GREETING_LANG_MSG', {lang: specialGreeting.language});
   const langSpecialGreeting = switchLanguage(`${specialGreeting.greeting}!`, specialGreeting.locale);
