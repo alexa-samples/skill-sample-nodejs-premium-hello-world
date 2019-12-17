@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "premium hello world",
+            "invocationName": "le génie des salutations premium",
             "intents": [
                 {
                     "name": "AMAZON.CancelIntent",
@@ -19,7 +19,10 @@
                     "name": "SimpleHelloIntent",
                     "slots": [],
                     "samples": [
-                        "hello"
+                        "bonjour",
+                        "coucou",
+                        "salut",
+                        "me dire bonjour"
                     ]
                 },
                 {
@@ -38,21 +41,25 @@
                     "name": "AvailableProductsIntent",
                     "slots": [],
                     "samples": [
-                        "what can I purchase",
-                        "what can I buy",
-                        "purchase options"
+                        "que puis-je acheter",
+                        "que peut-on acheter",
+                        "quels sont les produits disponibles",
+                        "je veux la liste des produits",
+                        "quels sont les produits disponibles à l'achat",
+                        "quels sont les produits à l'achat",
+                        "produits disponibles"
                     ]
                 },
                 {
                     "name": "PurchaseHistoryIntent",
                     "slots": [],
                     "samples": [
-                        "purchase history",
-                        "order history",
-                        "what have I purchased",
-                        "what have I bought",
-                        "what have I ordered",
-                        "what did I order"
+                        "quel est mon historique d'achat",
+                        "quels produits j'ai acheté",
+                        "donne-moi la liste des produits achetés",
+                        "dis-moi mon historique d'achat",
+                        "donne-moi mon historique d'achat",
+                        "historique"
                     ]
                 },
                 {
@@ -60,14 +67,25 @@
                     "slots": [
                         {
                             "name": "product",
-                            "type": "productType"
+                            "type": "productType",
+                            "samples": [
+                                "plus d'information sur {product}",
+                                "{product}",
+                                "le {product}",
+                                "le produit {product}",
+                                "description {product}"
+                            ]
                         }
                     ],
                     "samples": [
-                        "what is {product}",
-                        "tell me more about {product}",
-                        "more information about {product}",
-                        "give me more information about {product}"
+                        "description", 
+                        "plus d'information",
+                        "plus d'information sur {product}",
+                        "donne-moi plus d'informations sur {product}",
+                        "donne-moi plus d'informations sur le produit {product}",
+                        "donne-moi plus la description de {product}",
+                        "donne-moi plus la description du produit {product}",
+                        "quel est le produit {product}"
                     ]
                 },
                 {
@@ -77,36 +95,36 @@
                             "name": "product",
                             "type": "productType",
                             "samples": [
-                                "I want to buy the {product}",
-                                "I want to buy {product}",
-                                "the {product}",
-                                "{product}"
+                                "je veux acheter {product}",
+                                "je veux acheter le produit {product}",
+                                "{product}",
+                                "le {product}",
+                                "achètes {product}",
+                                "achètes le produit {product}"
                             ]
                         }
                     ],
                     "samples": [
-                        "i want to buy",
-                        "purchase",
-                        "buy",
-                        "give me {product}",
-                        "get {product}",
-                        "buy {product}",
-                        "sign up to {product}"
+                        "achat",
+                        "je veux acheter",
+                        "je veux commander",
+                        "commande le produit {product}",
+                        "commande {product}",
+                        "achètes {product}",
+                        "achètes le produit {product}"
                     ]
                 },
                 {
                     "name": "InventoryIntent",
                     "slots": [],
                     "samples": [
-                        "inventory",
-                        "what is my inventory",
-                        "my inventory",
-                        "current inventory",
-                        "what is my goodbyes count",
-                        "what is my current goodbyes count",
-                        "how many goodbyes I have left",
-                        "how many goodbyes do I have",
-                        "goodbyes left"
+                        "inventaire",
+                        "quel est mon inventaire",
+                        "combien d'adieux reste-t-il",
+                        "combien d'adieux j'ai",
+                        "dis-moi le nombre d'adieux qu'il me reste",
+                        "adieux restant",
+                        "nombre d'adieux restant"
                     ]
                 },
                 {
@@ -116,26 +134,27 @@
                             "name": "product",
                             "type": "productType",
                             "samples": [
-                                "refund of {product}",
-                                "I want a refund of the {product}",
-                                "I want a refund of {product}",
-                                "the {product}",
-                                "{product}"
+                                "{product}",
+                                "le {product}",
+                                "le produit {product}",
+                                "annule l'achat de {product}",
+                                "annule l'achat du produit {product}",
+                                "annule {product}",
+                                "annule le produit {product}",
+                                "je veux être remboursé de {product}",
+                                "je veux être remboursé du produit {product}"
                             ]
                         }
                     ],
                     "samples": [
-                        "cancel the {product}",
-                        "refund the {product}",
-                        "return the {product}",
-                        "cancel {product}",
-                        "refund {product}",
-                        "return {product}",
-                        "return product",
-                        "I want a refund",
-                        "I want a refund of {product}",
-                        "I want a refund of the {product}",
-                        "refund"
+                        "remboursement",
+                        "je veux être remboursé",
+                        "rembourse mon achat",
+                        "rembourse moi",
+                        "annule l'achat de {product}",
+                        "annule l'achat du produit {product}",
+                        "je ne veux plus de {product}",
+                        "je ne veux plus du produit {product}"
                     ]
                 }
             ],
@@ -146,26 +165,38 @@
                         {
                             "id": "Premium_Subscription",
                             "name": {
-                                "value": "premium subscription"
+                                "value": "abonnement",
+                                "synonyms": [
+                                    "abonnement premium",
+                                    "premium"
+                                ]
                             }
                         },
                         {
                             "id": "Goodbyes_Pack",
                             "name": {
-                                "value": "goodbyes pack",
+                                "value": "adieux",
                                 "synonyms": [
-                                    "special goodbyes",
-                                    "special goodbye"
+                                    "adieux personnalisés",
+                                    "au revoir spécial",
+                                    "au revoir spéciaux",
+                                    "au revoir personnalisé",
+                                    "pack des au revoir personnalisés",
+                                    "pack des au revoir speciaux",
+                                    "pack des adieux personnalisés"
                                 ]
                             }
                         },
                         {
                             "id": "Greetings_Pack",
                             "name": {
-                                "value": "greetings pack",
+                                "value": "salutations",
                                 "synonyms": [
-                                    "special greetings",
-                                    "special greeting"
+                                    "salutations spéciales",
+                                    "salutations personnalisées",
+                                    "accueil personnalisé",
+                                    "pack de salutations spéciales",
+                                    "pack d'accueil personnalisée"
                                 ]
                             }
                         }
@@ -177,7 +208,7 @@
             "intents": [
                 {
                     "name": "DescribeProductIntent",
-                    "delegationStrategy": "SKILL_RESPONSE",
+                    "delegationStrategy": "ALWAYS",
                     "confirmationRequired": false,
                     "prompts": {},
                     "slots": [
@@ -185,8 +216,10 @@
                             "name": "product",
                             "type": "productType",
                             "confirmationRequired": false,
-                            "elicitationRequired": false,
-                            "prompts": {}
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.593674792803.723737651317"
+                            }
                         }
                     ]
                 },
@@ -209,6 +242,7 @@
                 },
                 {
                     "name": "RefundProductIntent",
+                    "delegationStrategy": "ALWAYS",
                     "confirmationRequired": false,
                     "prompts": {},
                     "slots": [
@@ -232,11 +266,7 @@
                 "variations": [
                     {
                         "type": "PlainText",
-                        "value": "which product are you interested in?"
-                    },
-                    {
-                        "type": "PlainText",
-                        "value": "interested in greetings pack, premium subscription or goodbyes pack?"
+                        "value": "Lequel de ces produits vous intéressent, salutations spéciales, adieux personnalisés ou abonnement premium ?"
                     }
                 ]
             },
@@ -245,11 +275,7 @@
                 "variations": [
                     {
                         "type": "PlainText",
-                        "value": "do you want to buy greetings pack, premium subscription or goodbyes pack?"
-                    },
-                    {
-                        "type": "PlainText",
-                        "value": "which product do you want to buy?"
+                        "value": "Lequel de ces produits voulez-vous acheter, salutations spéciales, adieux personnalisés ou abonnement premium ?"
                     }
                 ]
             },
@@ -258,11 +284,7 @@
                 "variations": [
                     {
                         "type": "PlainText",
-                        "value": "do you want a refund for greetings pack, premium subscription or goodbyes pack?"
-                    },
-                    {
-                        "type": "PlainText",
-                        "value": "which product should I refund?"
+                        "value": "Souhaitez-vous un remboursement pour le pack des salutations spéciales, l'abonnement premium ou bien le pack des adieux ?"
                     }
                 ]
             }

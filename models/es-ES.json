@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "premium hello world",
+            "invocationName": "hola mundo premium",
             "intents": [
                 {
                     "name": "AMAZON.CancelIntent",
@@ -19,7 +19,7 @@
                     "name": "SimpleHelloIntent",
                     "slots": [],
                     "samples": [
-                        "hello"
+                        "hola"
                     ]
                 },
                 {
@@ -38,21 +38,21 @@
                     "name": "AvailableProductsIntent",
                     "slots": [],
                     "samples": [
-                        "what can I purchase",
-                        "what can I buy",
-                        "purchase options"
+                        "qué puedo comprar",
+                        "que puedo adquirir",
+                        "opciones de compra"
                     ]
                 },
                 {
                     "name": "PurchaseHistoryIntent",
                     "slots": [],
                     "samples": [
-                        "purchase history",
-                        "order history",
-                        "what have I purchased",
-                        "what have I bought",
-                        "what have I ordered",
-                        "what did I order"
+                        "historial de compras",
+                        "historial de pedidos",
+                        "qué he adquirido",
+                        "qué he comprado",
+                        "qué he ordenado",
+                        "mis compras"
                     ]
                 },
                 {
@@ -64,10 +64,19 @@
                         }
                     ],
                     "samples": [
-                        "what is {product}",
-                        "tell me more about {product}",
-                        "more information about {product}",
-                        "give me more information about {product}"
+                        "qué es el {product}",
+                        "qué es la {product}",
+                        "quiero saber más sobre el {product}",
+                        "quiero saber más sobre la {product}",
+                        "más información sobre el {product}",
+                        "más información sobre la {product}",
+                        "más información sobre {product}",
+                        "dame más información sobre el {product}",
+                        "dame más información sobre la {product}",
+                        "dame más información sobre {product}",
+                        "quiero más información sobre el {product}",
+                        "quiero más información sobre la {product}",
+                        "quiero más información sobre {product}"
                     ]
                 },
                 {
@@ -77,36 +86,49 @@
                             "name": "product",
                             "type": "productType",
                             "samples": [
-                                "I want to buy the {product}",
-                                "I want to buy {product}",
-                                "the {product}",
+                                "quiero comprar el {product}",
+                                "quiero comprar la {product}",
+                                "quiero comprar {product}",
+                                "el {product}",
+                                "la {product}",
                                 "{product}"
                             ]
                         }
                     ],
                     "samples": [
-                        "i want to buy",
-                        "purchase",
-                        "buy",
-                        "give me {product}",
-                        "get {product}",
-                        "buy {product}",
-                        "sign up to {product}"
+                        "quiero comprar",
+                        "comprar",
+                        "compra",
+                        "dame {product}",
+                        "adquirir {product}",
+                        "comprar {product}",
+                        "{product}",
+                        "suscríbeme a {product}",
+                        "dame el {product}",
+                        "adquirir el {product}",
+                        "comprar el {product}",
+                        "suscríbeme al {product}",
+                        "dame la {product}",
+                        "adquirir la {product}",
+                        "comprar la {product}",
+                        "suscríbeme a la {product}"
                     ]
                 },
                 {
                     "name": "InventoryIntent",
                     "slots": [],
                     "samples": [
-                        "inventory",
-                        "what is my inventory",
-                        "my inventory",
-                        "current inventory",
-                        "what is my goodbyes count",
-                        "what is my current goodbyes count",
-                        "how many goodbyes I have left",
-                        "how many goodbyes do I have",
-                        "goodbyes left"
+                        "inventario",
+                        "cúal es mi inventario",
+                        "mi inventario",
+                        "inventario actual",
+                        "qué número de despedidas tengo",
+                        "cuantas despedidas tengo",
+                        "cuantas despedidas tengo actualmente",
+                        "cuantas despedidas me quedan",
+                        "despedidas restantes",
+                        "cuántos créditos tengo",
+                        "cuántos créditos me quedan"
                     ]
                 },
                 {
@@ -116,26 +138,35 @@
                             "name": "product",
                             "type": "productType",
                             "samples": [
-                                "refund of {product}",
-                                "I want a refund of the {product}",
-                                "I want a refund of {product}",
-                                "the {product}",
+                                "reembolso de {product}",
+                                "reembolso del {product}",
+                                "reembolso de la {product}",
+                                "quiero un reembolso del {product}",
+                                "quiero un reembolso de la {product}",
+                                "quiere un reembolso de {product}",
+                                "el {product}",
+                                "la {product}",
                                 "{product}"
                             ]
                         }
                     ],
                     "samples": [
-                        "cancel the {product}",
-                        "refund the {product}",
-                        "return the {product}",
-                        "cancel {product}",
-                        "refund {product}",
-                        "return {product}",
-                        "return product",
-                        "I want a refund",
-                        "I want a refund of {product}",
-                        "I want a refund of the {product}",
-                        "refund"
+                        "cancela el {product}",
+                        "reembolsa el {product}",
+                        "devuelve el {product}",
+                        "cancela la {product}",
+                        "reembolsa la {product}",
+                        "devuelve la {product}",
+                        "cancela {product}",
+                        "reembolsa {product}",
+                        "devuelve {product}",
+                        "devolver producto",
+                        "devoluciones",
+                        "quiero un reembolso",
+                        "quiero un reembolso de {product}",
+                        "quiero un reembolso del {product}",
+                        "quiero un reembolso de la {product}",
+                        "reembolsos"
                     ]
                 }
             ],
@@ -146,26 +177,26 @@
                         {
                             "id": "Premium_Subscription",
                             "name": {
-                                "value": "premium subscription"
+                                "value": "suscripción premium"
                             }
                         },
                         {
                             "id": "Goodbyes_Pack",
                             "name": {
-                                "value": "goodbyes pack",
+                                "value": "paquete de despedidas",
                                 "synonyms": [
-                                    "special goodbyes",
-                                    "special goodbye"
+                                    "despedidas especiales",
+                                    "despedida especial"
                                 ]
                             }
                         },
                         {
                             "id": "Greetings_Pack",
                             "name": {
-                                "value": "greetings pack",
+                                "value": "paquete de bienvenidas",
                                 "synonyms": [
-                                    "special greetings",
-                                    "special greeting"
+                                    "bienvenidas especiales",
+                                    "bienvenida especial"
                                 ]
                             }
                         }
@@ -232,11 +263,11 @@
                 "variations": [
                     {
                         "type": "PlainText",
-                        "value": "which product are you interested in?"
+                        "value": "de qué producto quieres más información?"
                     },
                     {
                         "type": "PlainText",
-                        "value": "interested in greetings pack, premium subscription or goodbyes pack?"
+                        "value": "quieres saber más sobre el paquete de bienvenidas, la suscripción premium o el paquete de despedidas?"
                     }
                 ]
             },
@@ -245,11 +276,11 @@
                 "variations": [
                     {
                         "type": "PlainText",
-                        "value": "do you want to buy greetings pack, premium subscription or goodbyes pack?"
+                        "value": "quieres comprar el paquete de bienvenidas, la suscripción premium o el paquete de despedidas?"
                     },
                     {
                         "type": "PlainText",
-                        "value": "which product do you want to buy?"
+                        "value": "qué producto quieres comprar?"
                     }
                 ]
             },
@@ -258,11 +289,11 @@
                 "variations": [
                     {
                         "type": "PlainText",
-                        "value": "do you want a refund for greetings pack, premium subscription or goodbyes pack?"
+                        "value": "quieres un reembolso del paquete de bienvenidas, la suscripción premium o el paquete de despedidas?"
                     },
                     {
                         "type": "PlainText",
-                        "value": "which product should I refund?"
+                        "value": "de qué producto quieres un reembolso?"
                     }
                 ]
             }

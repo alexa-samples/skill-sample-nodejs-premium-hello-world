@@ -1,0 +1,284 @@
+{
+	"interactionModel": {
+		"languageModel": {
+			"invocationName": "ciao mondo premium",
+			"intents": [
+				{
+					"name": "AMAZON.CancelIntent",
+					"samples": []
+				},
+				{
+					"name": "AMAZON.HelpIntent",
+					"samples": []
+				},
+				{
+					"name": "AMAZON.StopIntent",
+					"samples": []
+				},
+				{
+					"name": "SimpleHelloIntent",
+					"slots": [],
+					"samples": [
+						"ciao"
+					]
+				},
+				{
+					"name": "AMAZON.NavigateHomeIntent",
+					"samples": []
+				},
+				{
+					"name": "AMAZON.YesIntent",
+					"samples": []
+				},
+				{
+					"name": "AMAZON.NoIntent",
+					"samples": []
+				},
+				{
+					"name": "AvailableProductsIntent",
+					"slots": [],
+					"samples": [
+						"cosa posso comprare",
+						"cosa posso acquistare",
+						"prodotti disponibili"
+					]
+				},
+				{
+					"name": "PurchaseHistoryIntent",
+					"slots": [],
+					"samples": [
+						"cosa ho comprato",
+						"cosa ho acquistato",
+						"acquisti passati",
+						"cosa ho già comprato",
+						"i miei acquisti"
+					]
+				},
+				{
+					"name": "DescribeProductIntent",
+					"slots": [
+						{
+							"name": "product",
+							"type": "productType"
+						}
+					],
+					"samples": [
+						"cos'è il prodotto {product}",
+						"voglio sapere di più del prodotto {product}",
+						"dammi più informazioni su {product}",
+						"spiegami il prodotto {product}"
+					]
+				},
+				{
+					"name": "BuyProductIntent",
+					"slots": [
+						{
+							"name": "product",
+							"type": "productType",
+							"samples": [
+								"voglio comprare il {product}",
+								"voglio comprare la {product}",
+								"voglio comprare {product}",
+								"voglio acquistare il {product}",
+								"voglio acquistare la {product}",
+								"voglio acquistare {product}",
+								"il {product}",
+								"la {product}",
+								"{product}"
+							]
+						}
+					],
+					"samples": [
+						"voglio comprare",
+						"compra",
+						"comprare",
+						"dammi {product}",
+						"acquista {product}",
+						"compra {product}",
+						"{product}",
+						"iscrivimi a {product}",
+						"dammi il {product}",
+						"acquista il {product}",
+						"compra il {product}",
+						"iscrivimi al {product}",
+						"dammi la {product}",
+						"acquista la {product}",
+						"compra la {product}",
+						"iscrivimi a la {product}"
+					]
+				},
+				{
+					"name": "InventoryIntent",
+					"slots": [],
+					"samples": [
+						"inventario",
+						"cos'è il mii inventario",
+						"mio inventario",
+						"inventario attuale",
+						"quanti saluti ho",
+						"quanti saluti ho ancora",
+						"saluti rimanenti",
+						"quanto credito tengo",
+						"quanti crediti mi rimangono"
+					]
+				},
+				{
+					"name": "RefundProductIntent",
+					"slots": [
+						{
+							"name": "product",
+							"type": "productType",
+							"samples": [
+								"rimborsami il {product}",
+								"rimborsami la {product}",
+								"vorrei il rimborso di {product}",
+								"voglio un rimborso del {product}",
+								"voglio il rimborso della {product}",
+								"vorrei il rimborso del {product}",
+								"il {product}",
+								"la {product}",
+								"{product}"
+							]
+						}
+					],
+					"samples": [
+						"annulla il {product}",
+						"rimborsami il {product}",
+						"annulla la {product}",
+						"cancela la {product}",
+						"cancela il {product}",
+						"reembolsa il {product}",
+						"reembolsa la {product}"
+					]
+				}
+			],
+			"types": [
+				{
+					"name": "productType",
+					"values": [
+						{
+							"id": "Premium_Subscription",
+							"name": {
+								"value": "iscrizione premium"
+							}
+						},
+						{
+							"id": "Goodbyes_Pack",
+							"name": {
+								"value": "pacchetto di addii",
+								"synonyms": [
+									"addii speciali",
+									"addio speciale"
+								]
+							}
+						},
+						{
+							"id": "Greetings_Pack",
+							"name": {
+								"value": "pacchetto di saluti",
+								"synonyms": [
+									"saluti speciali",
+									"saluto speciale"
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		"dialog": {
+			"intents": [
+				{
+					"name": "DescribeProductIntent",
+					"delegationStrategy": "SKILL_RESPONSE",
+					"confirmationRequired": false,
+					"prompts": {},
+					"slots": [
+						{
+							"name": "product",
+							"type": "productType",
+							"confirmationRequired": false,
+							"elicitationRequired": false,
+							"prompts": {}
+						}
+					]
+				},
+				{
+					"name": "BuyProductIntent",
+					"delegationStrategy": "ALWAYS",
+					"confirmationRequired": false,
+					"prompts": {},
+					"slots": [
+						{
+							"name": "product",
+							"type": "productType",
+							"confirmationRequired": false,
+							"elicitationRequired": true,
+							"prompts": {
+								"elicitation": "Elicit.Slot.595251027713.101054381785"
+							}
+						}
+					]
+				},
+				{
+					"name": "RefundProductIntent",
+					"confirmationRequired": false,
+					"prompts": {},
+					"slots": [
+						{
+							"name": "product",
+							"type": "productType",
+							"confirmationRequired": false,
+							"elicitationRequired": true,
+							"prompts": {
+								"elicitation": "Elicit.Slot.1223818174213.631612009135"
+							}
+						}
+					]
+				}
+			],
+			"delegationStrategy": "ALWAYS"
+		},
+		"prompts": [
+			{
+				"id": "Elicit.Slot.593674792803.723737651317",
+				"variations": [
+					{
+						"type": "PlainText",
+						"value": "Di quale prodotto vuoi più informazioni?"
+					},
+					{
+						"type": "PlainText",
+						"value": "Vuoi sapere di più del pacchetto di saluti, del pacchetto di addii o dell'iscrizione premium?"
+					}
+				]
+			},
+			{
+				"id": "Elicit.Slot.595251027713.101054381785",
+				"variations": [
+					{
+						"type": "PlainText",
+						"value": "Vuoi comprare il pacchetto di saluti, il pacchetto di addii o l'iscrizione premium?"
+					},
+					{
+						"type": "PlainText",
+						"value": "quale prodotto vuoi acquistare?"
+					}
+				]
+			},
+			{
+				"id": "Elicit.Slot.1223818174213.631612009135",
+				"variations": [
+					{
+						"type": "PlainText",
+						"value": "Desideri un rimborso del pacchetto di saluti, del pacchetto di addii o dell'iscrizione premium?"
+					},
+					{
+						"type": "PlainText",
+						"value": "Di quale prodotto vorresti avere un rimborso?"
+					}
+				]
+			}
+		]
+	}
+}

@@ -3,13 +3,52 @@
     "publishingInformation": {
       "locales": {
         "en-US": {
-          "summary": "Sample Short Description",
+          "summary": "Premium Hello World greets you in a variety of languages",
           "examplePhrases": [
-            "Alexa open Premium Hello World",
-            "give me a premium greeting"
+            "Alexa open Premium Hello World"
           ],
-          "name": "Hello World Sample w/In Skill Purchasing",
-          "description": "Sample Full Description"
+          "name": "Premium Hello World",
+          "description": "Premium Hello World greets you in a variety of languages"
+        },
+        "en-GB": {
+          "summary": "Premium Hello World greets you in a variety of languages",
+          "examplePhrases": [
+            "Alexa open Premium Hello World"
+          ],
+          "name": "Premium Hello World",
+          "description": "Premium Hello World greets you in a variety of languages"
+        },
+        "es-ES": {
+          "summary": "Hola Mundo Premium te saluda en distintos idiomas.",
+          "examplePhrases": [
+            "Alexa abre Hola Mundo Premium"
+          ],
+          "name": "Hola Mundo Premium",
+          "description": "Hola Mundo Premium te saluda en distintos idiomas."
+        },
+        "es-US": {
+          "summary": "Hola Mundo Premium te saluda en distintos idiomas.",
+          "examplePhrases": [
+            "Alexa abre Hola Mundo Premium"
+          ],
+          "name": "Hola Mundo Premium",
+          "description": "Hola Mundo Premium te saluda en distintos idiomas."
+        },
+        "it-IT": {
+          "summary": "Ciao Mondo Premium ti saluta in diverse lingue.",
+          "examplePhrases": [
+            "Alexa apri ciao mondo premium"
+          ],
+          "name": "Ciao Mondo Premium",
+          "description": "Ciao Mondo Premium ti saluta in diverse lingue."
+        },
+        "fr-FR": {
+          "summary": "Le Génie des Saluatations (version Premium) vous salue dans différentes langues.",
+          "examplePhrases": [
+            "Alexa ouvre le génie des salutations premium"
+          ],
+          "name": "Genie des Salutations version Premium",
+          "description": "Le Génie des Saluatations (version Premium) vous salue dans différentes langues."
         }
       },
       "isAvailableWorldwide": true,

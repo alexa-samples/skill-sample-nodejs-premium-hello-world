@@ -1,7 +1,7 @@
 # Build An Alexa Skill with In-Skill Purchases - Premium Hello World
 <img src="https://m.media-amazon.com/images/G/01/mobile-apps/dex/alexa/alexa-skills-kit/tutorials/fact/header._TTH_.png" />
 
-Adding premium content to your skill is a way for you to monetize your skill.  This Alexa sample skill is a template for a basic ISP skill. It takes the hello world skill and adds greetings in a variety of languages as premium content. This premium content is accessed through a one-time purchase of the "Greetings Pack". It also includes a monthly "Premium Subscription", which greets the customer in multiple languages in a variety of voices using Amazon Polly.
+Adding premium content to your skill is a way for you to monetize your skill.  This Alexa sample skill is a template for a basic ISP skill. It takes the hello world skill and adds greetings in a variety of languages as premium content. This premium content is accessed through a one-time purchase of the "Greetings Pack". It also includes a monthly "Premium Subscription", which greets the customer in multiple languages in a variety of voices using Amazon Polly. Finally, the third type of ISP product is also included (Consumables) as a "Goodbyes Pack" so you get goodbyes in different languages a limited number of times (note that the consumables are tracked in DynamoDB and you need to grant DynamoDB access to your skill Lambda role).
 
 ## Skill Architecture
 Each skill consists of two basic parts, a front end and a back end.
@@ -9,7 +9,7 @@ Each skill consists of two basic parts, a front end and a back end.
 2. The back end is where the logic of your skill resides.
 
 ## Three Options for Skill Setup
-There are a number of different ways for you to setup your skill, depending on your experience and what tools you have available - Alexa Hosted, AWS Hosted, ASK CLI. For this Hello World Skill, we will be using the Alexa Hosted option. If you'd like to  use the AWS Hosted, or ASK CLI methods, you can check out the instructions here for the Sample Fact skill - [AWS Hosted Instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/setup-vui-aws-hosted.md) | [ASK CLI instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/cli.md)
+There are a number of different ways for you to setup your skill, depending on your experience and what tools you have available - Alexa Hosted, AWS Hosted, ASK CLI. For this Hello World Skill, we will be using the Alexa Hosted option. If you'd like to  use the AWS Hosted, or ASK CLI methods, you can check out the instructions here for the Sample Fact skill - [AWS Hosted Instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/setup-vui-aws-hosted.md) | [ASK CLI instructions](https://github.com/alexa/skill-sample-nodejs-fact/blob/master/instructions/cli.md). If you don't use Alexa Hosted you'll have to add DynamoDB access permissions to your lambda role (as consumables are tracked in persistent storage).
 
 
 ## Alexa Hosted
