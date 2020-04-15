@@ -1,0 +1,230 @@
+{
+  "version": "1.0",
+  "type": "SUBSCRIPTION",
+  "referenceName": "Premium_Subscription",
+  "subscriptionInformation": {
+    "subscriptionPaymentFrequency": "MONTHLY",
+    "subscriptionTrialPeriodDays": 7
+  },
+  "publishingInformation": {
+    "locales": {
+      "it-IT": {
+        "name": "Iscrizione premium",
+        "summary": "L'iscrizione premium ti da accesso a voci diverse sfruttando Amazon Polly.",
+        "description": "L'iscrizione premium ti da accesso a voci diverse sfruttando Amazon Polly.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, compra l'iscrizione premium"
+        ],
+        "keywords": [
+          "subscriptions"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "L'iscrizione premium ti da accesso a voci diverse sfruttando Amazon Polly.",
+          "boughtCardDescription": "Fantastico! Ora sei un utente premium!"
+        }
+      },
+      "en-US": {
+        "name": "Premium Subscription",
+        "summary": "The Premium Subscription greets the user in a variety of voices.",
+        "description": "The Premium Subscription Pack unlocks the magic of Polly Voice, and greets you in a variety of languages, like hindi, spanish, italian, and more.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, buy the premium subscription"
+        ],
+        "keywords": [
+          "subscriptions"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "The Premium Subscription Pack unlocks the magic of Polly Voice, and greets you in a variety of languages using Amazon Polly.",
+          "boughtCardDescription": "You now have the Premium Subscription, which will greet you in multiple languages in a variety of voices using Amazon Polly."
+        }
+      },
+      "es-ES": {
+        "name": "Suscripción Premium",
+        "summary": "La Suscripción Premium te saluda utilizando distintas voces de Amazon Polly.",
+        "description": "La Suscripción Premium utiliza las voces de Amazon Polly para saludarte en otros idiomas como Hindi, Francés, Español y más.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, compra la suscripción premium"
+        ],
+        "keywords": [
+          "subscriptions"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "La Suscripción Premium utiliza las voces de Amazon Polly para saludarte en otros idiomas como Hindi, Francés, Español y más.",
+          "boughtCardDescription": "Ahora tienes la Suscripción Premium, que te saluda utilizando distintas voces de Amazon Polly."
+        }
+      },
+      "es-US": {
+        "name": "Suscripción Premium",
+        "summary": "La Suscripción Premium te saluda utilizando distintas voces de Amazon Polly.",
+        "description": "La Suscripción Premium utiliza las voces de Amazon Polly para saludarte en otros idiomas como Hindi, Francés, Español y más.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, compra la suscripción premium"
+        ],
+        "keywords": [
+          "subscriptions"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "La Suscripción Premium utiliza las voces de Amazon Polly para saludarte en otros idiomas como Hindi, Francés, Español y más.",
+          "boughtCardDescription": "Ahora tienes la Suscripción Premium, que te saluda utilizando distintas voces de Amazon Polly."
+        }
+      },
+      "en-GB": {
+        "name": "Premium Subscription",
+        "summary": "The Premium Subscription greets the user in a variety of voices.",
+        "description": "The Premium Subscription Pack unlocks the magic of Polly Voice, and greets you in a variety of languages, like hindi, spanish, italian, and more.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, buy the premium subscription"
+        ],
+        "keywords": [
+          "subscriptions"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "The Premium Subscription Pack unlocks the magic of Polly Voice, and greets you in a variety of languages using Amazon Polly.",
+          "boughtCardDescription": "You now have the Premium Subscription, which will greet you in multiple languages in a variety of voices using Amazon Polly."
+        }
+      },
+      "fr-FR": {
+        "name": "Abonnement Premium",
+        "summary": "L'abonnement premium vous permet d'écouter des salutations dans différentes langues et avec différentes voix.",
+        "description": "L'abonnement premium vous débloque l'accès aux voix proposées par Amazon Polly dans différentes langues comme par exemple en Hindi, espagnol, italien et plus encore...",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, achètes l'abonnement premium"
+        ],
+        "keywords": [
+          "subscriptions",
+          "abonnement"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "L'abonnement premium vous débloque l'accès aux voix proposées par Amazon Polly dans différentes langues.",
+          "boughtCardDescription": "Vous venez de souscrire à l'abonnement premium qui vous permet d'accéder aux différentes voix proposées par Amazon Polly."
+        }
+      }
+    },
+    "distributionCountries": [
+      "AT",
+      "BE",
+      "BG",
+      "CY",
+      "CZ",
+      "DE",
+      "DK",
+      "EE",
+      "FI",
+      "GB",
+      "GG",
+      "GI",
+      "GR",
+      "HR",
+      "HU",
+      "IE",
+      "JP",
+      "LI",
+      "LT",
+      "LU",
+      "LV",
+      "MT",
+      "NL",
+      "NO",
+      "PL",
+      "PT",
+      "RO",
+      "SE",
+      "SI",
+      "SK",
+      "UA",
+      "US",
+      "ES",
+      "IT",
+      "FR"
+    ],
+    "pricing": {
+      "amazon.es": {
+        "releaseDate": "2019-11-20T00:00Z",
+        "defaultPriceListing": {
+          "price": 9.99,
+          "currency": "EUR"
+        }
+      },
+      "amazon.de": {
+        "releaseDate": "2019-06-27T00:00Z",
+        "defaultPriceListing": {
+          "price": 9.99,
+          "currency": "EUR"
+        }
+      },
+      "amazon.com": {
+        "releaseDate": "2019-06-27T00:00Z",
+        "defaultPriceListing": {
+          "price": 9.99,
+          "currency": "USD"
+        }
+      },
+      "amazon.co.uk": {
+        "releaseDate": "2019-06-27T00:00Z",
+        "defaultPriceListing": {
+          "price": 9.99,
+          "currency": "GBP"
+        }
+      },
+      "amazon.co.jp": {
+        "releaseDate": "2019-06-27T00:00Z",
+        "defaultPriceListing": {
+          "price": 999,
+          "currency": "JPY"
+        }
+      },
+      "amazon.it": {
+        "releaseDate": "2019-11-20T00:00Z",
+        "defaultPriceListing": {
+          "price": 9.99,
+          "currency": "EUR"
+        }
+      },
+      "amazon.fr": {
+        "releaseDate": "2019-11-20T00:00Z",
+        "defaultPriceListing": {
+          "price": 9.99,
+          "currency": "EUR"
+        }
+      }
+    },
+    "taxInformation": {
+      "category": "INFORMATION_SERVICES"
+    }
+  },
+  "privacyAndCompliance": {
+    "locales": {
+      "it-IT": {
+        "privacyPolicyUrl": "https://www.amazon.it/privacy"
+      },
+      "en-US": {
+        "privacyPolicyUrl": "http://www.amazon.com/privacy"
+      },
+      "es-ES": {
+        "privacyPolicyUrl": "http://www.amazon.es/privacy"
+      },
+      "es-US": {
+        "privacyPolicyUrl": "http://www.amazon.com/privacy?language=es_US"
+      },
+      "en-GB": {
+        "privacyPolicyUrl": "http://www.amazon.co.uk/privacy"
+      },
+      "fr-FR": {
+        "privacyPolicyUrl": "http://www.amazon.fr/privacy"
+      }
+    }
+  },
+  "purchasableState": "PURCHASABLE"
+}

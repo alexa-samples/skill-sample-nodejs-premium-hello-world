@@ -1,0 +1,287 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "premium hello world three",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "SimpleHelloIntent",
+                    "slots": [],
+                    "samples": [
+                        "hello"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.YesIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NoIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AvailableProductsIntent",
+                    "slots": [],
+                    "samples": [
+                        "what can I purchase",
+                        "what can I buy",
+                        "purchase options"
+                    ]
+                },
+                {
+                    "name": "PurchaseHistoryIntent",
+                    "slots": [],
+                    "samples": [
+                        "purchase history",
+                        "order history",
+                        "what have I purchased",
+                        "what have I bought",
+                        "what have I ordered",
+                        "what did I order"
+                    ]
+                },
+                {
+                    "name": "DescribeProductIntent",
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType",
+                            "samples": [
+                                "about {product}",
+                                "about the {product}",
+                                "the {product}",
+                                "{product}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "what is {product}",
+                        "tell me more about {product}",
+                        "more information about {product}",
+                        "give me more information about {product}",
+                        "the {product}",
+                        "{product}"
+                    ]
+                },
+                {
+                    "name": "BuyProductIntent",
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType",
+                            "samples": [
+                                "I want to buy the {product}",
+                                "I want to buy {product}",
+                                "I want the {product}",
+                                "I want {product}",
+                                "the {product}",
+                                "{product}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "i want to buy",
+                        "purchase",
+                        "buy",
+                        "subscribe",
+                        "I want to buy the {product}",
+                        "I want to buy {product}",
+                        "give me {product}",
+                        "get {product}",
+                        "buy {product}",
+                        "sign up to {product}",
+                        "sign me up to {product}",
+                        "subscribe to {product}"
+                    ]
+                },
+                {
+                    "name": "InventoryIntent",
+                    "slots": [],
+                    "samples": [
+                        "inventory",
+                        "what is my inventory",
+                        "my inventory",
+                        "current inventory",
+                        "what is my goodbyes count",
+                        "what is my current goodbyes count",
+                        "how many goodbyes I have left",
+                        "how many goodbyes do I have",
+                        "goodbyes left"
+                    ]
+                },
+                {
+                    "name": "RefundProductIntent",
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType",
+                            "samples": [
+                                "refund of {product}",
+                                "I want a refund of the {product}",
+                                "I want a refund of {product}",
+                                "the {product}",
+                                "{product}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "cancel the {product}",
+                        "refund the {product}",
+                        "return the {product}",
+                        "cancel {product}",
+                        "refund {product}",
+                        "return {product}",
+                        "return product",
+                        "I want a refund",
+                        "I want a refund of {product}",
+                        "I want a refund of the {product}",
+                        "refund"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "productType",
+                    "values": [
+                        {
+                            "id": "Premium_Subscription",
+                            "name": {
+                                "value": "premium subscription"
+                            }
+                        },
+                        {
+                            "id": "Goodbyes_Pack",
+                            "name": {
+                                "value": "goodbyes pack",
+                                "synonyms": [
+                                    "special goodbyes",
+                                    "special goodbye"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "Greetings_Pack",
+                            "name": {
+                                "value": "greetings pack",
+                                "synonyms": [
+                                    "special greetings",
+                                    "special greeting"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "DescribeProductIntent",
+                    "delegationStrategy": "SKILL_RESPONSE",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.593674792803.723737651317"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "BuyProductIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.595251027713.101054381785"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "RefundProductIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "product",
+                            "type": "productType",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1223818174213.631612009135"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.593674792803.723737651317",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "which product are you interested in?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "interested in the greetings pack, the premium subscription or the goodbyes pack?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.595251027713.101054381785",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "do you want to buy the greetings pack, the premium subscription or the goodbyes pack?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "which product do you want to buy?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1223818174213.631612009135",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "do you want a refund for the greetings pack, the premium subscription or the goodbyes pack?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "which product should I refund?"
+                    }
+                ]
+            }
+        ]
+    }
+}

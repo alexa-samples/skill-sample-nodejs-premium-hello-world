@@ -1,0 +1,111 @@
+{
+	"interactionModel": {
+		"languageModel": {
+			"invocationName": "ciao mondo premium uno",
+			"intents": [
+				{
+					"name": "AMAZON.CancelIntent",
+					"samples": []
+				},
+				{
+					"name": "AMAZON.HelpIntent",
+					"samples": []
+				},
+				{
+					"name": "AMAZON.StopIntent",
+					"samples": []
+				},
+				{
+					"name": "SimpleHelloIntent",
+					"slots": [],
+					"samples": [
+						"ciao"
+					]
+				},
+				{
+					"name": "AMAZON.NavigateHomeIntent",
+					"samples": []
+				},
+				{
+					"name": "AMAZON.YesIntent",
+					"samples": []
+				},
+				{
+					"name": "AMAZON.NoIntent",
+					"samples": []
+				},
+				{
+					"name": "AvailableProductsIntent",
+					"slots": [],
+					"samples": [
+						"cosa posso comprare",
+						"cosa posso acquistare",
+						"prodotti disponibili"
+					]
+				},
+				{
+					"name": "DescribeProductIntent",
+					"slots": [],
+					"samples": [
+						"cos'è il prodotto pacchetto di saluti",
+						"voglio sapere di più del prodotto pacchetto di saluti",
+						"dammi più informazioni su pacchetto di saluti",
+                        "spiegami il prodotto pacchetto di saluti",
+                        "cos'è il prodotto saluti speciali",
+						"voglio sapere di più del prodotto saluti speciali",
+						"dammi più informazioni su saluti speciali",
+                        "spiegami il prodotto saluti speciali",
+                        "cos'è il prodotto saluto speciale",
+						"voglio sapere di più del prodotto saluto speciale",
+						"dammi più informazioni su saluto speciale",
+                        "spiegami il prodotto saluto speciale",
+                        "il pacchetto di saluti",
+                        "pacchetto di saluti",
+                        "i saluti speciali",
+                        "saluti speciali",
+                        "il saluto speciale",
+						"saluto speciale"
+					]
+				},
+				{
+					"name": "BuyProductIntent",
+					"slots": [],
+					"samples": [
+                        "voglio comprare il pacchetto di saluti",
+                        "voglio comprare pacchetto di saluti",
+                        "voglio acquistare il pacchetto di saluti",
+                        "voglio acquistare pacchetto di saluti",
+						"dammi pacchetto di saluti",
+						"acquista pacchetto di saluti",
+						"compra pacchetto di saluti",
+						"dammi il pacchetto di saluti",
+						"acquista il pacchetto di saluti",
+                        "compra il pacchetto di saluti",
+                        "voglio comprare i saluti speciali",
+                        "voglio comprare saluti speciali",
+                        "voglio acquistare i saluti speciali",
+                        "voglio acquistare saluti speciali",
+						"dammi saluti speciali",
+						"acquista saluti speciali",
+						"compra saluti speciali",
+						"dammi i saluti speciali",
+						"acquista i saluti speciali",
+                        "compra i saluti speciali",
+                        "voglio comprare il saluto speciale",
+                        "voglio comprare saluto speciale",
+                        "voglio acquistare il saluto speciale",
+						"voglio acquistare saluto speciale",
+						"dammi saluto speciale",
+						"acquista saluto speciale",
+						"compra saluto speciale",
+						"dammi il saluto speciale",
+						"acquista il saluto speciale",
+						"compra il saluto speciale"
+					]
+				}
+			],
+			"types": []
+		},
+		"prompts": []
+	}
+}

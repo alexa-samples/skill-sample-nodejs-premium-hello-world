@@ -1,0 +1,228 @@
+{
+  "version": "1.0",
+  "type": "CONSUMABLE",
+  "referenceName": "Goodbyes_Pack",
+  "publishingInformation": {
+    "locales": {
+      "it-IT": {
+        "name": "Pacchetto di addii",
+        "summary": "Il pacchetto di addii di saluta in varie lingue.",
+        "description": "Il pacchetto di addii di saluta in varie lingue.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, compra il pacchetto di addii"
+        ],
+        "keywords": [
+          "addii",
+          "arrivederci",
+          "a presto"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "Il pacchetto di addii ti dice addio in diverse lingue come l'Hindi, il francese, lo spagnolo e tante altre.",
+          "boughtCardDescription": "Ottimo! Ora hai a disposizione il pacchetto di addii in diverse lingue!"
+        }
+      },
+      "en-US": {
+        "name": "Goodbyes Pack",
+        "summary": "The Goodbyes Pack says goodbye a limited number of times in a variety of languages.",
+        "description": "The Goodbyes Pack says goodbye a limited number of times in a variety of languages like French, Spanish, Hindi, and more.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, buy the goodbyes pack"
+        ],
+        "keywords": [
+          "goodbyes"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "The Goodbyes Pack says goodbye a limited number of times in a variety of languages like French, Spanish, Hindi, and more.",
+          "boughtCardDescription": "You now have the Goodbyes Pack, which says goodbye a limited number of times in a variety of languages like French, Spanish, Hindi, and more."
+        }
+      },
+      "es-ES": {
+        "name": "Paquete de Despedidas",
+        "summary": "El Paquete de Despedidas te dice adiós, un número limitado de veces, en otros idiomas como Hindi, Francés, Español y más.",
+        "description": "Pack de Despedidas te dice adiós, un número limitado de veces, en otros idiomas como Hindi, Francés, Español y más.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, compra el paquete de despedidas"
+        ],
+        "keywords": [
+          "despedidas"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "El Paquete de Despedidas te dice adiós un número limitado de veces en otros idiomas como Hindi, Francés, Español y más.",
+          "boughtCardDescription": "Ahora tienes el Paquete de Despedidas, que te dice adiós, un número limitado de veces, en otros idiomas como Hindi, Francés, Español y más."
+        }
+      },
+      "es-US": {
+        "name": "Paquete de Despedidas",
+        "summary": "El Paquete de Despedidas te dice adiós, un número limitado de veces, en otros idiomas como Hindi, Francés, Español y más.",
+        "description": "Pack de Despedidas te dice adiós, un número limitado de veces, en otros idiomas como Hindi, Francés, Español y más.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, compra el paquete de despedidas"
+        ],
+        "keywords": [
+          "despedidas"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "El Paquete de Despedidas te dice adiós un número limitado de veces en otros idiomas como Hindi, Francés, Español y más.",
+          "boughtCardDescription": "Ahora tienes el Paquete de Despedidas, que te dice adiós, un número limitado de veces, en otros idiomas como Hindi, Francés, Español y más."
+        }
+      },
+      "en-GB": {
+        "name": "Goodbyes Pack",
+        "summary": "The Goodbyes Pack says goodbye a limited number of times in a variety of languages.",
+        "description": "The Goodbyes Pack says goodbye a limited number of times in a variety of languages like French, Spanish, Hindi, and more.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, buy the goodbyes pack"
+        ],
+        "keywords": [
+          "goodbyes"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "The Goodbyes Pack says goodbye a limited number of times in a variety of languages like French, Spanish, Hindi, and more.",
+          "boughtCardDescription": "You now have the Goodbyes Pack, which says goodbye a limited number of times in a variety of languages like French, Spanish, Hindi, and more."
+        }
+      },
+      "fr-FR": {
+        "name": "Pack des Adieux Personnalisés",
+        "summary": "Le pack des adieux personnalisés vous mentionne 'Au Revoir' un nombre limité de fois dans différentes langues.",
+        "description": "Le pack des adieux personnalisés vous mentionne 'Au Revoir' un nombre limité de fois dans différentes langues comme par exemple en Hindi, Espagnol, Italien.",
+        "smallIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_108.png",
+        "largeIconUri": "https://s3.amazonaws.com/ask-samples-resources/icons/moneyicon_512.png",
+        "examplePhrases": [
+          "Alexa, achètes le pack des adieux personnalisés"
+        ],
+        "keywords": [
+          "au revoir",
+          "adieu"
+        ],
+        "customProductPrompts": {
+          "purchasePromptDescription": "Le pack des adieux personnalisés vous mentionne 'Au Revoir' un nombre limité de fois dans différentes langues comme par exemple en Hindi, Espagnol et Italien.",
+          "boughtCardDescription": "Vous venez d'acheter le pack des adieux qui permet de dire 'Au Revoir' dans différentes langues comme par exemple en Hindi, Allemand, Japonais."
+        }
+      }
+    },
+    "distributionCountries": [
+      "AT",
+      "BE",
+      "BG",
+      "CY",
+      "CZ",
+      "DE",
+      "DK",
+      "EE",
+      "FI",
+      "GB",
+      "GG",
+      "GI",
+      "GR",
+      "HR",
+      "HU",
+      "IE",
+      "JP",
+      "LI",
+      "LT",
+      "LU",
+      "LV",
+      "MT",
+      "NL",
+      "NO",
+      "PL",
+      "PT",
+      "RO",
+      "SE",
+      "SI",
+      "SK",
+      "UA",
+      "US",
+      "ES",
+      "IT",
+      "FR"
+    ],
+    "pricing": {
+      "amazon.es": {
+        "releaseDate": "2019-11-20T00:00Z",
+        "defaultPriceListing": {
+          "price": 0.99,
+          "currency": "EUR"
+        }
+      },
+      "amazon.de": {
+        "releaseDate": "2019-06-26T00:00Z",
+        "defaultPriceListing": {
+          "price": 0.99,
+          "currency": "EUR"
+        }
+      },
+      "amazon.com": {
+        "releaseDate": "2019-06-26T00:00Z",
+        "defaultPriceListing": {
+          "price": 0.99,
+          "currency": "USD"
+        }
+      },
+      "amazon.co.uk": {
+        "releaseDate": "2019-06-26T00:00Z",
+        "defaultPriceListing": {
+          "price": 0.99,
+          "currency": "GBP"
+        }
+      },
+      "amazon.co.jp": {
+        "releaseDate": "2019-06-26T00:00Z",
+        "defaultPriceListing": {
+          "price": 99,
+          "currency": "JPY"
+        }
+      },
+      "amazon.it": {
+        "releaseDate": "2019-11-20T00:00Z",
+        "defaultPriceListing": {
+          "price": 0.99,
+          "currency": "EUR"
+        }
+      },
+      "amazon.fr": {
+        "releaseDate": "2019-11-20T00:00Z",
+        "defaultPriceListing": {
+          "price": 0.99,
+          "currency": "EUR"
+        }
+      }
+    },
+    "taxInformation": {
+      "category": "SOFTWARE"
+    }
+  },
+  "privacyAndCompliance": {
+    "locales": {
+      "it-IT": {
+        "privacyPolicyUrl": "https://www.amazon.it/privacy"
+      },
+      "en-US": {
+        "privacyPolicyUrl": "http://www.amazon.com/privacy"
+      },
+      "es-ES": {
+        "privacyPolicyUrl": "http://www.amazon.es/privacy"
+      },
+      "es-US": {
+        "privacyPolicyUrl": "http://www.amazon.com/privacy?language=es_US"
+      },
+      "en-GB": {
+        "privacyPolicyUrl": "http://www.amazon.co.uk/privacy"
+      },
+      "fr-FR": {
+        "privacyPolicyUrl": "http://www.amazon.fr/privacy"
+      }
+    }
+  },
+  "purchasableState": "PURCHASABLE"
+}

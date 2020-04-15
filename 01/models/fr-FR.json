@@ -1,0 +1,172 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "le génie des salutations premium un",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "SimpleHelloIntent",
+                    "slots": [],
+                    "samples": [
+                        "bonjour",
+                        "coucou",
+                        "salut",
+                        "me dire bonjour"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.YesIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NoIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AvailableProductsIntent",
+                    "slots": [],
+                    "samples": [
+                        "que puis-je acheter",
+                        "que peut-on acheter",
+                        "quels sont les produits disponibles",
+                        "je veux la liste des produits",
+                        "quels sont les produits disponibles à l'achat",
+                        "quels sont les produits à l'achat",
+                        "produits disponibles"
+                    ]
+                },
+                {
+                    "name": "DescribeProductIntent",
+                    "slots": [],
+                    "samples": [
+                        "plus d'information sur les salutations",
+                        "donne-moi plus d'informations sur les salutations",
+                        "donne-moi plus d'informations sur le produit salutations",
+                        "donne-moi plus la description de salutations",
+                        "donne-moi plus la description du produit salutations",
+                        "quel est le produit salutations",
+                        "les salutations",
+                        "salutations",
+                        "plus d'information sur les salutations spéciales",
+                        "donne-moi plus d'informations sur les salutations spéciales",
+                        "donne-moi plus d'informations sur le produit salutations spéciales",
+                        "donne-moi plus la description de salutations spéciales",
+                        "donne-moi plus la description du produit salutations spéciales",
+                        "quel est le produit salutations spéciales",
+                        "les salutations spéciales",
+                        "salutations spéciales",
+                        "plus d'information sur les salutations personnalisées",
+                        "donne-moi plus d'informations sur les salutations personnalisées",
+                        "donne-moi plus d'informations sur le produit salutations personnalisées",
+                        "donne-moi plus la description de salutations personnalisées",
+                        "donne-moi plus la description du produit salutations personnalisées",
+                        "quel est le produit salutations personnalisées",
+                        "les salutations personnalisées",
+                        "salutations personnalisées",
+                        "plus d'information sur l'accueil personnalisé",
+                        "donne-moi plus d'informations sur l'accueil personnalisé",
+                        "donne-moi plus d'informations sur le produit accueil personnalisé",
+                        "donne-moi plus la description de l'accueil personnalisé",
+                        "donne-moi plus la description du produit accueil personnalisé",
+                        "quel est le produit accueil personnalisé",
+                        "l'accueil personnalisé",
+                        "accueil personnalisé",
+                        "plus d'information sur le pack de salutations spéciales",
+                        "donne-moi plus d'informations sur le pack de salutations spéciales",
+                        "donne-moi plus d'informations sur le produit pack de salutations spéciales",
+                        "donne-moi plus la description le pack de salutations spéciales",
+                        "donne-moi plus la description du produit pack de salutations spéciales",
+                        "quel est le produit pack de salutations spéciales",
+                        "le pack de salutations spéciales",
+                        "pack de salutations spéciales",
+                        "plus d'information sur le pack d'accueil personnalisée",
+                        "donne-moi plus d'informations sur le pack d'accueil personnalisée",
+                        "donne-moi plus d'informations sur le produit pack d'accueil personnalisée",
+                        "donne-moi plus la description de le pack d'accueil personnalisée",
+                        "donne-moi plus la description du produit pack d'accueil personnalisée",
+                        "quel est le produit pack d'accueil personnalisée",
+                        "le pack d'accueil personnalisée",
+                        "pack d'accueil personnalisée"
+                    ]
+                },
+                {
+                    "name": "BuyProductIntent",
+                    "slots": [],
+                    "samples": [
+                        "je veux acheter les salutations",
+                        "je veux acheter le produit salutations",
+                        "achètes les salutations",
+                        "achètes le produit salutations",
+                        "commande le produit salutations",
+                        "commande les salutations",
+                        "commande salutations",
+                        "achètes les salutations",
+                        "achètes le produit salutations",
+                        "je veux acheter les salutations spéciales",
+                        "je veux acheter le produit salutations spéciales",
+                        "achètes les salutations spéciales",
+                        "achètes le produit salutations spéciales",
+                        "commande le produit salutations spéciales",
+                        "commande les salutations spéciales",
+                        "commande salutations spéciales",
+                        "achètes les salutations spéciales",
+                        "achètes le produit salutations spéciales",
+                        "je veux acheter les salutations personnalisées",
+                        "je veux acheter le produit salutations personnalisées",
+                        "achètes les salutations personnalisées",
+                        "achètes le produit salutations personnalisées",
+                        "commande le produit salutations personnalisées",
+                        "commande les salutations personnalisées",
+                        "commande salutations personnalisées",
+                        "achètes les salutations personnalisées",
+                        "achètes le produit salutations personnalisées",
+                        "je veux acheter l'accueil personnalisé",
+                        "je veux acheter le produit accueil personnalisé",
+                        "achètes l'accueil personnalisé",
+                        "achètes le produit accueil personnalisé",
+                        "commande le produit accueil personnalisé",
+                        "commande l'accueil personnalisé",
+                        "commande accueil personnalisé",
+                        "achètes l'accueil personnalisé",
+                        "achètes le produit accueil personnalisé",
+                        "je veux acheter le pack de salutations spéciales",
+                        "je veux acheter le produit pack de salutations spéciales",
+                        "achètes le pack de salutations spéciales",
+                        "achètes le produit pack de salutations spéciales",
+                        "commande le produit pack de salutations spéciales",
+                        "commande le pack de salutations spéciales",
+                        "commande pack de salutations spéciales",
+                        "achètes le pack de salutations spéciales",
+                        "achètes le produit pack de salutations spéciales",
+                        "je veux acheter le pack d'accueil personnalisée",
+                        "je veux acheter le produit pack d'accueil personnalisée",
+                        "achètes le pack d'accueil personnalisée",
+                        "achètes le produit pack d'accueil personnalisée",
+                        "commande le produit pack d'accueil personnalisée",
+                        "commande le pack d'accueil personnalisée",
+                        "commande pack d'accueil personnalisée",
+                        "achètes le pack d'accueil personnalisée",
+                        "achètes le produit pack d'accueil personnalisée"
+                    ]
+                }
+            ],
+            "types": []
+        },
+        "prompts": []
+    }
+}
