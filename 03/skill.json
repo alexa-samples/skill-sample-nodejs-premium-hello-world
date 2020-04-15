@@ -1,0 +1,69 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "summary": "Premium Hello World greets you in a variety of languages",
+          "examplePhrases": [
+            "Alexa open Premium Hello World"
+          ],
+          "name": "Premium Hello World Three",
+          "description": "Premium Hello World greets you in a variety of languages"
+        },
+        "en-GB": {
+          "summary": "Premium Hello World greets you in a variety of languages",
+          "examplePhrases": [
+            "Alexa open Premium Hello World"
+          ],
+          "name": "Premium Hello World Three",
+          "description": "Premium Hello World greets you in a variety of languages"
+        },
+        "es-ES": {
+          "summary": "Hola Mundo Premium te saluda en distintos idiomas.",
+          "examplePhrases": [
+            "Alexa abre Hola Mundo Premium"
+          ],
+          "name": "Hola Mundo Premium Tres",
+          "description": "Hola Mundo Premium te saluda en distintos idiomas."
+        },
+        "es-US": {
+          "summary": "Hola Mundo Premium te saluda en distintos idiomas.",
+          "examplePhrases": [
+            "Alexa abre Hola Mundo Premium"
+          ],
+          "name": "Hola Mundo Premium Tres",
+          "description": "Hola Mundo Premium te saluda en distintos idiomas."
+        },
+        "it-IT": {
+          "summary": "Ciao Mondo Premium ti saluta in diverse lingue.",
+          "examplePhrases": [
+            "Alexa apri ciao mondo premium"
+          ],
+          "name": "Ciao Mondo Premium Tre",
+          "description": "Ciao Mondo Premium ti saluta in diverse lingue."
+        },
+        "fr-FR": {
+          "summary": "Le Génie des Saluatations (version Premium) vous salue dans différentes langues.",
+          "examplePhrases": [
+            "Alexa ouvre le génie des salutations premium"
+          ],
+          "name": "Genie des Salutations version Premium Trois",
+          "description": "Le Génie des Saluatations (version Premium) vous salue dans différentes langues."
+        }
+      },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "Sample Testing Instructions.",
+      "category": "EDUCATION_AND_REFERENCE",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "lambda/custom",
+          "uri": "ask-premium-hello-world-3"
+        }
+      }
+    },
+    "manifestVersion": "1.0"
+  }
+}

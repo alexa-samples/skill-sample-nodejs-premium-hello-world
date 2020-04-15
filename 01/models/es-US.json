@@ -1,0 +1,123 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "hola mundo premium uno",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "SimpleHelloIntent",
+                    "slots": [],
+                    "samples": [
+                        "hola"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.YesIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NoIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AvailableProductsIntent",
+                    "slots": [],
+                    "samples": [
+                        "qué puedo comprar",
+                        "que puedo adquirir",
+                        "opciones de compra"
+                    ]
+                },
+                {
+                    "name": "DescribeProductIntent",
+                    "slots": [],
+                    "samples": [
+                        "qué es el paquete de bienvenidas",
+                        "quiero saber más sobre el paquete de bienvenidas",
+                        "más información sobre el paquete de bienvenidas",
+                        "más información sobre paquete de bienvenidas",
+                        "dame más información sobre el paquete de bienvenidas",
+                        "dame más información sobre paquete de bienvenidas",
+                        "quiero más información sobre el paquete de bienvenidas",
+                        "quiero más información sobre paquete de bienvenidas",
+                        "paquete de bienvenidas",
+                        "el paquete de bienvenidas",
+                        "qué son las bienvenidas especiales",
+                        "quiero saber más sobre las bienvenidas especiales",
+                        "más información sobre las bienvenidas especiales",
+                        "más información sobre bienvenidas especiales",
+                        "dame más información sobre las bienvenidas especiales",
+                        "dame más información sobre bienvenidas especiales",
+                        "quiero más información sobre las bienvenidas especiales",
+                        "quiero más información sobre bienvenidas especiales",
+                        "las bienvenidas especiales",
+                        "bienvenidas especiales",
+                        "qué es la bienvenida especial",
+                        "quiero saber más sobre la bienvenida especial",
+                        "más información sobre la bienvenida especial",
+                        "más información sobre bienvenida especial",
+                        "dame más información sobre la bienvenida especial",
+                        "dame más información sobre bienvenida especial",
+                        "quiero más información sobre la bienvenida especial",
+                        "quiero más información sobre bienvenida especial",
+                        "la bienvenida especial",
+                        "bienvenida especial"
+                    ]
+                },
+                {
+                    "name": "BuyProductIntent",
+                    "slots": [],
+                    "samples": [
+                        "quiero comprar el paquete de bienvenidas",
+                        "quiero comprar las bienvenidas especiales",
+                        "quiero comprar la bienvenida especial",
+                        "quiero comprar paquete de bienvenidas",
+                        "adquirir paquete de bienvenidas",
+                        "comprar paquete de bienvenidas",
+                        "dame paquete de bienvenidas",
+                        "quiero comprar bienvenidas especiales",
+                        "adquirir bienvenidas especiales",
+                        "comprar bienvenidas especiales",
+                        "dame bienvenidas especiales",
+                        "quiero comprar bienvenida especial",
+                        "adquirir bienvenida especial",
+                        "comprar bienvenida especial",
+                        "dame bienvenida especial",
+                        "dame el paquete de bienvenidas",
+                        "adquirir el paquete de bienvenidas",
+                        "comprar el paquete de bienvenidas",
+                        "dame las bienvenidas especiales",
+                        "adquirir las bienvenidas especiales",
+                        "comprar las bienvenidas especiales",
+                        "dame la bienvenida especial",
+                        "adquirir la bienvenida especial",
+                        "comprar la bienvenida especial",
+                        "compra paquete de bienvenidas",
+                        "compra el paquete de bienvenidas",
+                        "compra bienvenida especial",
+                        "compra la bienvenida especial",
+                        "compra bienvenidas especiales",
+                        "compra las bienvenidas especiales"
+                    ]
+                }
+            ],
+            "types": []
+        },
+        "prompts": []
+    }
+}

@@ -1,17 +1,17 @@
 {
-  "name": "skill-sample-nodejs-premium-hello-world",
-  "version": "1.0.0",
+  "name": "skill-sample-nodejs-premium-hello-world-1",
+  "version": "1.2.1",
   "description": "In Skill Purchasing sample skill",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Amazon Alexa",
-  "license": "ISC",
+  "license": "ASL",
   "dependencies": {
-    "ask-sdk":"^2.3.0",
-    "ask-sdk-core": "^2.0.7",
-    "ask-sdk-model": "^1.4.1",
+    "ask-sdk-core": "^2.7.0",
+    "ask-sdk-model": "^1.24.0",
+    "i18next": "^15.0.5",
     "aws-sdk": "^2.326.0"
   }
 }
